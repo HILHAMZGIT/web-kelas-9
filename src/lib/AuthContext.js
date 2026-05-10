@@ -45,10 +45,13 @@ export function AuthProvider({ children }) {
           }
           
           // Jika BUKAN callback URL, kita bisa set loading false sekarang.
-          // Jika ini callback URL, kita biarkan onAuthStateChange yang mengatur state loading
-          // setelah event SIGNED_IN tertangkap. Ini menghindari race condition.
-          if (!isAuthCallback || error) {
+          if (!isAuthCallback || error || s) {
             setLoading(false);
+          } else {
+             // Fallback: Jika setelah 4 detik tetap tidak ada event SIGNED_IN, hentikan loading
+             setTimeout(() => {
+               if (mounted) setLoading(false);
+             }, 4000);
           }
         }
       } catch (err) {
@@ -64,6 +67,13 @@ export function AuthProvider({ children }) {
       async (event, sess) => {
         if (!mounted) return;
 
+        if (event === "INITIAL_SESSION") {
+          // Supabase langsung menembakkan INITIAL_SESSION secara sinkronus.
+          // Jika kita ada di halaman callback dan sess masih null (karena sedang ditukar di background),
+          // ABAIKAN event ini, tunggu sampai event SIGNED_IN muncul.
+          if (isAuthCallback && !sess) return;
+        }
+
         if (event === "SIGNED_IN" || event === "INITIAL_SESSION" || event === "USER_UPDATED") {
           setSession(sess);
           if (sess?.user?.id) {
@@ -71,9 +81,11 @@ export function AuthProvider({ children }) {
             setProfile(p);
           }
           setLoading(false);
-        } else if (event === "SIGNED_OUT") {
-          setSession(null);
-          setProfile(null);
+        } else if (event === "SIGNED_OUT" || event === "TOKEN_REFRESHED") {
+          if (event === "SIGNED_OUT") {
+            setSession(null);
+            setProfile(null);
+          }
           setLoading(false);
         }
       }

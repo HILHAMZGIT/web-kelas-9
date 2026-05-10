@@ -35,17 +35,33 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     if (!clerkLoaded) return;
     
-    if (clerkUser?.id) {
-      setProfileLoading(true);
-      fetchProfile(clerkUser.id).then((p) => {
-        setProfile(p);
-        setProfileLoading(false);
-      });
-    } else {
-      setProfile(null);
-      setProfileLoading(false);
-    }
-  }, [clerkUser, clerkLoaded, fetchProfile]);
+    let cancelled = false;
+
+    const loadProfile = async () => {
+      if (clerkUser?.id) {
+        setProfileLoading(true);
+        try {
+          const p = await fetchProfile(clerkUser.id);
+          if (!cancelled) setProfile(p);
+        } catch (e) {
+          if (!cancelled) setProfile(null);
+        } finally {
+          if (!cancelled) setProfileLoading(false);
+        }
+      } else {
+        if (!cancelled) {
+          setProfile(null);
+          setProfileLoading(false);
+        }
+      }
+    };
+
+    loadProfile();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [clerkUser?.id, clerkLoaded, fetchProfile]);
 
   const signOut = async () => {
     await clerkSignOut();

@@ -173,7 +173,7 @@ export default function ProfilPage() {
             Keluar dari Akun
           </button>
           <p className="text-xs text-slate-600">
-            Powered by <span className="text-slate-400">Supabase Auth · Google OAuth</span>
+            Powered by <span className="text-slate-400">Clerk Auth · Google OAuth</span>
           </p>
         </div>
 

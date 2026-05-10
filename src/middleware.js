@@ -1,10 +1,19 @@
-import { NextResponse } from "next/server";
+import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
-// Auth protection now handled client-side via AuthContext.
-// Supabase Auth with Google OAuth doesn't require server middleware for basic protection.
-export function middleware(request) {
-  return NextResponse.next();
-}
+// Lindungi semua route kecuali beranda (/) dan file statis
+const isProtectedRoute = createRouteMatcher([
+  "/galeri(.*)",
+  "/pesan(.*)",
+  "/profil(.*)",
+  "/siswa(.*)",
+  "/setup-profile(.*)",
+]);
+
+export default clerkMiddleware((auth, req) => {
+  if (isProtectedRoute(req)) {
+    auth().protect();
+  }
+});
 
 export const config = {
   matcher: [

@@ -2,134 +2,75 @@
 
 import { createContext, useContext, useEffect, useState, useCallback } from "react";
 import { supabase } from "@/lib/supabase";
+import { useUser, useAuth as useClerkAuth } from "@clerk/nextjs";
 
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-  const [session, setSession] = useState(null);
+  const { user: clerkUser, isLoaded: clerkLoaded } = useUser();
+  const { signOut: clerkSignOut } = useClerkAuth();
   const [profile, setProfile] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [profileLoading, setProfileLoading] = useState(true);
 
   const fetchProfile = useCallback(async (userId) => {
     if (!userId) return null;
-    const { data } = await supabase
-      .from("profil_user")
-      .select("id, username, bio, email")
-      .eq("id", userId)
-      .maybeSingle();
-    return data ?? null;
+    try {
+      const { data } = await supabase
+        .from("profil_user")
+        .select("id, username, bio, email")
+        .eq("id", userId)
+        .maybeSingle();
+      return data ?? null;
+    } catch {
+      return null;
+    }
   }, []);
 
   const refreshProfile = useCallback(async () => {
-    if (!session?.user?.id) return;
-    const data = await fetchProfile(session.user.id);
+    if (!clerkUser?.id) return;
+    const data = await fetchProfile(clerkUser.id);
     setProfile(data);
-  }, [session?.user?.id, fetchProfile]);
+  }, [clerkUser?.id, fetchProfile]);
 
   useEffect(() => {
-    let mounted = true;
-
-    // Cek apakah ada hash token atau code di URL (pertanda sedang proses OAuth callback)
-    const url = new URL(window.location.href);
-    const isAuthCallback = url.hash.includes("access_token") || url.searchParams.has("code");
+    if (!clerkLoaded) return;
     
-    // Tampilkan error jika ada error dari Server Callback
-    if (url.searchParams.has("error")) {
-      const errMsg = url.searchParams.get("error");
-      console.error("Callback Error:", errMsg);
-      alert("Gagal Login (Vercel Error): " + errMsg);
+    if (clerkUser?.id) {
+      setProfileLoading(true);
+      fetchProfile(clerkUser.id).then((p) => {
+        setProfile(p);
+        setProfileLoading(false);
+      });
+    } else {
+      setProfile(null);
+      setProfileLoading(false);
     }
-
-    const initializeAuth = async () => {
-      try {
-        const { data: { session: s }, error } = await supabase.auth.getSession();
-        
-        if (mounted) {
-          setSession(s);
-          if (s?.user?.id) {
-            const p = await fetchProfile(s.user.id);
-            setProfile(p);
-          }
-          
-          // Jika BUKAN callback URL, kita bisa set loading false sekarang.
-          if (!isAuthCallback || error || s) {
-            setLoading(false);
-          } else {
-             // Fallback: Jika setelah 4 detik tetap tidak ada event SIGNED_IN, hentikan loading
-             setTimeout(() => {
-               if (mounted) setLoading(false);
-             }, 4000);
-          }
-        }
-      } catch (err) {
-        console.error("Auth init error:", err);
-        if (mounted) setLoading(false);
-      }
-    };
-
-    initializeAuth();
-
-    // Dengarkan event auth (login, logout, token refresh)
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, sess) => {
-        if (!mounted) return;
-
-        if (event === "INITIAL_SESSION") {
-          // Supabase langsung menembakkan INITIAL_SESSION secara sinkronus.
-          // Jika kita ada di halaman callback dan sess masih null (karena sedang ditukar di background),
-          // ABAIKAN event ini, tunggu sampai event SIGNED_IN muncul.
-          if (isAuthCallback && !sess) return;
-        }
-
-        if (event === "SIGNED_IN" || event === "INITIAL_SESSION" || event === "USER_UPDATED") {
-          setSession(sess);
-          if (sess?.user?.id) {
-            const p = await fetchProfile(sess.user.id);
-            setProfile(p);
-          }
-          setLoading(false);
-        } else if (event === "SIGNED_OUT" || event === "TOKEN_REFRESHED") {
-          if (event === "SIGNED_OUT") {
-            setSession(null);
-            setProfile(null);
-          }
-          setLoading(false);
-        }
-      }
-    );
-
-    return () => {
-      mounted = false;
-      subscription.unsubscribe();
-    };
-  }, [fetchProfile]);
-
-  const signInWithGoogle = async () => {
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: "google",
-      options: {
-        redirectTo: `${window.location.origin}/auth/callback`,
-      },
-    });
-    if (error) throw error;
-  };
+  }, [clerkUser, clerkLoaded, fetchProfile]);
 
   const signOut = async () => {
-    await supabase.auth.signOut();
-    setSession(null);
+    await clerkSignOut();
     setProfile(null);
   };
 
-  const needsProfileSetup = session?.user && (!profile?.username || profile.username.trim() === "");
+  const loading = !clerkLoaded || profileLoading;
+  const user = clerkUser ? {
+    id: clerkUser.id,
+    email: clerkUser.primaryEmailAddress?.emailAddress,
+    user_metadata: {
+      full_name: clerkUser.fullName,
+      avatar_url: clerkUser.imageUrl,
+    }
+  } : null;
+
+  const needsProfileSetup = user && !loading && (!profile?.username || profile.username.trim() === "");
 
   return (
     <AuthContext.Provider
       value={{
-        session,
-        user: session?.user ?? null,
+        session: user ? { user } : null,
+        user,
         profile,
         loading,
-        signInWithGoogle,
         signOut,
         refreshProfile,
         needsProfileSetup,

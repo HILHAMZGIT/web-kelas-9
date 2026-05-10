@@ -27,30 +27,62 @@ export function AuthProvider({ children }) {
   }, [session?.user?.id, fetchProfile]);
 
   useEffect(() => {
-    // Get initial session
-    supabase.auth.getSession().then(({ data: { session: s } }) => {
-      setSession(s);
-      if (s?.user?.id) {
-        fetchProfile(s.user.id).then(setProfile);
-      }
-      setLoading(false);
-    });
+    let mounted = true;
 
-    // Listen to auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (_event, sess) => {
-        setSession(sess);
-        if (sess?.user?.id) {
-          const p = await fetchProfile(sess.user.id);
-          setProfile(p);
-        } else {
-          setProfile(null);
+    // Cek apakah ada hash token atau code di URL (pertanda sedang proses OAuth callback)
+    const url = new URL(window.location.href);
+    const isAuthCallback = url.hash.includes("access_token") || url.searchParams.has("code");
+
+    const initializeAuth = async () => {
+      try {
+        const { data: { session: s }, error } = await supabase.auth.getSession();
+        
+        if (mounted) {
+          setSession(s);
+          if (s?.user?.id) {
+            const p = await fetchProfile(s.user.id);
+            setProfile(p);
+          }
+          
+          // Jika BUKAN callback URL, kita bisa set loading false sekarang.
+          // Jika ini callback URL, kita biarkan onAuthStateChange yang mengatur state loading
+          // setelah event SIGNED_IN tertangkap. Ini menghindari race condition.
+          if (!isAuthCallback || error) {
+            setLoading(false);
+          }
         }
-        setLoading(false);
+      } catch (err) {
+        console.error("Auth init error:", err);
+        if (mounted) setLoading(false);
+      }
+    };
+
+    initializeAuth();
+
+    // Dengarkan event auth (login, logout, token refresh)
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event, sess) => {
+        if (!mounted) return;
+
+        if (event === "SIGNED_IN" || event === "INITIAL_SESSION" || event === "USER_UPDATED") {
+          setSession(sess);
+          if (sess?.user?.id) {
+            const p = await fetchProfile(sess.user.id);
+            setProfile(p);
+          }
+          setLoading(false);
+        } else if (event === "SIGNED_OUT") {
+          setSession(null);
+          setProfile(null);
+          setLoading(false);
+        }
       }
     );
 
-    return () => subscription.unsubscribe();
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+    };
   }, [fetchProfile]);
 
   const signInWithGoogle = async () => {
@@ -69,7 +101,6 @@ export function AuthProvider({ children }) {
     setProfile(null);
   };
 
-  // Check if user needs to complete profile setup
   const needsProfileSetup = session?.user && (!profile?.username || profile.username.trim() === "");
 
   return (

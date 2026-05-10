@@ -32,6 +32,13 @@ export function AuthProvider({ children }) {
     // Cek apakah ada hash token atau code di URL (pertanda sedang proses OAuth callback)
     const url = new URL(window.location.href);
     const isAuthCallback = url.hash.includes("access_token") || url.searchParams.has("code");
+    
+    // Tampilkan error jika ada error dari Server Callback
+    if (url.searchParams.has("error")) {
+      const errMsg = url.searchParams.get("error");
+      console.error("Callback Error:", errMsg);
+      alert("Gagal Login (Vercel Error): " + errMsg);
+    }
 
     const initializeAuth = async () => {
       try {

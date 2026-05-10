@@ -22,20 +22,17 @@ export async function GET(request) {
               cookiesToSet.forEach(({ name, value, options }) =>
                 cookieStore.set(name, value, options)
               );
-            } catch (error) {
-              // The `setAll` method was called from a Server Component.
-              // This can be ignored if you have middleware refreshing
-              // user sessions.
-            }
+            } catch (error) {}
           },
         },
       }
     );
     
-    // Exchange the code for a session and set cookies automatically via SSR
-    await supabase.auth.exchangeCodeForSession(code);
+    const { error } = await supabase.auth.exchangeCodeForSession(code);
+    if (error) {
+      return NextResponse.redirect(new URL(`/?error=${encodeURIComponent(error.message)}`, request.url));
+    }
   }
 
-  // Redirect the user back to the application
-  return NextResponse.redirect(`${origin}${next}`);
+  return NextResponse.redirect(new URL(next, request.url));
 }

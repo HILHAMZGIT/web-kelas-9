@@ -380,17 +380,38 @@ export default function HomePage() {
     }
   }, [loading, needsProfileSetup, router]);
 
-  // Fetch stats when logged in
+  // Fetch stats when logged in with Real-time
   useEffect(() => {
     if (!user) { setStats({ siswa: 0, galeri: 0, pesan: 0, ready: false }); return; }
-    let cancelled = false;
-    (async () => {
+
+    const updateStats = async () => {
       const [siswa, galeri, pesan] = await Promise.all([
-        fetchCount("siswa"), fetchCount("galeri"), fetchCount("pesan_kesan"),
+        fetchCount("siswa"),
+        fetchCount("galeri"),
+        fetchCount("obrolan_kelas"),
       ]);
-      if (!cancelled) setStats({ siswa, galeri, pesan, ready: true });
-    })();
-    return () => { cancelled = true; };
+      setStats({ siswa, galeri, pesan, ready: true });
+    };
+
+    updateStats();
+
+    // Subscribe to changes in chat and gallery
+    const chatChannel = supabase
+      .channel("stats-chat")
+      .on("postgres_changes", { event: "INSERT", schema: "public", table: "obrolan_kelas" }, updateStats)
+      .on("postgres_changes", { event: "DELETE", schema: "public", table: "obrolan_kelas" }, updateStats)
+      .subscribe();
+
+    const galeriChannel = supabase
+      .channel("stats-galeri")
+      .on("postgres_changes", { event: "INSERT", schema: "public", table: "galeri" }, updateStats)
+      .on("postgres_changes", { event: "DELETE", schema: "public", table: "galeri" }, updateStats)
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(chatChannel);
+      supabase.removeChannel(galeriChannel);
+    };
   }, [user]);
 
   if (loading) {

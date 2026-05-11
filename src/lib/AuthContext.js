@@ -17,7 +17,7 @@ export function AuthProvider({ children }) {
     try {
       const { data } = await supabase
         .from("profil_user")
-        .select("id, username, bio, email")
+        .select("id, username, bio, email, instagram_username, foto_profil")
         .eq("id", userId)
         .maybeSingle();
       return data ?? null;

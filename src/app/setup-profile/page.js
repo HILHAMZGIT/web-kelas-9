@@ -1,11 +1,21 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import Image from "next/image";
 import { User, FileText, Loader2, CheckCircle2, Sparkles } from "lucide-react";
+import InstagramIcon from "@/components/InstagramIcon";
 import { useAuth } from "@/lib/AuthContext";
 import { supabase } from "@/lib/supabase";
+import { motion } from "framer-motion";
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 20 },
+  visible: (i = 0) => ({
+    opacity: 1, y: 0,
+    transition: { delay: i * 0.1, duration: 0.5, ease: [0.22, 1, 0.36, 1] }
+  }),
+};
 
 export default function SetupProfilePage() {
   const { user, loading, refreshProfile, needsProfileSetup } = useAuth();
@@ -13,21 +23,18 @@ export default function SetupProfilePage() {
 
   const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
+  const [igUsername, setIgUsername] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState(null);
-  const [visible, setVisible] = useState(false);
 
-  useEffect(() => {
-    const t = setTimeout(() => setVisible(true), 80);
-    return () => clearTimeout(t);
-  }, []);
+  const pathname = usePathname();
 
   // Jika belum login, redirect ke home
   useEffect(() => {
     if (!loading && !user) {
       router.replace("/");
     }
-    // Jika sudah punya username, tak perlu di sini
+    // Jika sudah punya username, tak perlu di sini, tapi pastikan hanya redirect kalau bukan loop
     if (!loading && !needsProfileSetup && user) {
       router.replace("/");
     }
@@ -36,7 +43,7 @@ export default function SetupProfilePage() {
   if (loading || !user) {
     return (
       <div className="flex min-h-screen items-center justify-center">
-        <Loader2 className="h-9 w-9 animate-spin text-emerald-400" />
+        <Loader2 className="h-9 w-9 animate-spin text-emerald-500" />
       </div>
     );
   }
@@ -78,12 +85,13 @@ export default function SetupProfilePage() {
           email: email,
           username: u,
           bio: bio.trim() || null,
+          instagram_username: igUsername.trim().replace("@", "") || null,
         }, { onConflict: "id" });
 
       if (upsertErr) throw upsertErr;
 
       await refreshProfile();
-      router.replace("/");
+      window.location.href = "/";
     } catch (err) {
       setError(err?.message || "Terjadi kesalahan. Coba lagi.");
     } finally {
@@ -94,49 +102,53 @@ export default function SetupProfilePage() {
   return (
     <div className="relative min-h-screen page-shell flex items-center justify-center px-4 pb-32 pt-24">
       {/* Ambient glow */}
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 h-[500px] w-[500px] rounded-full bg-emerald-500/5 blur-[120px] pointer-events-none" />
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 h-[500px] w-[500px] rounded-full bg-emerald-200/20 blur-[150px] pointer-events-none" />
 
-      <div className={`relative z-10 w-full max-w-md transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
-
+      <motion.div
+        className="relative z-10 w-full max-w-md"
+        initial="hidden"
+        animate="visible"
+        variants={{ visible: { transition: { staggerChildren: 0.08 } } }}
+      >
         {/* Header */}
-        <div className="mb-8 text-center">
-          <div className="inline-flex items-center gap-2 rounded-full border border-emerald-400/20 bg-emerald-400/5 px-4 py-1.5 text-xs font-medium text-emerald-300 mb-4">
+        <motion.div variants={fadeUp} custom={0} className="mb-8 text-center">
+          <div className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50/80 px-4 py-1.5 text-xs font-medium text-emerald-600 mb-4">
             <Sparkles className="h-3.5 w-3.5" />
             Satu langkah lagi!
           </div>
 
           {/* Google Avatar */}
-          <div className="mx-auto mb-4 h-20 w-20 overflow-hidden rounded-2xl ring-2 ring-emerald-400/30 shadow-[0_0_30px_rgba(52,211,153,0.2)]">
+          <div className="mx-auto mb-4 h-20 w-20 overflow-hidden rounded-2xl ring-2 ring-emerald-200/50 shadow-md">
             {avatarUrl ? (
               <Image src={avatarUrl} alt={fullName} width={80} height={80} className="object-cover" />
             ) : (
-              <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-emerald-700 to-emerald-900">
-                <User className="h-10 w-10 text-emerald-300" />
+              <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-emerald-300 to-teal-400">
+                <User className="h-10 w-10 text-white" />
               </div>
             )}
           </div>
 
-          <h1 className="text-2xl font-black text-white sm:text-3xl">
+          <h1 className="text-2xl font-black text-slate-800 sm:text-3xl">
             Halo, <span className="gradient-text">{fullName.split(" ")[0] || "Teman"}!</span>
           </h1>
           <p className="mt-2 text-sm text-slate-400">
             Lengkapi profil kamu sebelum bergabung ke portal 9B.
           </p>
-        </div>
+        </motion.div>
 
         {/* Form Card */}
-        <div className="bento-card p-6 sm:p-8">
-          <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/6 via-transparent to-blue-500/4 pointer-events-none" />
+        <motion.div variants={fadeUp} custom={1} className="bento-card p-6 sm:p-8">
+          <div className="absolute inset-0 bg-gradient-to-br from-emerald-50/40 via-transparent to-blue-50/20 pointer-events-none" />
           <form onSubmit={handleSubmit} className="relative z-10 space-y-5">
 
             {/* Username */}
             <div>
-              <label htmlFor="setup-username" className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-400">
+              <label htmlFor="setup-username" className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-500">
                 Username <span className="text-red-400">*</span>
               </label>
               <div className="relative">
                 <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
-                  <span className="text-slate-500 text-sm font-medium">@</span>
+                  <span className="text-slate-400 text-sm font-medium">@</span>
                 </div>
                 <input
                   id="setup-username"
@@ -146,17 +158,17 @@ export default function SetupProfilePage() {
                   onChange={(e) => setUsername(e.target.value.toLowerCase().replace(/\s/g, ""))}
                   required
                   maxLength={48}
-                  className="w-full rounded-xl border border-white/10 bg-slate-900/80 pl-8 pr-4 py-3 text-sm text-white outline-none placeholder:text-slate-500 focus:border-emerald-500/50 focus:ring-2 focus:ring-emerald-500/20 transition-all"
+                  className="input-glass pl-8"
                   placeholder="misal: jazmi9b"
                 />
               </div>
-              <p className="mt-1 text-[11px] text-slate-600">Huruf kecil, angka, titik, strip. Min 3 karakter.</p>
+              <p className="mt-1 text-[11px] text-slate-300">Huruf kecil, angka, titik, strip. Min 3 karakter.</p>
             </div>
 
             {/* Bio */}
             <div>
-              <label htmlFor="setup-bio" className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-400">
-                Bio <span className="text-slate-600">(opsional)</span>
+              <label htmlFor="setup-bio" className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-500">
+                Bio <span className="text-slate-300">(opsional)</span>
               </label>
               <textarea
                 id="setup-bio"
@@ -164,26 +176,47 @@ export default function SetupProfilePage() {
                 onChange={(e) => setBio(e.target.value)}
                 rows={3}
                 maxLength={150}
-                className="w-full resize-none rounded-xl border border-white/10 bg-slate-900/80 px-4 py-3 text-sm text-white outline-none placeholder:text-slate-500 focus:border-emerald-500/50 focus:ring-2 focus:ring-emerald-500/20 transition-all"
+                className="input-glass resize-none"
                 placeholder="Ceritakan sedikit tentang dirimu... (maks. 150 karakter)"
               />
-              <p className="mt-1 text-right text-[11px] text-slate-600">{bio.length}/150</p>
+              <p className="mt-1 text-right text-[11px] text-slate-300">{bio.length}/150</p>
+            </div>
+
+            {/* Instagram */}
+            <div>
+              <label htmlFor="setup-ig" className="mb-1.5 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-slate-500">
+                <InstagramIcon className="h-3 w-3 text-pink-400" /> Instagram <span className="text-slate-300">(opsional)</span>
+              </label>
+              <div className="relative">
+                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
+                  <span className="text-slate-400 text-sm font-medium">@</span>
+                </div>
+                <input
+                  id="setup-ig"
+                  type="text"
+                  value={igUsername}
+                  onChange={(e) => setIgUsername(e.target.value.replace(/\s/g, "").replace("@", ""))}
+                  maxLength={48}
+                  className="input-glass pl-8"
+                  placeholder="username_instagram"
+                />
+              </div>
             </div>
 
             {/* Google info (read-only) */}
-            <div className="rounded-xl border border-white/8 bg-white/3 px-4 py-3 flex items-center gap-3">
+            <div className="rounded-xl border border-black/5 bg-white/60 px-4 py-3 flex items-center gap-3">
               <div className="h-8 w-8 overflow-hidden rounded-lg flex-shrink-0">
                 {avatarUrl ? (
                   <Image src={avatarUrl} alt="" width={32} height={32} className="object-cover" />
                 ) : (
-                  <div className="flex h-full w-full items-center justify-center bg-slate-700">
+                  <div className="flex h-full w-full items-center justify-center bg-slate-100">
                     <User className="h-4 w-4 text-slate-400" />
                   </div>
                 )}
               </div>
               <div className="min-w-0">
-                <p className="truncate text-xs font-medium text-slate-300">{fullName}</p>
-                <p className="truncate text-[11px] text-slate-500">{email}</p>
+                <p className="truncate text-xs font-medium text-slate-600">{fullName}</p>
+                <p className="truncate text-[11px] text-slate-400">{email}</p>
               </div>
               <div className="ml-auto flex-shrink-0">
                 <svg className="h-4 w-4" viewBox="0 0 24 24">
@@ -197,7 +230,7 @@ export default function SetupProfilePage() {
 
             {/* Error */}
             {error && (
-              <div className="rounded-xl border border-red-500/30 bg-red-500/10 px-3 py-2.5 text-sm text-red-300" role="alert">
+              <div className="rounded-xl border border-red-200 bg-red-50 px-3 py-2.5 text-sm text-red-600" role="alert">
                 {error}
               </div>
             )}
@@ -218,8 +251,8 @@ export default function SetupProfilePage() {
             </button>
 
           </form>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </div>
   );
 }

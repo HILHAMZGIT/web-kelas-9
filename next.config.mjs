@@ -15,6 +15,14 @@ const nextConfig = {
         protocol: "https",
         hostname: "*.googleusercontent.com",
       },
+      {
+        protocol: "https",
+        hostname: "img.clerk.com", // Clerk profile images
+      },
+      {
+        protocol: "https",
+        hostname: "mgfwzjvmxcrimchylkoy.supabase.co", // Supabase Storage
+      },
     ],
   },
   reactCompiler: false,

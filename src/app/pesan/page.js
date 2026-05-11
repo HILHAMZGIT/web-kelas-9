@@ -131,7 +131,7 @@ function ProfileModal({ userId, onClose }) {
                     </div>
                     <div>
                       <p className="text-[10px] text-slate-400 uppercase tracking-widest">Kelas</p>
-                      <p className="text-xs text-slate-600">9B Â· SMPN 1 Karanglewas</p>
+                      <p className="text-xs text-slate-600">9B • SMPN 1 Karanglewas</p>
                     </div>
                   </div>
                 </div>
@@ -348,9 +348,9 @@ export default function PesanPage() {
               </div>
             </div>
             <div className="min-w-0 flex-1">
-              <h1 className="truncate text-lg font-bold text-slate-800 sm:text-xl">Tembok Kenangan Â· 9B</h1>
+              <h1 className="truncate text-lg font-bold text-slate-800 sm:text-xl">Tembok Kenangan • 9B</h1>
               <p className="truncate text-xs text-slate-400">
-                {myUsername} <span className="hidden sm:inline">Â· online</span>
+                {myUsername} <span className="hidden sm:inline">• online</span>
               </p>
             </div>
             <button
@@ -378,13 +378,13 @@ export default function PesanPage() {
                 {messagesLoading ? (
                   <div className="flex flex-1 flex-col items-center justify-center gap-2 py-16 text-slate-400">
                     <Loader2 className="h-8 w-8 animate-spin text-emerald-500" />
-                    <p className="text-sm">Memuat obrolanâ€¦</p>
+                    <p className="text-sm">Memuat obrolan...</p>
                   </div>
                 ) : messages.length === 0 ? (
                   <div className="flex flex-1 flex-col items-center justify-center px-4 py-16 text-center">
                     <MessageCircle className="mb-3 h-12 w-12 text-slate-300" />
                     <p className="text-sm font-medium text-slate-500">Belum ada pesan</p>
-                    <p className="mt-1 max-w-xs text-xs text-slate-400">Mulai percakapan â€” pesan tampil ke semua anggota grup secara real-time.</p>
+                    <p className="mt-1 max-w-xs text-xs text-slate-400">Mulai percakapan - pesan tampil ke semua anggota grup secara real-time.</p>
                   </div>
                 ) : (
                   messages.map((m) => {
@@ -516,7 +516,7 @@ export default function PesanPage() {
                         if (!sendBusy && draft.trim()) void sendMessage();
                       }
                     }}
-                    placeholder="Ketik pesanâ€¦"
+                    placeholder="Ketik pesan..."
                     className="max-h-32 min-h-[44px] w-full resize-none rounded-2xl border border-black/8 bg-white/80 px-4 py-3 text-sm text-slate-700 outline-none transition focus:ring-2 focus:ring-emerald-200 focus:border-emerald-300"
                   />
                 </div>

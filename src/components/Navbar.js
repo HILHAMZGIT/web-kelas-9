@@ -88,7 +88,7 @@ export default function Navbar() {
       {/* Mobile Navbar — bottom */}
       <nav className="fixed inset-x-0 bottom-0 z-50 md:hidden">
         <div className="mx-auto px-3 pb-3">
-          <div className="glass-strong flex items-center justify-around rounded-2xl px-2 py-2 shadow-[0_-4px_32px_rgba(0,0,0,0.08)]">
+          <div className="glass-strong flex items-center gap-1 overflow-x-auto flex-nowrap rounded-2xl px-2 py-2 shadow-[0_-4px_32px_rgba(0,0,0,0.08)] [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = pathname === item.href;
@@ -97,7 +97,7 @@ export default function Navbar() {
                   key={item.href}
                   href={item.href}
                   id={`nav-mobile-${item.label.toLowerCase()}`}
-                  className={`relative flex flex-col items-center gap-1 rounded-xl px-4 py-2.5 text-[10px] font-medium transition-all duration-300 ${
+                  className={`relative flex flex-col items-center gap-1 rounded-xl px-4 py-2.5 text-[10px] font-medium transition-all duration-300 flex-shrink-0 ${
                     isActive ? "text-emerald-700" : "text-slate-400 hover:text-slate-600"
                   }`}
                 >
@@ -116,6 +116,8 @@ export default function Navbar() {
                 </Link>
               );
             })}
+            {/* Extra padding at the end for scroll space */}
+            <div className="w-4 flex-shrink-0" />
           </div>
         </div>
       </nav>

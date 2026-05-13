@@ -110,40 +110,40 @@ function ProfessionalHeroSection() {
 
       {/* Hero Content */}
       <motion.div 
-        className="relative z-10 text-center px-6 max-w-5xl mx-auto"
+        className="relative z-10 text-center px-4 sm:px-6 max-w-5xl mx-auto"
         initial="hidden"
         animate="visible"
         variants={stagger}
       >
         {/* Professional Badge */}
-        <motion.div variants={fadeUp} custom={0} className="mb-8">
-          <div className="inline-flex items-center gap-3 rounded-full border border-emerald-200/40 bg-emerald-50/25 backdrop-blur-xl px-7 py-2.5 text-xs font-semibold text-emerald-700 shadow-lg transition-all hover:bg-emerald-50/35">
-            <Sparkles className="h-3.5 w-3.5 text-emerald-500 animate-pulse" />
-            <span className="tracking-[0.25em] uppercase">SMPN 1 KARANGLEWAS · ANGKATAN 2026</span>
-            <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+        <motion.div variants={fadeUp} custom={0} className="mb-6">
+          <div className="inline-flex items-center gap-2 sm:gap-3 rounded-full border border-emerald-200/40 bg-emerald-50/25 backdrop-blur-xl px-4 sm:px-7 py-2 text-[10px] sm:text-xs font-semibold text-emerald-700 shadow-lg transition-all hover:bg-emerald-50/35">
+            <Sparkles className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-emerald-500 animate-pulse" />
+            <span className="tracking-[0.2em] sm:tracking-[0.25em] uppercase">SMPN 1 KARANGLEWAS · ANGKATAN 2026</span>
+            <div className="h-1 w-1 sm:h-1.5 sm:w-1.5 rounded-full bg-emerald-500 animate-pulse" />
           </div>
         </motion.div>
 
         {/* Professional Logo */}
-        <motion.div variants={scaleIn} custom={1} className="mb-10">
-          <div className="mx-auto relative h-36 w-36">
-            <div className="absolute inset-0 rounded-[2.5rem] bg-gradient-to-br from-emerald-400/25 to-tosca-400/25 blur-3xl animate-pulse-emerald" />
-            <div className="relative h-full w-full overflow-hidden rounded-[2.5rem] glass-premium p-5 border border-white/25 shadow-xl">
-              <Image src="/logo.png" alt="Logo 9B" fill className="object-contain" priority sizes="144px" />
+        <motion.div variants={scaleIn} custom={1} className="mb-8">
+          <div className="mx-auto relative h-28 w-28 sm:h-36 sm:w-36">
+            <div className="absolute inset-0 rounded-[2rem] sm:rounded-[2.5rem] bg-gradient-to-br from-emerald-400/25 to-tosca-400/25 blur-3xl animate-pulse-emerald" />
+            <div className="relative h-full w-full overflow-hidden rounded-[2rem] sm:rounded-[2.5rem] glass-premium p-4 sm:p-5 border border-white/25 shadow-xl">
+              <Image src="/logo.png" alt="Logo 9B" fill className="object-contain" priority sizes="112px" />
             </div>
           </div>
         </motion.div>
 
         {/* Hero Title */}
-        <motion.div variants={fadeUp} custom={2} className="mb-6">
-          <h1 className="text-5xl sm:text-7xl lg:text-8xl font-black text-prestige tracking-tight text-[#1a1a1a] mb-5">
+        <motion.div variants={fadeUp} custom={2} className="mb-5">
+          <h1 className="text-3xl sm:text-5xl lg:text-8xl font-black text-prestige tracking-tight text-[#1a1a1a] mb-4 sm:mb-5 text-balance">
             <span className="gradient-text-warm">Website Kelas 9B</span>
           </h1>
           
           {/* Professional Quote */}
           <div className="relative">
-            <Quote className="absolute -top-6 left-1/2 -translate-x-1/2 h-7 w-7 text-emerald-500/25" />
-            <p className="text-xl sm:text-2xl lg:text-3xl font-semibold text-[#4a5568] italic leading-relaxed text-shadow-premium max-w-4xl mx-auto">
+            <Quote className="absolute -top-4 sm:-top-6 left-1/2 -translate-x-1/2 h-5 w-5 sm:h-7 sm:w-7 text-emerald-500/25" />
+            <p className="text-base sm:text-xl lg:text-3xl font-semibold text-[#4a5568] italic leading-relaxed text-shadow-premium max-w-4xl mx-auto text-balance">
               "Setiap tawa punya cerita, 
               <span className="gradient-text"> setiap sudut punya memori."</span>
             </p>
@@ -151,23 +151,23 @@ function ProfessionalHeroSection() {
         </motion.div>
 
         {/* Subtitle */}
-        <motion.div variants={fadeUp} custom={3} className="mb-10">
-          <p className="text-base sm:text-lg font-medium text-[#718096] max-w-2xl mx-auto leading-relaxed">
+        <motion.div variants={fadeUp} custom={3} className="mb-8">
+          <p className="text-sm sm:text-base lg:text-lg font-medium text-[#718096] max-w-2xl mx-auto leading-relaxed text-balance">
             Portal kenangan untuk keluarga besar 9B SMPN 1 Karanglewas
           </p>
         </motion.div>
 
         {/* CTA Buttons */}
-        <motion.div variants={fadeUp} custom={4} className="flex flex-col sm:flex-row gap-4 items-center justify-center">
+        <motion.div variants={fadeUp} custom={4} className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-center justify-center">
           <SignInButton mode="modal" fallbackRedirectUrl="/">
-            <button className="btn-primary group">
+            <button className="btn-primary group w-full sm:w-auto py-3 sm:py-2.5 px-6">
               <Video className="h-5 w-5" />
               <span>Mulai Jelajah</span>
               <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
             </button>
           </SignInButton>
           
-          <Link href="#gallery" className="btn-ghost">
+          <Link href="#gallery" className="btn-ghost w-full sm:w-auto py-3 sm:py-2.5 px-6">
             <Play className="h-5 w-5" />
             <span>Lihat Kenangan</span>
           </Link>
@@ -297,7 +297,7 @@ function Keluarga9BSection() {
         </motion.div>
 
         {/* Professional Bento Grid Layout */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-5 auto-rows-auto">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-4 sm:gap-5 auto-rows-auto">
           {/* Main Class Photo - Large */}
           <motion.div 
             className="md:col-span-8 md:row-span-2 group relative overflow-hidden rounded-2xl glass-premium border border-white/25 shadow-xl"
@@ -308,13 +308,13 @@ function Keluarga9BSection() {
             whileHover={{ scale: 1.01 }}
             transition={{ duration: 0.3 }}
           >
-            <div className="relative h-full min-h-[350px]">
+            <div className="relative h-full min-h-[300px] sm:min-h-[350px]">
               {/* Background Image */}
               <Image 
                 src="/foto-kelas.jpeg" 
                 alt="Foto Bersama Kelas 9B" 
                 fill 
-                className="object-cover" 
+                className="object-cover object-center" 
                 priority
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 66vw, 66vw"
               />
@@ -323,11 +323,11 @@ function Keluarga9BSection() {
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
               
               {/* Content - Bottom Left */}
-              <div className="absolute bottom-0 left-0 right-0 p-6">
-                <h3 className="text-xl font-bold text-white mb-2 text-shadow-hero">Foto Bersama Kelas</h3>
-                <p className="text-white/90 mb-4 text-sm">Momen paling ikonik kita bersama</p>
-                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/80 backdrop-blur-sm text-white text-xs font-medium">
-                  <Users className="h-4 w-4" />
+              <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6">
+                <h3 className="text-lg sm:text-xl font-bold text-white mb-2 text-shadow-hero text-balance">Foto Bersama Kelas</h3>
+                <p className="text-white/90 mb-3 sm:mb-4 text-xs sm:text-sm">Momen paling ikonik kita bersama</p>
+                <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 rounded-full bg-emerald-500/80 backdrop-blur-sm text-white text-[10px] sm:text-xs font-medium">
+                  <Users className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                   <span>34 Anggota</span>
                 </div>
               </div>
@@ -347,14 +347,14 @@ function Keluarga9BSection() {
             custom={1}
             whileHover={{ scale: 1.03 }}
           >
-            <div className="h-full min-h-[180px]">
+            <div className="h-full min-h-[140px] sm:min-h-[180px]">
               <div className="absolute inset-0 bg-gradient-to-br from-blue-100/35 to-indigo-50/25" />
               <div className="absolute inset-0 bg-dots opacity-20" />
               
-              <div className="relative z-10 h-full flex flex-col items-center justify-center p-6 text-center">
-                <MapPin className="h-7 w-7 text-blue-500 mb-2 group-hover:scale-105 transition-transform" />
-                <h3 className="text-base font-bold text-[#1a1a1a] mb-1">Study Tour</h3>
-                <p className="text-xs text-[#718096]">Petualangan seru</p>
+              <div className="relative z-10 h-full flex flex-col items-center justify-center p-4 sm:p-6 text-center">
+                <MapPin className="h-6 w-6 sm:h-7 sm:w-7 text-blue-500 mb-2 group-hover:scale-105 transition-transform" />
+                <h3 className="text-sm sm:text-base font-bold text-[#1a1a1a] mb-1 text-balance">Study Tour</h3>
+                <p className="text-[10px] sm:text-xs text-[#718096]">Petualangan seru</p>
               </div>
             </div>
           </motion.div>
@@ -369,14 +369,14 @@ function Keluarga9BSection() {
             custom={2}
             whileHover={{ scale: 1.03 }}
           >
-            <div className="h-full min-h-[180px]">
+            <div className="h-full min-h-[140px] sm:min-h-[180px]">
               <div className="absolute inset-0 bg-gradient-to-br from-amber-100/35 to-orange-50/25" />
               <div className="absolute inset-0 bg-dots opacity-20" />
               
-              <div className="relative z-10 h-full flex flex-col items-center justify-center p-6 text-center">
-                <Heart className="h-7 w-7 text-amber-500 mb-2 group-hover:scale-105 transition-transform fill-amber-500" />
-                <h3 className="text-base font-bold text-[#1a1a1a] mb-1">Keseruan Harian</h3>
-                <p className="text-xs text-[#718096]">Tawa dan canda</p>
+              <div className="relative z-10 h-full flex flex-col items-center justify-center p-4 sm:p-6 text-center">
+                <Heart className="h-6 w-6 sm:h-7 sm:w-7 text-amber-500 mb-2 group-hover:scale-105 transition-transform fill-amber-500" />
+                <h3 className="text-sm sm:text-base font-bold text-[#1a1a1a] mb-1 text-balance">Keseruan Harian</h3>
+                <p className="text-[10px] sm:text-xs text-[#718096]">Tawa dan canda</p>
               </div>
             </div>
           </motion.div>
@@ -391,14 +391,14 @@ function Keluarga9BSection() {
             custom={3}
             whileHover={{ scale: 1.03 }}
           >
-            <div className="h-full min-h-[180px]">
+            <div className="h-full min-h-[140px] sm:min-h-[180px]">
               <div className="absolute inset-0 bg-gradient-to-br from-purple-100/35 to-pink-50/25" />
               <div className="absolute inset-0 bg-dots opacity-20" />
               
-              <div className="relative z-10 h-full flex flex-col items-center justify-center p-6 text-center">
-                <Trophy className="h-7 w-7 text-purple-500 mb-2 group-hover:scale-105 transition-transform" />
-                <h3 className="text-base font-bold text-[#1a1a1a] mb-1">Prestasi</h3>
-                <p className="text-xs text-[#718096]">Bangga bersama</p>
+              <div className="relative z-10 h-full flex flex-col items-center justify-center p-4 sm:p-6 text-center">
+                <Trophy className="h-6 w-6 sm:h-7 sm:w-7 text-purple-500 mb-2 group-hover:scale-105 transition-transform" />
+                <h3 className="text-sm sm:text-base font-bold text-[#1a1a1a] mb-1 text-balance">Prestasi</h3>
+                <p className="text-[10px] sm:text-xs text-[#718096]">Bangga bersama</p>
               </div>
             </div>
           </motion.div>
@@ -412,11 +412,11 @@ function Keluarga9BSection() {
             variants={slideUp}
             custom={4}
           >
-            <div className="p-10 text-center">
-              <Quote className="h-10 w-10 text-emerald-500/25 mx-auto mb-5" />
-              <blockquote className="text-xl sm:text-2xl lg:text-3xl font-black text-prestige text-[#1a1a1a] leading-relaxed mb-6">
+            <div className="p-6 sm:p-10 text-center">
+              <Quote className="h-8 w-8 sm:h-10 sm:w-10 text-emerald-500/25 mx-auto mb-4" />
+              <blockquote className="text-lg sm:text-xl lg:text-3xl font-black text-prestige text-[#1a1a1a] leading-relaxed mb-4 sm:mb-6 text-balance">
                 "Bersama kita tumbuh, 
-                <span className="gradient-text-warm">bersama kita dikenang.</span> 
+                <span className="gradient-text-warm">bersama kita dikenang."</span> 
                 9B bukan sekadar angkatan — kami adalah keluarga."
               </blockquote>
               <div className="flex items-center justify-center gap-2">

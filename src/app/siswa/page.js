@@ -36,8 +36,17 @@ const fadeUp = {
   hidden: { opacity: 0, y: 20 },
   visible: (i = 0) => ({
     opacity: 1, y: 0,
-    transition: { delay: i * 0.04, duration: 0.4, ease: [0.22, 1, 0.36, 1] }
+    transition: { delay: i * 0.06, duration: 0.55, ease: [0.23, 1, 0.32, 1] }
   }),
+};
+
+const fadeIn = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { duration: 0.75, ease: [0.23, 1, 0.32, 1] } }
+};
+
+const stagger = {
+  visible: { transition: { staggerChildren: 0.08 } }
 };
 
 /* ─── Student Avatar ─────────────────────────────────────────── */
@@ -104,8 +113,9 @@ export default function SiswaPage() {
       <motion.div
         className="mx-auto max-w-7xl px-4 pb-32 pt-24 sm:px-6 md:pt-28 lg:px-8"
         initial="hidden"
-        animate="visible"
-        variants={{ visible: { transition: { staggerChildren: 0.04 } } }}
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.15 }}
+        variants={stagger}
       >
         {/* Header */}
         <motion.div variants={fadeUp} custom={0} className="mb-8">

@@ -16,11 +16,20 @@ const categories = [
 ];
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 20 },
+  hidden: { opacity: 0, y: 24 },
   visible: (i = 0) => ({
     opacity: 1, y: 0,
-    transition: { delay: i * 0.03, duration: 0.35, ease: [0.22, 1, 0.36, 1] },
+    transition: { delay: i * 0.06, duration: 0.55, ease: [0.23, 1, 0.32, 1] },
   }),
+};
+
+const fadeIn = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { duration: 0.75, ease: [0.23, 1, 0.32, 1] } },
+};
+
+const stagger = {
+  visible: { transition: { staggerChildren: 0.08 } },
 };
 
 /* ─── Lightbox ─── */
@@ -211,8 +220,9 @@ export default function GaleriPage() {
       <motion.div
         className="mx-auto max-w-6xl px-3 pb-32 pt-24 sm:px-6 md:pt-28"
         initial="hidden"
-        animate="visible"
-        variants={{ visible: { transition: { staggerChildren: 0.04 } } }}
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.15 }}
+        variants={stagger}
       >
         {/* ─── Header: Minimal ─── */}
         <motion.div variants={fadeUp} custom={0} className="mb-6 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">

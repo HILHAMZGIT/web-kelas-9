@@ -13,12 +13,17 @@ const fadeUp = {
   hidden: { opacity: 0, y: 20 },
   visible: (i = 0) => ({
     opacity: 1, y: 0,
-    transition: { delay: i * 0.1, duration: 0.5, ease: [0.22, 1, 0.36, 1] },
+    transition: { delay: i * 0.08, duration: 0.55, ease: [0.23, 1, 0.32, 1] },
   }),
 };
 
+const fadeIn = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { duration: 0.75, ease: [0.23, 1, 0.32, 1] } },
+};
+
 const stagger = {
-  visible: { transition: { staggerChildren: 0.1 } },
+  visible: { transition: { staggerChildren: 0.08 } },
 };
 
 export default function RuangRahasiaPage() {
@@ -105,7 +110,8 @@ export default function RuangRahasiaPage() {
       <motion.div
         className="relative z-10 mx-auto max-w-2xl px-4 pb-32 pt-24 sm:px-6 md:pt-28"
         initial="hidden"
-        animate="visible"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.17 }}
         variants={stagger}
       >
         {/* ─── Header ─── */}

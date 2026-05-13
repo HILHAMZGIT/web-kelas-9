@@ -11,31 +11,82 @@ import InstagramIcon from "@/components/InstagramIcon";
 
 /* ─── Animation Variants ─────────────────────────────────── */
 const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
+  hidden: { opacity: 0, y: 30 },
   visible: (i = 0) => ({
     opacity: 1, y: 0,
-    transition: { delay: i * 0.1, duration: 0.6, ease: [0.22, 1, 0.36, 1] },
+    transition: { delay: i * 0.12, duration: 0.8, ease: [0.23, 1, 0.32, 1] }
   }),
 };
 
+const fadeIn = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { duration: 1.0, ease: [0.23, 1, 0.32, 1] } }
+};
+
+const scaleIn = {
+  hidden: { opacity: 0, scale: 0.9 },
+  visible: { opacity: 1, scale: 1, transition: { duration: 0.6, ease: [0.23, 1, 0.32, 1] } }
+};
+
 const stagger = {
-  visible: { transition: { staggerChildren: 0.1 } },
+  visible: { transition: { staggerChildren: 0.15 } }
 };
 
 /* ─── Data ─────────────────────────────────── */
+const pengurus = [
+  { role: "Ketua", name: "Aghis Awalia Wayangsari", icon: Crown, color: "from-amber-400 to-orange-500", shadow: "shadow-amber-200/50" },
+  { role: "Wakil", name: "Rama Indra Pratama", icon: UserCheck, color: "from-emerald-400 to-tosca-500", shadow: "shadow-emerald-200/50" },
+  { role: "Sekretaris 1", name: "Nadira Rafelina", icon: PenLine, color: "from-blue-400 to-indigo-500", shadow: "shadow-blue-200/50" },
+  { role: "Sekretaris 2", name: "Jazmi Hilmi Hamizan", icon: PenLine, color: "from-blue-400 to-indigo-500", shadow: "shadow-blue-200/50" },
+  { role: "Bendahara 1", name: "Nesa Novisa", icon: Wallet, color: "from-purple-400 to-pink-500", shadow: "shadow-purple-200/50" },
+  { role: "Bendahara 2", name: "Aida Novitasari", icon: Wallet, color: "from-purple-400 to-pink-500", shadow: "shadow-purple-200/50" },
+];
+
 const strukturKelas = [
-  { jabatan: "Ketua Kelas", nama: "Jazmi Hilmi Hamizan", icon: Crown, color: "text-amber-600", bg: "bg-amber-50" },
-  { jabatan: "Wakil Ketua", nama: "Rama Indra Pratama", icon: UserCheck, color: "text-emerald-600", bg: "bg-emerald-50" },
-  { jabatan: "Sekretaris", nama: "Keysa Ayu Wulandari", icon: PenLine, color: "text-blue-600", bg: "bg-blue-50" },
-  { jabatan: "Bendahara", nama: "Tegar Dimas Saputra", icon: Wallet, color: "text-violet-600", bg: "bg-violet-50" },
+  { jabatan: "Ketua", nama: "Aghis Awalia", icon: Crown, color: "text-amber-600", bg: "bg-amber-100" },
+  { jabatan: "Wakil", nama: "Rama Indra", icon: UserCheck, color: "text-emerald-600", bg: "bg-emerald-100" },
+  { jabatan: "Sekretaris 1", nama: "Nadira Rafelina", icon: PenLine, color: "text-blue-600", bg: "bg-blue-100" },
+  { jabatan: "Sekretaris 2", nama: "Jazmi Hilmi", icon: PenLine, color: "text-blue-600", bg: "bg-blue-100" },
+  { jabatan: "Bendahara 1", nama: "Nesa Novisa", icon: Wallet, color: "text-purple-600", bg: "bg-purple-100" },
+  { jabatan: "Bendahara 2", nama: "Aida Novita", icon: Wallet, color: "text-purple-600", bg: "bg-purple-100" },
 ];
 
 const jadwalPiket = [
-  { hari: "Senin", anggota: ["Jazmi", "Rama", "Keysa", "Tegar", "Aldo", "Adila", "Mega"] },
-  { hari: "Selasa", anggota: ["Alifah", "Biyan", "Carissa", "Devi", "Erlangga", "Fahri", "Gita"] },
-  { hari: "Rabu", anggota: ["Hana", "Ilham", "Jesica", "Kevin", "Lintang", "Mifta", "Naufal"] },
-  { hari: "Kamis", anggota: ["Olivia", "Putra", "Queen", "Rizki", "Salwa", "Tirta", "Umi"] },
-  { hari: "Jumat", anggota: ["Vina", "Winda", "Xena", "Yoga", "Zahra", "Zidan", "Arya"] },
+  { 
+    hari: "Senin", 
+    color: "border-l-emerald-500",
+    bg: "bg-emerald-50/30",
+    iconColor: "text-emerald-500",
+    anggota: ["Ade Vanes Syahputra", "Adnan fathurrohman", "Aghis Awalia Wayangsari", "Aida Novitasari", "Anggit Slamet Syahputra", "Anton Maulidan", "Aulia Shintya Megarani", "Azmi cheryl ardelia"]
+  },
+  { 
+    hari: "Selasa", 
+    color: "border-l-blue-500",
+    bg: "bg-blue-50/30",
+    iconColor: "text-blue-500",
+    anggota: ["Barra Abdillah", "Dwi lestari sulistiyaning tyas", "Farel Juniansyah", "Feliza Nuril Anggraeni", "Fitriyani", "Haikal Fahmi Setya Aji"]
+  },
+  { 
+    hari: "Rabu", 
+    color: "border-l-violet-500",
+    bg: "bg-violet-50/30",
+    iconColor: "text-violet-500",
+    anggota: ["Ikbal Anugrah", "Itmam nur Rohman", "Jazmi Hilmi Hamizan", "Keiya Khairunisa Putri", "Maritza Salsabil Az Zahra", "Nadira Rafelina"]
+  },
+  { 
+    hari: "Kamis", 
+    color: "border-l-amber-500",
+    bg: "bg-amber-50/30",
+    iconColor: "text-amber-500",
+    anggota: ["M.zaki nurehan", "Nela Oktaviana", "Nesa Novisa", "Nova Erlani", "Nurrizky Ita Dwi Alyana", "Rama Indra P.", "Revan Septian Budiono"]
+  },
+  { 
+    hari: "Jumat", 
+    color: "border-l-rose-500",
+    bg: "bg-rose-50/30",
+    iconColor: "text-rose-500",
+    anggota: ["Rifa Auliya Ramadhani", "Rifki Pratama", "Sabrina Zhara Rahmadani", "Safira Nasha Farah Azizah", "Shahnaz Histi Pratiwi", "Syifa Nabilah", "Tiara Adrastya Putri"]
+  },
 ];
 
 const hariColors = {

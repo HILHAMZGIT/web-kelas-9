@@ -88,18 +88,18 @@ export default function ProfilPage() {
 
     try {
       const ext = file.name.split(".").pop();
-      const filePath = `avatars/${user.id}.${ext}`;
+      const filePath = `profile/${user.id}.${ext}`;
 
       // Upload to Supabase Storage
       const { error: uploadErr } = await supabase.storage
-        .from("avatars")
+        .from("profile")
         .upload(filePath, file, { upsert: true, cacheControl: "3600" });
 
       if (uploadErr) throw uploadErr;
 
       // Get public URL
       const { data: { publicUrl } } = supabase.storage
-        .from("avatars")
+        .from("profile")
         .getPublicUrl(filePath);
 
       // Update profile

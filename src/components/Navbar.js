@@ -10,7 +10,7 @@ import { motion } from "framer-motion";
 const navItems = [
   { href: "/", label: "Beranda", icon: Home },
   { href: "/galeri", label: "Galeri", icon: Images },
-  { href: "/pesan", label: "Chat", icon: MessageSquare },
+  { href: "/pesan", label: "Grup Chat", icon: MessageSquare },
   { href: "/siswa", label: "Siswa", icon: Users },
   { href: "/profil", label: "Profil", icon: UserCircle },
 ];

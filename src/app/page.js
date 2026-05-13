@@ -4,8 +4,9 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   Users, Images, MessageSquare, Sparkles, ArrowRight,
-  Quote, Star, Heart, Zap, Camera, Trophy, ChevronRight,
-  Loader2, Play,
+  Quote, Star, Heart, Camera, Trophy, ChevronRight,
+  Loader2, Play, LayoutGrid, MessageCircle, Video,
+  Calendar, Clock, MapPin, Code, Heart as HeartIcon
 } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
@@ -37,332 +38,660 @@ function AnimatedCounter({ target, duration = 1500, active, suffix = "" }) {
 
 async function fetchCount(table) {
   try {
-    const { count, error } = await supabase.from(table).select("*", { count: "exact", head: true });
+    const { count, error } = await supabase
+      .from(table)
+      .select("id", { count: "exact", head: true });
     return error ? 0 : (count ?? 0);
   } catch { return 0; }
 }
 
-/* ─── Framer variants ───────────────────────────────────────── */
+/* ─── Professional Framer Variants ───────────────────────────────── */
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
   visible: (i = 0) => ({
     opacity: 1, y: 0,
-    transition: { delay: i * 0.1, duration: 0.6, ease: [0.22, 1, 0.36, 1] }
+    transition: { delay: i * 0.12, duration: 0.8, ease: [0.23, 1, 0.32, 1] }
   }),
 };
 
-const stagger = {
-  visible: { transition: { staggerChildren: 0.08 } },
+const fadeIn = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { duration: 1.0, ease: [0.23, 1, 0.32, 1] } }
 };
 
-/* ─── Landing Page (belum login) ───────────────────────────── */
-function LandingPage() {
-  return (
-    <div className="relative min-h-screen overflow-hidden">
-      {/* Decorative circles */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[500px] w-[500px] rounded-full border border-emerald-200/30 pointer-events-none" />
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[800px] w-[800px] rounded-full border border-emerald-100/20 pointer-events-none" />
+const scaleIn = {
+  hidden: { opacity: 0, scale: 0.9 },
+  visible: { opacity: 1, scale: 1, transition: { duration: 0.6, ease: [0.23, 1, 0.32, 1] } }
+};
 
-      <motion.div
-        className="relative z-10 flex min-h-screen flex-col items-center justify-center px-6 text-center pt-24 pb-32"
+const stagger = {
+  visible: { transition: { staggerChildren: 0.15 } },
+};
+
+const slideUp = {
+  hidden: { opacity: 0, y: 50 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.9, ease: [0.23, 1, 0.32, 1] } }
+};
+
+/* ─── Professional Hero Section ─────────────────────────────────── */
+function ProfessionalHeroSection() {
+  return (
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-pattern-warm">
+      {/* Professional Image Background */}
+      <div className="absolute inset-0">
+        <Image 
+          src="/bg-kelas.jpg" 
+          alt="Website Kelas 9B" 
+          fill 
+          className="object-cover object-center" 
+          priority 
+          sizes="100vw"
+        />
+        {/* Overlay for Text Readability */}
+        <div className="absolute inset-0 bg-black/60" />
+        <div className="absolute inset-0 bg-gradient-to-br from-emerald-900/15 via-transparent to-tosca-900/15" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#faf8f5] via-transparent to-[#faf8f5]/60" />
+        <div className="absolute inset-0 bg-noise opacity-15" />
+      </div>
+
+      {/* Floating Elements */}
+      <div className="absolute inset-0 pointer-events-none">
+        <motion.div 
+          animate={{ y: [0, -15, 0], rotate: [0, 3, 0] }}
+          transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-24 left-12 w-28 h-28 bg-emerald-400/8 rounded-full blur-3xl"
+        />
+        <motion.div 
+          animate={{ y: [0, 15, 0], rotate: [0, -3, 0] }}
+          transition={{ duration: 11, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute bottom-24 right-12 w-36 h-36 bg-tosca-400/8 rounded-full blur-3xl"
+        />
+      </div>
+
+      {/* Hero Content */}
+      <motion.div 
+        className="relative z-10 text-center px-6 max-w-5xl mx-auto"
         initial="hidden"
         animate="visible"
         variants={stagger}
       >
-        {/* Badge */}
-        <motion.div variants={fadeUp} custom={0}>
-          <div className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50/80 px-5 py-2 text-xs font-medium text-emerald-700 shadow-sm backdrop-blur-sm">
-            <Sparkles className="h-3.5 w-3.5" />
-            SMPN 1 Karanglewas · Angkatan 2026
-            <Sparkles className="h-3.5 w-3.5" />
+        {/* Professional Badge */}
+        <motion.div variants={fadeUp} custom={0} className="mb-8">
+          <div className="inline-flex items-center gap-3 rounded-full border border-emerald-200/40 bg-emerald-50/25 backdrop-blur-xl px-7 py-2.5 text-xs font-semibold text-emerald-700 shadow-lg transition-all hover:bg-emerald-50/35">
+            <Sparkles className="h-3.5 w-3.5 text-emerald-500 animate-pulse" />
+            <span className="tracking-[0.25em] uppercase">SMPN 1 KARANGLEWAS · ANGKATAN 2026</span>
+            <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
           </div>
         </motion.div>
 
-        {/* Logo + Title */}
-        <motion.div variants={fadeUp} custom={1} className="mt-8">
-          <div className="mx-auto mb-6 relative h-24 w-24">
-            <div className="absolute inset-0 rounded-2xl bg-emerald-400/20 blur-xl animate-pulse-glow" />
-            <div className="relative h-full w-full overflow-hidden rounded-2xl ring-1 ring-black/5 shadow-lg">
-              <Image src="/logo.png" alt="Logo SMPN 1 Karanglewas" fill className="object-cover" priority sizes="96px" />
+        {/* Professional Logo */}
+        <motion.div variants={scaleIn} custom={1} className="mb-10">
+          <div className="mx-auto relative h-36 w-36">
+            <div className="absolute inset-0 rounded-[2.5rem] bg-gradient-to-br from-emerald-400/25 to-tosca-400/25 blur-3xl animate-pulse-emerald" />
+            <div className="relative h-full w-full overflow-hidden rounded-[2.5rem] glass-premium p-5 border border-white/25 shadow-xl">
+              <Image src="/logo.png" alt="Logo 9B" fill className="object-contain" priority sizes="144px" />
             </div>
           </div>
-          <h1 className="text-6xl font-black tracking-tight sm:text-7xl lg:text-8xl">
-            <span className="gradient-text-hero text-5xl sm:text-6xl lg:text-7xl">Website</span>
-            <br />
-            <span className="gradient-text-hero">Kelas 9B</span>
+        </motion.div>
+
+        {/* Hero Title */}
+        <motion.div variants={fadeUp} custom={2} className="mb-6">
+          <h1 className="text-5xl sm:text-7xl lg:text-8xl font-black text-prestige tracking-tight text-[#1a1a1a] mb-5">
+            <span className="gradient-text-warm">Website Kelas 9B</span>
           </h1>
+          
+          {/* Professional Quote */}
+          <div className="relative">
+            <Quote className="absolute -top-6 left-1/2 -translate-x-1/2 h-7 w-7 text-emerald-500/25" />
+            <p className="text-xl sm:text-2xl lg:text-3xl font-semibold text-[#4a5568] italic leading-relaxed text-shadow-premium max-w-4xl mx-auto">
+              "Setiap tawa punya cerita, 
+              <span className="gradient-text"> setiap sudut punya memori."</span>
+            </p>
+          </div>
         </motion.div>
 
         {/* Subtitle */}
-        <motion.div variants={fadeUp} custom={2} className="mt-6 max-w-lg">
-          <p className="text-base font-semibold text-slate-700 sm:text-lg">
-            Selamat datang di Portal Kenangan Kelas 9B SPENSAKA.
-          </p>
-          <p className="mt-2 text-sm text-slate-400 leading-relaxed italic">
-            &ldquo;Setiap tawa punya cerita, setiap sudut punya memori.&rdquo;
+        <motion.div variants={fadeUp} custom={3} className="mb-10">
+          <p className="text-base sm:text-lg font-medium text-[#718096] max-w-2xl mx-auto leading-relaxed">
+            Portal kenangan untuk keluarga besar 9B SMPN 1 Karanglewas
           </p>
         </motion.div>
 
-        {/* Google Login Button */}
-        <motion.div variants={fadeUp} custom={3} className="mt-10">
+        {/* CTA Buttons */}
+        <motion.div variants={fadeUp} custom={4} className="flex flex-col sm:flex-row gap-4 items-center justify-center">
           <SignInButton mode="modal" fallbackRedirectUrl="/">
-            <button
-              id="btn-login-google"
-              className="group relative inline-flex items-center gap-3 overflow-hidden rounded-2xl bg-white px-8 py-4 text-slate-900 font-bold text-base shadow-[0_4px_24px_rgba(0,0,0,0.08)] ring-1 ring-black/5 transition-all duration-300 hover:scale-105 hover:shadow-[0_8px_32px_rgba(0,0,0,0.12)]"
-            >
-              <div className="absolute inset-0 bg-gradient-to-r from-emerald-50 to-white opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-              <svg className="relative z-10 h-5 w-5" viewBox="0 0 24 24">
-                <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-                <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-                <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
-                <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
-              </svg>
-              <span className="relative z-10">Login with Google</span>
+            <button className="btn-primary group">
+              <Video className="h-5 w-5" />
+              <span>Mulai Jelajah</span>
+              <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
             </button>
           </SignInButton>
-          <p className="mt-4 text-xs text-slate-400">
-            Hanya untuk siswa & alumni SMPN 1 Karanglewas
+          
+          <Link href="#gallery" className="btn-ghost">
+            <Play className="h-5 w-5" />
+            <span>Lihat Kenangan</span>
+          </Link>
+        </motion.div>
+      </motion.div>
+
+      {/* Scroll Indicator */}
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.8, duration: 0.8 }}
+        className="absolute bottom-10 left-1/2 -translate-x-1/2"
+      >
+        <motion.div 
+          animate={{ y: [0, 8, 0] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          className="w-5 h-8 border-2 border-emerald-400/40 rounded-full flex justify-center"
+        >
+          <div className="w-1 h-2 bg-emerald-400/40 rounded-full mt-1.5 animate-pulse" />
+        </motion.div>
+      </motion.div>
+    </section>
+  );
+}
+/* ─── Video Hero Section (Placeholder) ───────────────────────── */
+function VideoHeroSection() {
+  return (
+    <section id="gallery" className="relative py-20 px-6 bg-gradient-to-b from-[#faf8f5] to-[#f5f2ed]">
+      <div className="container-premium max-w-7xl mx-auto">
+        {/* Section Header */}
+        <motion.div 
+          className="text-center mb-16"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={fadeIn}
+        >
+          <div className="inline-flex items-center gap-2 rounded-full border border-emerald-200/35 bg-emerald-50/20 backdrop-blur-xl px-6 py-2 text-xs font-semibold text-emerald-700 mb-6">
+            <Video className="h-4 w-4" />
+            <span className="tracking-[0.2em] uppercase">Video Kenangan</span>
+          </div>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-prestige text-[#1a1a1a] mb-6">
+            <span className="gradient-text-warm">Video Utama Kelas</span>
+          </h2>
+          <p className="text-base text-[#718096] max-w-2xl mx-auto">
+            Video perjalanan kita bersama di 9B SMPN 1 Karanglewas
           </p>
         </motion.div>
 
-        {/* Feature badges */}
-        <motion.div variants={fadeUp} custom={4} className="mt-8 flex flex-wrap justify-center gap-2">
-          {[
-            { icon: Camera, label: "Galeri Foto" },
-            { icon: MessageSquare, label: "Chat 9B" },
-            { icon: Users, label: "34 Siswa" },
-            { icon: Heart, label: "Website Kelas 9B" },
-          ].map(({ icon: Icon, label }) => (
-            <span key={label} className="flex items-center gap-1.5 rounded-full border border-slate-200 bg-white/60 px-3 py-1.5 text-[11px] text-slate-500 backdrop-blur-sm">
-              <Icon className="h-3 w-3 text-emerald-500" strokeWidth={2} />
-              {label}
-            </span>
-          ))}
+        {/* Professional Video Placeholder */}
+        <motion.div 
+          className="relative aspect-video rounded-2xl overflow-hidden glass-premium border border-white/25 shadow-xl"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={slideUp}
+        >
+          {/* Background Pattern */}
+          <div className="absolute inset-0 bg-gradient-to-br from-emerald-900/8 to-tosca-900/8" />
+          <div className="absolute inset-0 bg-dots opacity-25" />
+          
+          {/* Video Placeholder Content */}
+          <div className="relative z-10 h-full flex flex-col items-center justify-center p-8">
+            {/* Play Button */}
+            <motion.div 
+              whileHover={{ scale: 1.08 }}
+              whileTap={{ scale: 0.95 }}
+              className="w-20 h-20 rounded-2xl bg-gradient-to-br from-emerald-400 to-tosca-500 flex items-center justify-center shadow-xl mb-8 cursor-pointer group"
+            >
+              <Play className="h-9 w-9 text-white ml-1 group-hover:scale-110 transition-transform" fill="white" />
+              <div className="absolute inset-0 rounded-2xl bg-white/20 animate-pulse" />
+            </motion.div>
+            
+            {/* Video Info */}
+            <div className="text-center">
+              <h3 className="text-xl font-bold text-[#1a1a1a] mb-2">
+                Video Kenangan Kelas 9B
+              </h3>
+              <p className="text-[#718096] mb-4">
+                Tempat video kenangan terindah kita bersama
+              </p>
+              <div className="flex items-center gap-4 text-sm text-[#a0aec0]">
+                <div className="flex items-center gap-1">
+                  <Clock className="h-4 w-4" />
+                  <span>Coming Soon</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <Calendar className="h-4 w-4" />
+                  <span>2024-2026</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          {/* Decorative Elements */}
+          <div className="absolute top-4 left-4 w-14 h-14 bg-emerald-400/15 rounded-2xl blur-xl" />
+          <div className="absolute bottom-4 right-4 w-18 h-18 bg-tosca-400/15 rounded-2xl blur-xl" />
         </motion.div>
-      </motion.div>
+      </div>
+    </section>
+  );
+}
+
+/* ─── Keluarga Besar 9B Section ───────────────────────────────── */
+function Keluarga9BSection() {
+  return (
+    <section className="relative py-20 px-6 bg-gradient-to-b from-[#f5f2ed] to-[#faf8f5]">
+      <div className="container-premium max-w-7xl mx-auto">
+        {/* Section Header */}
+        <motion.div 
+          className="text-center mb-16"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={fadeIn}
+        >
+          <div className="inline-flex items-center gap-2 rounded-full border border-emerald-200/35 bg-emerald-50/20 backdrop-blur-xl px-6 py-2 text-xs font-semibold text-emerald-700 mb-6">
+            <Users className="h-4 w-4" />
+            <span className="tracking-[0.2em] uppercase">Keluarga Besar</span>
+          </div>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-prestige text-[#1a1a1a] mb-6">
+            <span className="gradient-text-warm">Keluarga Besar 9B</span>
+          </h2>
+          <p className="text-base text-[#718096] max-w-2xl mx-auto">
+            34 jiwa, 1 keluarga, kenangan yang tak terlupakan
+          </p>
+        </motion.div>
+
+        {/* Professional Bento Grid Layout */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-5 auto-rows-auto">
+          {/* Main Class Photo - Large */}
+          <motion.div 
+            className="md:col-span-8 md:row-span-2 group relative overflow-hidden rounded-2xl glass-premium border border-white/25 shadow-xl"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={slideUp}
+            whileHover={{ scale: 1.01 }}
+            transition={{ duration: 0.3 }}
+          >
+            <div className="relative h-full min-h-[350px]">
+              {/* Background Image */}
+              <Image 
+                src="/foto-kelas.jpeg" 
+                alt="Foto Bersama Kelas 9B" 
+                fill 
+                className="object-cover" 
+                priority
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 66vw, 66vw"
+              />
+              
+              {/* Gradient Overlay for Text Readability */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+              
+              {/* Content - Bottom Left */}
+              <div className="absolute bottom-0 left-0 right-0 p-6">
+                <h3 className="text-xl font-bold text-white mb-2 text-shadow-hero">Foto Bersama Kelas</h3>
+                <p className="text-white/90 mb-4 text-sm">Momen paling ikonik kita bersama</p>
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/80 backdrop-blur-sm text-white text-xs font-medium">
+                  <Users className="h-4 w-4" />
+                  <span>34 Anggota</span>
+                </div>
+              </div>
+              
+              {/* Hover Overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+            </div>
+          </motion.div>
+
+          {/* Study Tour Card */}
+          <motion.div 
+            className="md:col-span-4 group relative overflow-hidden rounded-2xl glass-premium border border-white/25 shadow-xl"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={slideUp}
+            custom={1}
+            whileHover={{ scale: 1.03 }}
+          >
+            <div className="h-full min-h-[180px]">
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-100/35 to-indigo-50/25" />
+              <div className="absolute inset-0 bg-dots opacity-20" />
+              
+              <div className="relative z-10 h-full flex flex-col items-center justify-center p-6 text-center">
+                <MapPin className="h-7 w-7 text-blue-500 mb-2 group-hover:scale-105 transition-transform" />
+                <h3 className="text-base font-bold text-[#1a1a1a] mb-1">Study Tour</h3>
+                <p className="text-xs text-[#718096]">Petualangan seru</p>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Daily Fun Card */}
+          <motion.div 
+            className="md:col-span-4 group relative overflow-hidden rounded-2xl glass-premium border border-white/25 shadow-xl"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={slideUp}
+            custom={2}
+            whileHover={{ scale: 1.03 }}
+          >
+            <div className="h-full min-h-[180px]">
+              <div className="absolute inset-0 bg-gradient-to-br from-amber-100/35 to-orange-50/25" />
+              <div className="absolute inset-0 bg-dots opacity-20" />
+              
+              <div className="relative z-10 h-full flex flex-col items-center justify-center p-6 text-center">
+                <Heart className="h-7 w-7 text-amber-500 mb-2 group-hover:scale-105 transition-transform fill-amber-500" />
+                <h3 className="text-base font-bold text-[#1a1a1a] mb-1">Keseruan Harian</h3>
+                <p className="text-xs text-[#718096]">Tawa dan canda</p>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Achievement Card */}
+          <motion.div 
+            className="md:col-span-4 group relative overflow-hidden rounded-2xl glass-premium border border-white/25 shadow-xl"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={slideUp}
+            custom={3}
+            whileHover={{ scale: 1.03 }}
+          >
+            <div className="h-full min-h-[180px]">
+              <div className="absolute inset-0 bg-gradient-to-br from-purple-100/35 to-pink-50/25" />
+              <div className="absolute inset-0 bg-dots opacity-20" />
+              
+              <div className="relative z-10 h-full flex flex-col items-center justify-center p-6 text-center">
+                <Trophy className="h-7 w-7 text-purple-500 mb-2 group-hover:scale-105 transition-transform" />
+                <h3 className="text-base font-bold text-[#1a1a1a] mb-1">Prestasi</h3>
+                <p className="text-xs text-[#718096]">Bangga bersama</p>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Quote Card - Full Width */}
+          <motion.div 
+            className="md:col-span-12 group relative overflow-hidden rounded-2xl glass-premium border border-white/25 shadow-xl"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={slideUp}
+            custom={4}
+          >
+            <div className="p-10 text-center">
+              <Quote className="h-10 w-10 text-emerald-500/25 mx-auto mb-5" />
+              <blockquote className="text-xl sm:text-2xl lg:text-3xl font-black text-prestige text-[#1a1a1a] leading-relaxed mb-6">
+                "Bersama kita tumbuh, 
+                <span className="gradient-text-warm">bersama kita dikenang.</span> 
+                9B bukan sekadar angkatan — kami adalah keluarga."
+              </blockquote>
+              <div className="flex items-center justify-center gap-2">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="h-5 w-5 text-amber-400 fill-amber-400 animate-pulse" style={{ animationDelay: `${i * 150}ms` }} />
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
+}
+/* ─── Professional Footer ───────────────────────────────────── */
+function FooterCredit() {
+  return (
+    <footer className="footer-credit py-12 px-6 border-t border-white/20">
+      <div className="container-premium max-w-7xl mx-auto">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-8">
+          {/* Bagian Kiri - Brand Info */}
+          <div className="flex flex-col items-center md:items-start gap-2 text-center md:text-left">
+            <div className="flex items-center gap-3">
+              <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-emerald-500 to-tosca-600 flex items-center justify-center shadow-lg">
+                <span className="text-lg font-black text-white">9B</span>
+              </div>
+              <div>
+                <h3 className="text-lg font-black text-[#1a1a1a] tracking-tight">SPENSAKA 9B</h3>
+                <p className="text-xs font-semibold text-emerald-600 uppercase tracking-widest">Website Kelas 9B</p>
+              </div>
+            </div>
+            <div className="flex flex-col gap-1">
+              <p className="text-sm text-[#718096] font-medium">
+                SMPN 1 Karanglewas
+              </p>
+              <p className="text-xs text-[#a0aec0] font-semibold uppercase tracking-wider">
+                Angkatan 2026
+              </p>
+            </div>
+          </div>
+
+          {/* Bagian Kanan - Team Info */}
+          <div className="flex flex-col items-center md:items-end gap-3 text-center md:text-right">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-100/50 border border-slate-200/50">
+              <Code className="h-4 w-4 text-slate-600" />
+              <span className="text-xs font-bold text-slate-700 uppercase tracking-wider">Engineering Team</span>
+            </div>
+            <div className="flex flex-col gap-1">
+              <div className="flex items-center gap-2">
+                <div className="h-1 w-1 bg-emerald-500 rounded-full" />
+                <p className="text-sm font-bold text-[#1a1a1a]">
+                  Jazmi Hilmi Hamizan
+                  <span className="text-xs font-semibold text-emerald-600 ml-2">Lead Developer</span>
+                </p>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="h-1 w-1 bg-slate-400 rounded-full" />
+                <p className="text-sm font-medium text-[#718096]">
+                  Rama Indra Pratama
+                  <span className="text-xs text-slate-500 ml-2">Helper</span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+/* ─── Landing Page (Professional Redesign) ─────────────────────── */
+function LandingPage() {
+  return (
+    <div className="min-h-screen">
+      <ProfessionalHeroSection />
+      <VideoHeroSection />
+      <Keluarga9BSection />
+      
+      {/* Final CTA Section */}
+      <section className="relative py-20 px-6 bg-gradient-to-b from-[#faf8f5] to-[#f5f2ed]">
+        <div className="container-premium max-w-4xl mx-auto text-center">
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeIn}
+          >
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-prestige text-[#1a1a1a] mb-6">
+              Siap <span className="gradient-text-warm">Bernostalgia</span>?
+            </h2>
+            <p className="text-base text-[#718096] mb-8">
+              Bergabunglah dengan keluarga besar 9B dan jelajahi semua kenangan indah kita
+            </p>
+            <SignInButton mode="modal" fallbackRedirectUrl="/">
+              <button className="btn-primary text-base px-8 py-3">
+                <Sparkles className="h-5 w-5" />
+                <span>Mulai Sekarang</span>
+                <ArrowRight className="h-5 w-5" />
+              </button>
+            </SignInButton>
+          </motion.div>
+        </div>
+      </section>
+      
+      {/* Footer Credit */}
+      <FooterCredit />
     </div>
   );
 }
 
-/* ─── Beranda (sudah login) ─────────────────────────────────── */
+/* ─── Dashboard (Sudah Login) ────────────────────────────────── */
 function Dashboard({ user, profile, stats }) {
   const displayName = profile?.username || user?.user_metadata?.full_name?.split(" ")[0] || "Siswa 9B";
   const avatarUrl = profile?.foto_profil || user?.user_metadata?.avatar_url;
 
   return (
-    <div className="relative min-h-screen page-shell">
-      <div className="mx-auto max-w-6xl px-4 pb-32 pt-24 sm:px-6 md:pt-28 lg:px-8">
-
-        {/* ═══ HERO SECTION: Main Memory ═══ */}
+    <div className="relative min-h-screen bg-pattern-warm page-shell">
+      <div className="container-premium max-w-7xl mx-auto px-6 pb-32 pt-28 sm:px-8 md:pt-32">
+        
+        {/* Professional Header */}
         <motion.section
-          className="mb-10"
+          className="mb-16"
           initial="hidden"
           animate="visible"
           variants={stagger}
         >
-          {/* Badge + Welcome */}
-          <motion.div variants={fadeUp} custom={0} className="text-center mb-8">
-            <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50/80 px-4 py-1.5 text-xs font-medium text-emerald-700">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              Portal Kenangan Aktif — Kelas 9B
+          <motion.div variants={fadeUp} custom={0} className="flex flex-col md:flex-row md:items-end justify-between gap-8">
+            <div>
+              <div className="mb-5 inline-flex items-center gap-3 rounded-full border border-emerald-200/45 bg-emerald-50/25 backdrop-blur-xl px-6 py-2.5 text-xs font-semibold text-emerald-700 shadow-lg">
+                <div className="h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse" />
+                <span className="tracking-widest uppercase">Portal Kenangan Aktif</span>
+              </div>
+              <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black text-prestige tracking-tight text-[#1a1a1a]">
+                Main <span className="gradient-text-warm">Memory</span>
+              </h1>
+              <p className="mt-5 text-lg font-medium text-[#718096] sm:text-xl leading-relaxed">
+                Selamat datang kembali, <span className="text-[#1a1a1a] font-bold">{displayName}</span>. 
+                <span className="block text-[#a0aec0] italic mt-1">Teruslah menulis sejarah.</span>
+              </p>
             </div>
-            <h1 className="mt-3 text-4xl font-black tracking-tight sm:text-5xl lg:text-6xl">
-              <span className="gradient-text-hero">Main Memory</span>
-            </h1>
-            <p className="mt-3 text-sm text-slate-500 sm:text-base">
-              Selamat datang kembali,{" "}
-              <span className="font-semibold text-emerald-600">{displayName}</span>!
-            </p>
+            
+            {/* Quick Profile Summary */}
+            <div className="flex items-center gap-4 glass-premium p-4 rounded-2xl border border-white/25 shadow-lg transition-all hover:shadow-xl">
+              <div className="h-14 w-14 overflow-hidden rounded-xl ring-2 ring-emerald-200/45 shadow-md">
+                {avatarUrl ? (
+                  <Image src={avatarUrl} alt="Avatar" width={56} height={56} className="object-cover h-full w-full" />
+                ) : (
+                  <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-emerald-200 to-teal-300">
+                    <Users className="h-7 w-7 text-emerald-700" />
+                  </div>
+                )}
+              </div>
+              <div className="min-w-0">
+                <p className="font-bold text-[#1a1a1a] text-base truncate">{user?.user_metadata?.full_name || displayName}</p>
+                <p className="text-xs font-bold text-emerald-600 uppercase tracking-widest">Siswa 9B</p>
+              </div>
+            </div>
           </motion.div>
+        </motion.section>
 
-          {/* ═══ VIDEO PLACEHOLDER ═══ */}
-          <motion.div variants={fadeUp} custom={1} className="mb-6">
-            <div className="bento-card overflow-hidden p-0">
-              <div className="relative w-full aspect-video bg-gradient-to-br from-emerald-100/60 via-teal-50/40 to-amber-50/30 flex items-center justify-center">
-                {/* Shimmer overlay */}
-                <div className="absolute inset-0 shimmer opacity-40" />
-                {/* Decorative circles */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-40 w-40 rounded-full border-2 border-emerald-200/40 animate-pulse-glow" />
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-64 w-64 rounded-full border border-emerald-100/30" />
-                {/* Play button placeholder */}
-                <div className="relative z-10 flex flex-col items-center gap-4">
-                  <div className="flex h-20 w-20 items-center justify-center rounded-full bg-white/80 backdrop-blur-sm ring-1 ring-black/5 shadow-lg transition-transform hover:scale-110 cursor-pointer">
-                    <Play className="h-8 w-8 text-emerald-600 ml-1" fill="currentColor" />
-                  </div>
-                  <div className="text-center">
-                    <p className="text-sm font-semibold text-slate-600">Video Utama Kelas 9B</p>
-                    <p className="text-xs text-slate-400 mt-1">Placeholder — tambahkan video di sini</p>
-                  </div>
+        {/* Hero Visual Section */}
+        <motion.section variants={fadeUp} custom={1} className="mb-16">
+          <div className="group relative w-full aspect-[21/9] overflow-hidden rounded-2xl glass-premium border border-white/25 shadow-xl">
+            <div className="relative h-full w-full overflow-hidden rounded-2xl bg-gradient-to-br from-slate-900 to-slate-800 flex items-center justify-center">
+              {/* Background Video */}
+              <video
+                src="/video-utama.mp4"
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="absolute inset-0 w-full h-full object-cover opacity-55 transition-transform duration-600 group-hover:scale-105"
+              />
+              
+              {/* Overlay Content */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/15 to-transparent flex flex-col items-center justify-center text-center px-6">
+                <motion.div 
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.4 }}
+                  className="mb-6 inline-flex items-center gap-2.5 rounded-full border border-white/15 bg-white/8 backdrop-blur-xl px-6 py-2.5"
+                >
+                  <Sparkles className="h-4 w-4 text-emerald-400" />
+                  <span className="text-xs font-black text-white uppercase tracking-[0.35em]">Family Forever</span>
+                </motion.div>
+                
+                <h2 className="text-3xl sm:text-5xl font-black text-prestige text-white tracking-tight text-shadow-hero mb-3">
+                  Selamat Datang di <span className="text-emerald-400">Website Kelas 9B</span>
+                </h2>
+                <p className="text-base font-bold text-white/75 max-w-3xl italic leading-relaxed">
+                  Portal kenangan angkatan 2026 SMPN 1 Karanglewas. Abadikan setiap detik perjalanan kita.
+                </p>
+                
+                <div className="mt-8 flex items-center gap-5">
+                  <div className="h-[1px] w-12 bg-white/25" />
+                  <Heart className="h-5 w-5 text-rose-500 fill-rose-500 animate-pulse" />
+                  <div className="h-[1px] w-12 bg-white/25" />
                 </div>
-                {/* Bottom caption bar */}
-                <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-white/80 to-transparent backdrop-blur-sm p-4 sm:p-6">
-                  <p className="text-center text-sm sm:text-base font-medium text-slate-600 italic">
-                    &ldquo;Setiap tawa punya cerita, setiap sudut punya memori.&rdquo;
+              </div>
+
+              {/* Caption Overlay */}
+              <div className="absolute bottom-6 right-6">
+                <div className="glass-premium px-5 py-2.5 rounded-xl border border-white/10 bg-white/5 backdrop-blur-lg">
+                  <p className="text-xs font-black text-white/55 uppercase tracking-widest flex items-center gap-2">
+                    <Users className="h-3.5 w-3.5" /> 34 Anggota Keluarga
                   </p>
                 </div>
               </div>
             </div>
-          </motion.div>
+          </div>
+        </motion.section>
 
-          {/* ═══ BENTO GRID ═══ */}
-          <motion.div
-            variants={fadeUp}
-            custom={2}
-            className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
-          >
-            {/* Card: Statistik */}
-            <div className="bento-card lg:col-span-2 p-6 sm:p-8">
-              <div className="absolute inset-0 bg-gradient-to-br from-emerald-100/30 via-transparent to-transparent pointer-events-none" />
-              <div className="relative z-10">
-                <div className="mb-5 flex items-center gap-3">
-                  <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-100 ring-1 ring-emerald-200/60">
-                    <Trophy className="h-4 w-4 text-emerald-600" />
+        {/* Professional Stats Section */}
+        <motion.section variants={fadeUp} custom={2} className="mb-16">
+          <div className="bento-card p-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {[
+                { label: "Siswa", value: stats.siswa || 34, icon: Users, color: "text-[#1a1a1a]", bg: "bg-slate-100/45" },
+                { label: "Foto", value: stats.galeri, icon: Camera, color: "text-emerald-600", bg: "bg-emerald-100/45" },
+                { label: "Pesan", value: stats.pesan, icon: MessageCircle, color: "text-blue-600", bg: "bg-blue-100/45" },
+              ].map(({ label, value, icon: Icon, color, bg }) => (
+                <div key={label} className="text-center">
+                  <div className={`mx-auto w-14 h-14 rounded-xl ${bg} flex items-center justify-center mb-3`}>
+                    <Icon className={`h-7 w-7 ${color}`} />
                   </div>
-                  <div>
-                    <p className="text-xs font-semibold uppercase tracking-widest text-emerald-600">Statistik Kelas</p>
-                    <p className="text-[11px] text-slate-400">Data real-time dari database</p>
-                  </div>
+                  <p className={`text-3xl font-black ${color} tracking-tight mb-1`}>
+                    <AnimatedCounter target={value} active={stats.ready || label === "Siswa"} />
+                  </p>
+                  <p className="text-xs font-bold text-[#a0aec0] uppercase tracking-widest">{label}</p>
                 </div>
-                <div className="grid grid-cols-3 gap-4">
-                  {[
-                    { label: "Siswa", value: stats.siswa || 34, icon: Users, color: "text-blue-600", bg: "bg-blue-50", ring: "ring-blue-200/60" },
-                    { label: "Foto", value: stats.galeri, icon: Camera, color: "text-violet-600", bg: "bg-violet-50", ring: "ring-violet-200/60" },
-                    { label: "Pesan", value: stats.pesan, icon: MessageSquare, color: "text-emerald-600", bg: "bg-emerald-50", ring: "ring-emerald-200/60" },
-                  ].map(({ label, value, icon: Icon, color, bg, ring }) => (
-                    <div key={label} className="flex flex-col items-center gap-3 rounded-2xl border border-black/5 bg-white/50 p-4 transition-all hover:border-emerald-200/50 hover:bg-white/80">
-                      <div className={`flex h-10 w-10 items-center justify-center rounded-xl ring-1 ${bg} ${ring}`}>
-                        <Icon className={`h-5 w-5 ${color}`} strokeWidth={1.8} />
-                      </div>
-                      <p className={`text-3xl font-black leading-none ${color}`}>
-                        <AnimatedCounter target={value} active={stats.ready || label === "Siswa"} duration={1200} />
-                      </p>
-                      <p className="text-center text-xs text-slate-400">{label}</p>
-                    </div>
-                  ))}
-                </div>
+              ))}
+            </div>
+          </div>
+        </motion.section>
+
+        {/* Quick Actions */}
+        <motion.section variants={fadeUp} custom={3} className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div className="bento-card p-7">
+            <div className="flex items-center gap-3 mb-5">
+              <div className="h-11 w-11 rounded-xl bg-blue-100/45 flex items-center justify-center">
+                <MessageSquare className="h-5.5 w-5.5 text-blue-600" />
+              </div>
+              <div>
+                <h3 className="text-lg font-black text-[#1a1a1a]">Grup Chat</h3>
+                <p className="text-sm text-[#718096]">Obrolan real-time dengan teman</p>
               </div>
             </div>
+            <Link href="/pesan" className="btn-primary w-full justify-center">
+              <MessageCircle className="h-5 w-5" />
+              <span>Buka Grup Chat</span>
+              <ArrowRight className="h-5 w-5" />
+            </Link>
+          </div>
 
-            {/* Card: User */}
-            <div className="bento-card p-5">
-              <div className="absolute inset-0 bg-gradient-to-br from-slate-100/40 via-transparent to-transparent pointer-events-none" />
-              <div className="relative z-10 flex h-full flex-col items-center justify-center gap-4 text-center">
-                <div className="h-16 w-16 overflow-hidden rounded-2xl ring-2 ring-emerald-200/50 shadow-md">
-                  {avatarUrl ? (
-                    <Image src={avatarUrl} alt="Avatar" width={64} height={64} className="object-cover h-full w-full" />
-                  ) : (
-                    <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-emerald-200 to-teal-300">
-                      <Users className="h-6 w-6 text-emerald-700" />
-                    </div>
-                  )}
-                </div>
-                <div>
-                  <p className="font-semibold text-slate-800">{user?.user_metadata?.full_name || displayName}</p>
-                  {profile?.username && (
-                    <p className="mt-0.5 text-xs text-emerald-600 font-medium">@{profile.username}</p>
-                  )}
-                  <p className="mt-0.5 text-xs text-slate-400">Siswa Kelas 9B · SPENSAKA</p>
-                </div>
-                <span className="rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-0.5 text-[10px] font-medium text-emerald-700">● Online</span>
+          <div className="bento-card p-7">
+            <div className="flex items-center gap-3 mb-5">
+              <div className="h-11 w-11 rounded-xl bg-slate-100/45 flex items-center justify-center">
+                <Images className="h-5.5 w-5.5 text-[#1a1a1a]" />
+              </div>
+              <div>
+                <h3 className="text-lg font-black text-[#1a1a1a]">Arsip Galeri</h3>
+                <p className="text-sm text-[#718096]">Ribuan momen terabadikan</p>
               </div>
             </div>
-
-            {/* Card: Chat */}
-            <div className="bento-card p-6 group">
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 via-transparent to-transparent pointer-events-none" />
-              <div className="relative z-10 flex h-full flex-col">
-                <div className="mb-4 flex items-center gap-2">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-blue-50 ring-1 ring-blue-200/60">
-                    <MessageSquare className="h-4 w-4 text-blue-600" strokeWidth={1.8} />
-                  </div>
-                  <p className="text-xs font-semibold uppercase tracking-widest text-blue-600">Chat Kelas</p>
-                </div>
-                <p className="text-sm text-slate-500 leading-relaxed flex-1">
-                  Tulis pesan & kesan untuk teman, guru, atau momen spesial yang akan dikenang selamanya.
-                </p>
-                <div className="mt-4 flex items-center gap-2 rounded-xl border border-blue-100 bg-blue-50/50 px-3 py-2">
-                  <Zap className="h-3.5 w-3.5 text-blue-500 flex-shrink-0" />
-                  <span className="text-[11px] text-blue-600">Real-time messaging</span>
-                </div>
-                <Link href="/pesan" id="bento-tembok-link" className="mt-4 flex items-center justify-between rounded-xl bg-blue-50 px-4 py-2.5 text-sm font-medium text-blue-700 ring-1 ring-blue-200/50 transition-all hover:bg-blue-100/80 group-hover:ring-blue-300/60">
-                  Buka Chat <ChevronRight className="h-4 w-4" />
-                </Link>
-              </div>
-            </div>
-
-            {/* Card: Galeri */}
-            <div className="bento-card p-6 group">
-              <div className="absolute inset-0 bg-gradient-to-br from-violet-50/50 via-transparent to-transparent pointer-events-none" />
-              <div className="relative z-10 flex h-full flex-col">
-                <div className="mb-4 flex items-center gap-2">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-violet-50 ring-1 ring-violet-200/60">
-                    <Images className="h-4 w-4 text-violet-600" strokeWidth={1.8} />
-                  </div>
-                  <p className="text-xs font-semibold uppercase tracking-widest text-violet-600">Galeri Foto</p>
-                </div>
-                <div className="grid grid-cols-3 gap-1.5 flex-1">
-                  {[...Array(6)].map((_, i) => (
-                    <div key={i} className="aspect-square rounded-lg ring-1 ring-black/5"
-                      style={{ background: `linear-gradient(135deg, hsl(${150 + i * 25}, 40%, 85%), hsl(${170 + i * 20}, 35%, 90%))` }} />
-                  ))}
-                </div>
-                <Link href="/galeri" id="bento-galeri-link" className="mt-4 flex items-center justify-between rounded-xl bg-violet-50 px-4 py-2.5 text-sm font-medium text-violet-700 ring-1 ring-violet-200/50 transition-all hover:bg-violet-100/80 group-hover:ring-violet-300/60">
-                  Lihat Galeri <ChevronRight className="h-4 w-4" />
-                </Link>
-              </div>
-            </div>
-
-            {/* Card: Daftar Siswa */}
-            <div className="bento-card p-6 group">
-              <div className="absolute inset-0 bg-gradient-to-br from-orange-50/40 via-transparent to-transparent pointer-events-none" />
-              <div className="relative z-10 flex h-full flex-col">
-                <div className="mb-4 flex items-center gap-2">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-orange-50 ring-1 ring-orange-200/60">
-                    <Users className="h-4 w-4 text-orange-600" strokeWidth={1.8} />
-                  </div>
-                  <p className="text-xs font-semibold uppercase tracking-widest text-orange-600">Daftar Siswa</p>
-                </div>
-                <p className="text-sm text-slate-500 leading-relaxed flex-1">
-                  Lihat profil foto, quotes, dan Instagram semua 34 siswa Kelas 9B SPENSAKA.
-                </p>
-                <Link href="/siswa" id="bento-siswa-link" className="mt-4 flex items-center justify-between rounded-xl bg-orange-50 px-4 py-2.5 text-sm font-medium text-orange-700 ring-1 ring-orange-200/50 transition-all hover:bg-orange-100/80 group-hover:ring-orange-300/60">
-                  Lihat Semua Siswa <ChevronRight className="h-4 w-4" />
-                </Link>
-              </div>
-            </div>
-
-            {/* Card: Quote */}
-            <div className="bento-card lg:col-span-3 p-6 sm:p-8">
-              <div className="absolute inset-0 bg-gradient-to-tr from-amber-50/40 via-transparent to-emerald-50/40 pointer-events-none" />
-              <div className="relative z-10 flex flex-col sm:flex-row sm:items-center sm:gap-8">
-                <div className="flex-1">
-                  <div className="mb-4 flex items-center gap-2">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-amber-50 ring-1 ring-amber-200/60">
-                      <Quote className="h-4 w-4 text-amber-600" strokeWidth={1.8} />
-                    </div>
-                    <p className="text-xs font-semibold uppercase tracking-widest text-amber-600">Motto Kelas 9B</p>
-                  </div>
-                  <blockquote className="text-lg font-semibold leading-relaxed text-slate-700 sm:text-xl">
-                    &ldquo;Bersama kita tumbuh, bersama kita dikenang.{" "}
-                    <span className="gradient-text">Kelas 9B bukan sekadar angkatan</span>
-                    {" "}— kami adalah keluarga.&rdquo;
-                  </blockquote>
-                </div>
-                <div className="mt-5 sm:mt-0 flex flex-col items-start sm:items-end gap-3">
-                  <div className="flex items-center gap-1">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="h-4 w-4 text-amber-400 fill-amber-400" />
-                    ))}
-                  </div>
-                  <p className="text-xs text-slate-400">34 siswa, satu semangat</p>
-                  <p className="text-xs text-slate-300">SMPN 1 Karanglewas · 2026</p>
-                </div>
-              </div>
-            </div>
-
-          </motion.div>
+            <Link href="/galeri" className="btn-ghost w-full justify-center">
+              <LayoutGrid className="h-5 w-5" />
+              <span>Lihat Galeri</span>
+              <ChevronRight className="h-5 w-5" />
+            </Link>
+          </div>
         </motion.section>
       </div>
+      
+      {/* Footer Credit */}
+      <FooterCredit />
     </div>
   );
 }
@@ -395,7 +724,7 @@ export default function HomePage() {
 
     updateStats();
 
-    // Subscribe to changes in chat and gallery
+    // Subscribe to changes
     const chatChannel = supabase
       .channel("stats-chat")
       .on("postgres_changes", { event: "INSERT", schema: "public", table: "obrolan_kelas" }, updateStats)
@@ -416,14 +745,26 @@ export default function HomePage() {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
-        <Loader2 className="h-9 w-9 animate-spin text-emerald-500" />
+      <div className="flex min-h-screen items-center justify-center bg-pattern-warm">
+        <div className="relative">
+          <div className="h-20 w-20 rounded-3xl border-4 border-emerald-100 border-t-emerald-500 animate-spin" />
+          <div className="absolute inset-0 flex items-center justify-center">
+            <span className="text-xs font-black text-emerald-600 uppercase tracking-tighter">9B</span>
+          </div>
+        </div>
+        <p className="mt-8 text-sm font-bold text-slate-400 uppercase tracking-widest animate-pulse">Initializing Portal...</p>
       </div>
     );
   }
 
   if (user && !needsProfileSetup) {
-    return <Dashboard user={user} profile={profile} stats={stats} />;
+    return (
+      <Dashboard 
+        user={user} 
+        profile={profile} 
+        stats={stats} 
+      />
+    );
   }
 
   return <LandingPage />;

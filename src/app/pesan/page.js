@@ -348,7 +348,7 @@ export default function PesanPage() {
               </div>
             </div>
             <div className="min-w-0 flex-1">
-              <h1 className="truncate text-lg font-bold text-slate-800 sm:text-xl">Tembok Kenangan • 9B</h1>
+              <h1 className="truncate text-lg font-bold text-slate-800 sm:text-xl">Grup Chat • 9B</h1>
               <p className="truncate text-xs text-slate-400">
                 {myUsername} <span className="hidden sm:inline">• online</span>
               </p>

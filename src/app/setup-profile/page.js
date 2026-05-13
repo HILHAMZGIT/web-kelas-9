@@ -91,7 +91,7 @@ export default function SetupProfilePage() {
       if (upsertErr) throw upsertErr;
 
       await refreshProfile();
-      window.location.href = "/";
+      router.replace("/");
     } catch (err) {
       setError(err?.message || "Terjadi kesalahan. Coba lagi.");
     } finally {

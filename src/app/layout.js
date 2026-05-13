@@ -21,7 +21,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="id" className={inter.variable}>
-      <body className="font-sans antialiased overflow-x-hidden" style={{ background: '#faf8f5', color: '#334155' }}>
+      <body className="font-sans antialiased overflow-x-hidden">
         <ClerkProvider>
           <AuthProvider>
             {/* Background ambient glows — soft, warm */}

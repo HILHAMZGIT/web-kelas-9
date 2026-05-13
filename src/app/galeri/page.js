@@ -96,11 +96,20 @@ function Lightbox({ item, onClose, onPrev, onNext }) {
         onClick={(e) => e.stopPropagation()}
       >
         {item.image_url ? (
-          <img
-            src={item.image_url}
-            alt={item.title || "Foto"}
-            className="w-full max-h-[80vh] object-contain rounded-2xl shadow-2xl"
-          />
+          item.type === "Video" || item.image_url.match(/\.(mp4|webm|ogg|mov)$/i) ? (
+            <video
+              src={item.image_url}
+              controls
+              autoPlay
+              className="w-full max-h-[80vh] object-contain rounded-2xl shadow-2xl"
+            />
+          ) : (
+            <img
+              src={item.image_url}
+              alt={item.title || "Foto"}
+              className="w-full max-h-[80vh] object-contain rounded-2xl shadow-2xl"
+            />
+          )
         ) : (
           <div className={`w-full aspect-video rounded-2xl bg-gradient-to-br ${item.color || "from-slate-200 to-slate-100"} flex items-center justify-center`}>
             <div className="text-center">
@@ -177,12 +186,15 @@ export default function GaleriPage() {
     const file = e.target.files?.[0];
     if (!file || !user) return;
 
-    if (!file.type.startsWith("image/")) {
-      setUploadError("File harus berupa gambar.");
+    const isVideo = file.type.startsWith("video/");
+    const isImage = file.type.startsWith("image/");
+
+    if (!isImage && !isVideo) {
+      setUploadError("File harus berupa gambar atau video.");
       return;
     }
-    if (file.size > 10 * 1024 * 1024) {
-      setUploadError("Ukuran file maksimal 10MB.");
+    if (file.size > 50 * 1024 * 1024) { // Increase limit for video to 50MB
+      setUploadError("Ukuran file maksimal 50MB.");
       return;
     }
 
@@ -195,13 +207,13 @@ export default function GaleriPage() {
       const filePath = `galeri/${fileName}`;
 
       const { error: uploadErr } = await supabase.storage
-        .from("galeri")
+        .from("gallery")
         .upload(filePath, file, { cacheControl: "3600" });
 
       if (uploadErr) throw uploadErr;
 
       const { data: { publicUrl } } = supabase.storage
-        .from("galeri")
+        .from("gallery")
         .getPublicUrl(filePath);
 
       const { error: insertErr } = await supabase
@@ -210,7 +222,7 @@ export default function GaleriPage() {
           user_id: user.id,
           foto_url: publicUrl,
           judul: file.name.replace(/\.[^/.]+$/, ""),
-          kategori: "Random",
+          kategori: isVideo ? "Video" : "Random",
         });
 
       if (insertErr) throw insertErr;
@@ -324,12 +336,21 @@ export default function GaleriPage() {
                     className={`relative ${heights[i % heights.length]} transition-all duration-500 group-hover:scale-[1.02]`}
                   >
                     {item.image_url ? (
-                      <img
-                        src={item.image_url}
-                        alt={item.title}
-                        className="h-full w-full object-cover"
-                        loading="lazy"
-                      />
+                      item.type === "Video" ? (
+                        <div className="relative h-full w-full">
+                          <video src={item.image_url} className="h-full w-full object-cover" muted />
+                          <div className="absolute inset-0 flex items-center justify-center bg-black/10">
+                            <Film className="h-8 w-8 text-white/70" />
+                          </div>
+                        </div>
+                      ) : (
+                        <img
+                          src={item.image_url}
+                          alt={item.title}
+                          className="h-full w-full object-cover"
+                          loading="lazy"
+                        />
+                      )
                     ) : (
                       <div className={`h-full w-full bg-gradient-to-br ${item.color} flex items-center justify-center`}>
                         <div className="text-center">
@@ -392,7 +413,7 @@ export default function GaleriPage() {
             <input
               ref={fileInputRef}
               type="file"
-              accept="image/*"
+              accept="image/*,video/*"
               className="hidden"
               onChange={handleUpload}
             />

@@ -6,7 +6,8 @@ import {
   Users, Images, MessageSquare, Sparkles, ArrowRight,
   Quote, Star, Heart, Camera, Trophy, ChevronRight,
   Loader2, Play, LayoutGrid, MessageCircle, Video,
-  Calendar, Clock, MapPin
+  Calendar, Clock, MapPin, GraduationCap, Award, 
+  PenTool, Wallet, UserCheck, Leaf, School
 } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
@@ -192,6 +193,318 @@ function ProfessionalHeroSection() {
     </section>
   );
 }
+
+/* ─── Section: Tentang 9B ───────────────────────────────────────── */
+function AboutSection() {
+  return (
+    <section id="about" className="relative py-24 px-6 bg-gradient-to-b from-[#faf8f5] to-[#f5f2ed] overflow-hidden">
+      <div className="container-premium max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          {/* Left: Content */}
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={stagger}
+          >
+            <motion.div variants={fadeUp} className="mb-6">
+              <div className="inline-flex items-center gap-2 rounded-full border border-emerald-200/50 bg-emerald-50/30 backdrop-blur-xl px-5 py-2 text-xs font-semibold text-emerald-700 mb-6">
+                <School className="h-3.5 w-3.5" />
+                <span className="tracking-[0.2em] uppercase">Profil Kelas 9B</span>
+              </div>
+              <h2 className="text-3xl sm:text-5xl font-black text-prestige tracking-tight text-[#1a1a1a] mb-6">
+                Membangun <span className="gradient-text-warm">Karakter</span> & <span className="gradient-text">Kenangan</span>
+              </h2>
+              <p className="text-base sm:text-lg text-[#718096] leading-relaxed mb-8">
+                Kelas 9B <strong className="text-[#1a1a1a]">SMP Negeri 1 Karanglewas</strong> adalah wadah kreativitas dan persaudaraan. Sebagai bagian dari sekolah <strong className="text-emerald-600">Adiwiyata</strong>, kami berkomitmen pada kelestarian lingkungan dan prestasi akademik yang gemilang.
+              </p>
+              
+              <div className="grid grid-cols-2 gap-4 sm:gap-6">
+                <div className="flex items-center gap-3 glass-premium p-4 rounded-2xl border border-emerald-100/50">
+                  <div className="h-10 w-10 rounded-xl bg-emerald-100 flex items-center justify-center">
+                    <Leaf className="h-5 w-5 text-emerald-600" />
+                  </div>
+                  <div>
+                    <p className="text-xs font-black text-emerald-600 uppercase tracking-widest">Adiwiyata</p>
+                    <p className="text-sm font-bold text-[#1a1a1a]">Eco School</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3 glass-premium p-4 rounded-2xl border border-emerald-100/50">
+                  <div className="h-10 w-10 rounded-xl bg-emerald-100 flex items-center justify-center">
+                    <Star className="h-5 w-5 text-emerald-600" />
+                  </div>
+                  <div>
+                    <p className="text-xs font-black text-emerald-600 uppercase tracking-widest">Prestasi</p>
+                    <p className="text-sm font-bold text-[#1a1a1a]">Unggul & Inovatif</p>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+
+          {/* Right: Stats Infographic */}
+          <motion.div 
+            className="grid grid-cols-2 gap-4 sm:gap-6"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={stagger}
+          >
+            <motion.div variants={fadeUp} className="bento-card p-6 text-center flex flex-col items-center justify-center">
+              <div className="w-14 h-14 rounded-2xl bg-slate-100 flex items-center justify-center mb-4">
+                <Users className="h-7 w-7 text-[#1a1a1a]" />
+              </div>
+              <h3 className="text-4xl font-black text-[#1a1a1a] tracking-tight mb-1">34</h3>
+              <p className="text-xs font-black text-[#a0aec0] uppercase tracking-widest">Total Siswa</p>
+            </motion.div>
+            
+            <motion.div variants={fadeUp} className="bento-card p-6 text-center flex flex-col items-center justify-center">
+              <div className="w-14 h-14 rounded-2xl bg-pink-50 flex items-center justify-center mb-4">
+                <Heart className="h-7 w-7 text-pink-500 fill-pink-500" />
+              </div>
+              <h3 className="text-4xl font-black text-pink-500 tracking-tight mb-1">18</h3>
+              <p className="text-xs font-black text-[#a0aec0] uppercase tracking-widest">Perempuan</p>
+            </motion.div>
+            
+            <motion.div variants={fadeUp} className="bento-card p-6 text-center flex flex-col items-center justify-center">
+              <div className="w-14 h-14 rounded-2xl bg-blue-50 flex items-center justify-center mb-4">
+                <Users className="h-7 w-7 text-blue-500" />
+              </div>
+              <h3 className="text-4xl font-black text-blue-500 tracking-tight mb-1">16</h3>
+              <p className="text-xs font-black text-[#a0aec0] uppercase tracking-widest">Laki-laki</p>
+            </motion.div>
+            
+            <motion.div variants={fadeUp} className="bento-card p-6 text-center flex flex-col items-center justify-center bg-gradient-to-br from-emerald-500 to-tosca-600">
+              <div className="w-14 h-14 rounded-2xl bg-white/20 flex items-center justify-center mb-4">
+                <Trophy className="h-7 w-7 text-white" />
+              </div>
+              <h3 className="text-4xl font-black text-white tracking-tight mb-1">2026</h3>
+              <p className="text-xs font-black text-white/70 uppercase tracking-widest">Angkatan</p>
+            </motion.div>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─── Section: Struktur Pengurus Kelas ─────────────────────────── */
+function OrganizationalSection() {
+  const pengurus = [
+    { role: "Ketua", name: "Aghis Awalia Wayangsari", icon: Crown, color: "from-amber-400 to-orange-500", shadow: "shadow-amber-200/50" },
+    { role: "Wakil", name: "Rama Indra Pratama", icon: UserCheck, color: "from-emerald-400 to-tosca-500", shadow: "shadow-emerald-200/50" },
+    { role: "Sekretaris 1", name: "Nadira Rafelina", icon: PenTool, color: "from-blue-400 to-indigo-500", shadow: "shadow-blue-200/50" },
+    { role: "Sekretaris 2", name: "Jazmi Hilmi Hamizan", icon: PenTool, color: "from-blue-400 to-indigo-500", shadow: "shadow-blue-200/50" },
+    { role: "Bendahara 1", name: "Nesa Novisa", icon: Wallet, color: "from-purple-400 to-pink-500", shadow: "shadow-purple-200/50" },
+    { role: "Bendahara 2", name: "Aida Novitasari", icon: Wallet, color: "from-purple-400 to-pink-500", shadow: "shadow-purple-200/50" },
+  ];
+
+  return (
+    <section id="structure" className="relative py-24 px-6 bg-[#fdfcfb]">
+      <div className="container-premium max-w-7xl mx-auto">
+        {/* Section Header */}
+        <motion.div 
+          className="text-center mb-20"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={fadeIn}
+        >
+          <div className="inline-flex items-center gap-2 rounded-full border border-emerald-200/35 bg-emerald-50/20 backdrop-blur-xl px-6 py-2 text-xs font-semibold text-emerald-700 mb-6">
+            <Trophy className="h-4 w-4" />
+            <span className="tracking-[0.2em] uppercase">Organisasi</span>
+          </div>
+          <h2 className="text-3xl sm:text-5xl font-black text-prestige text-[#1a1a1a] mb-6">
+            Struktur <span className="gradient-text-warm">Pengurus Kelas</span>
+          </h2>
+          <p className="text-base text-[#718096] max-w-2xl mx-auto">
+            Dikelola dengan profesionalisme dan tanggung jawab untuk kenyamanan bersama
+          </p>
+        </motion.div>
+
+        {/* Hierarchical Layout */}
+        <div className="flex flex-col items-center gap-12">
+          {/* Ketua */}
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeUp}
+            className="w-full max-w-sm"
+          >
+            <div className="bento-card p-1 overflow-hidden group">
+              <div className={`h-full bg-gradient-to-br ${pengurus[0].color} p-6 flex flex-col items-center justify-center text-center`}>
+                <div className="w-16 h-16 rounded-2xl bg-white/20 flex items-center justify-center mb-4 shadow-xl group-hover:scale-110 transition-transform">
+                  <Award className="h-8 w-8 text-white" />
+                </div>
+                <p className="text-xs font-black text-white/80 uppercase tracking-[0.3em] mb-1">{pengurus[0].role}</p>
+                <h3 className="text-xl sm:text-2xl font-black text-white tracking-tight">{pengurus[0].name}</h3>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Connect Line */}
+          <div className="h-12 w-1 bg-gradient-to-b from-slate-200 to-emerald-200 hidden md:block" />
+
+          {/* Wakil */}
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeUp}
+            className="w-full max-w-xs"
+          >
+            <div className="bento-card p-6 flex flex-col items-center justify-center text-center group border-emerald-200 shadow-xl shadow-emerald-100/50">
+              <div className="w-12 h-12 rounded-xl bg-emerald-100 flex items-center justify-center mb-3 group-hover:scale-105 transition-transform">
+                <UserCheck className="h-6 w-6 text-emerald-600" />
+              </div>
+              <p className="text-[10px] font-black text-emerald-600 uppercase tracking-[0.25em] mb-1">{pengurus[1].role}</p>
+              <h3 className="text-lg font-bold text-[#1a1a1a]">{pengurus[1].name}</h3>
+            </div>
+          </motion.div>
+
+          {/* Grid for Secretaries and Treasurers */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full mt-4">
+            {pengurus.slice(2).map((item, i) => (
+              <motion.div 
+                key={i}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                variants={fadeUp}
+                custom={i}
+              >
+                <div className="bento-card p-6 flex flex-col items-center justify-center text-center group h-full">
+                  <div className={`w-10 h-10 rounded-lg bg-slate-50 flex items-center justify-center mb-3 group-hover:scale-105 transition-transform`}>
+                    <item.icon className="h-5 w-5 text-slate-600" />
+                  </div>
+                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-1">{item.role}</p>
+                  <h3 className="text-base font-bold text-[#1a1a1a] leading-tight">{item.name}</h3>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─── Section: Jadwal Piket ────────────────────────────────────── */
+function PiketSection() {
+  const jadwal = [
+    { 
+      day: "Senin", 
+      color: "border-l-emerald-500",
+      bg: "bg-emerald-50/30",
+      iconColor: "text-emerald-500",
+      members: ["Ade Vanes Syahputra", "Adnan fathurrohman", "Aghis Awalia Wayangsari", "Aida Novitasari", "Anggit Slamet Syahputra", "Anton Maulidan", "Aulia Shintya Megarani", "Azmi cheryl ardelia"]
+    },
+    { 
+      day: "Selasa", 
+      color: "border-l-blue-500",
+      bg: "bg-blue-50/30",
+      iconColor: "text-blue-500",
+      members: ["Barra Abdillah", "Dwi lestari sulistiyaning tyas", "Farel Juniansyah", "Feliza Nuril Anggraeni", "Fitriyani", "Haikal Fahmi Setya Aji"]
+    },
+    { 
+      day: "Rabu", 
+      color: "border-l-violet-500",
+      bg: "bg-violet-50/30",
+      iconColor: "text-violet-500",
+      members: ["Ikbal Anugrah", "Itmam nur Rohman", "Jazmi Hilmi Hamizan", "Keiya Khairunisa Putri", "Maritza Salsabil Az Zahra", "Nadira Rafelina"]
+    },
+    { 
+      day: "Kamis", 
+      color: "border-l-amber-500",
+      bg: "bg-amber-50/30",
+      iconColor: "text-amber-500",
+      members: ["M.zaki nurehan", "Nela Oktaviana", "Nesa Novisa", "Nova Erlani", "Nurrizky Ita Dwi Alyana", "Rama Indra P.", "Revan Septian Budiono"]
+    },
+    { 
+      day: "Jumat", 
+      color: "border-l-rose-500",
+      bg: "bg-rose-50/30",
+      iconColor: "text-rose-500",
+      members: ["Rena Setyawati", "Rifda Amelia", "Ringga Yazid khoeri", "Rival Catur Widiono", "Shayla ayu saputri", "Tri wahyudiono", "Zahrotus Sita"]
+    },
+  ];
+
+  return (
+    <section id="piket" className="relative py-24 px-6 bg-pattern-warm">
+      <div className="container-premium max-w-7xl mx-auto">
+        {/* Section Header */}
+        <motion.div 
+          className="text-center mb-16"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={fadeIn}
+        >
+          <div className="inline-flex items-center gap-2 rounded-full border border-emerald-200/35 bg-emerald-50/20 backdrop-blur-xl px-6 py-2 text-xs font-semibold text-emerald-700 mb-6">
+            <Calendar className="h-4 w-4" />
+            <span className="tracking-[0.2em] uppercase">Kebersihan</span>
+          </div>
+          <h2 className="text-3xl sm:text-5xl font-black text-prestige text-[#1a1a1a] mb-6">
+            Jadwal <span className="gradient-text-warm">Piket Harian</span>
+          </h2>
+          <p className="text-base text-[#718096] max-w-2xl mx-auto">
+            Kebersihan adalah sebagian dari iman. Mari kita jaga kelas kita bersama!
+          </p>
+        </motion.div>
+
+        {/* Bento Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {jadwal.map((item, i) => (
+            <motion.div 
+              key={i}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={fadeUp}
+              custom={i}
+              className={`bento-card p-0 overflow-hidden border-l-4 ${item.color} h-full`}
+            >
+              <div className={`p-6 ${item.bg} h-full flex flex-col`}>
+                <div className="flex items-center justify-between mb-5">
+                  <h3 className={`text-xl font-black ${item.iconColor} tracking-tight`}>{item.day}</h3>
+                  <div className={`h-8 w-8 rounded-lg bg-white/50 flex items-center justify-center ${item.iconColor}`}>
+                    <Users className="h-4 w-4" />
+                  </div>
+                </div>
+                
+                <div className="flex flex-wrap gap-2">
+                  {item.members.map((name, idx) => (
+                    <span key={idx} className="text-xs font-semibold bg-white/60 text-[#4a5568] px-3 py-1.5 rounded-lg border border-white/50 shadow-sm">
+                      {name}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          ))}
+          
+          {/* Decorative Card */}
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeUp}
+            custom={5}
+            className="bento-card p-6 flex flex-col items-center justify-center text-center bg-gradient-to-br from-emerald-500 to-tosca-600 lg:col-span-1"
+          >
+            <div className="w-16 h-16 rounded-2xl bg-white/20 flex items-center justify-center mb-4">
+              <Sparkles className="h-8 w-8 text-white" />
+            </div>
+            <h3 className="text-xl font-black text-white mb-2">Kelas Bersih, Belajar Nyaman</h3>
+            <p className="text-sm text-white/80 italic">"Lingkungan yang bersih menciptakan pikiran yang jernih."</p>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 /* ─── Video Hero Section (Placeholder) ───────────────────────── */
 function VideoHeroSection() {
   return (
@@ -271,175 +584,15 @@ function VideoHeroSection() {
   );
 }
 
-/* ─── Keluarga Besar 9B Section ───────────────────────────────── */
-function Keluarga9BSection() {
-  return (
-    <section className="relative py-20 px-6 bg-gradient-to-b from-[#f5f2ed] to-[#faf8f5]">
-      <div className="container-premium max-w-7xl mx-auto">
-        {/* Section Header */}
-        <motion.div 
-          className="text-center mb-16"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          variants={fadeIn}
-        >
-          <div className="inline-flex items-center gap-2 rounded-full border border-emerald-200/35 bg-emerald-50/20 backdrop-blur-xl px-6 py-2 text-xs font-semibold text-emerald-700 mb-6">
-            <Users className="h-4 w-4" />
-            <span className="tracking-[0.2em] uppercase">Keluarga Besar</span>
-          </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-prestige text-[#1a1a1a] mb-6">
-            <span className="gradient-text-warm">Keluarga Besar 9B</span>
-          </h2>
-          <p className="text-base text-[#718096] max-w-2xl mx-auto">
-            34 jiwa, 1 keluarga, kenangan yang tak terlupakan
-          </p>
-        </motion.div>
-
-        {/* Professional Bento Grid Layout */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-4 sm:gap-5 auto-rows-auto">
-          {/* Main Class Photo - Large */}
-          <motion.div 
-            className="md:col-span-8 md:row-span-2 group relative overflow-hidden rounded-2xl glass-premium border border-white/25 shadow-xl"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={slideUp}
-            whileHover={{ scale: 1.01 }}
-            transition={{ duration: 0.3 }}
-          >
-            <div className="relative h-full min-h-[300px] sm:min-h-[350px]">
-              {/* Background Image */}
-              <Image 
-                src="/foto-kelas.jpeg" 
-                alt="Foto Bersama Kelas 9B" 
-                fill 
-                className="object-cover object-center" 
-                priority
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 66vw, 66vw"
-              />
-              
-              {/* Gradient Overlay for Text Readability */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
-              
-              {/* Content - Bottom Left */}
-              <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6">
-                <h3 className="text-lg sm:text-xl font-bold text-white mb-2 text-shadow-hero text-balance">Foto Bersama Kelas</h3>
-                <p className="text-white/90 mb-3 sm:mb-4 text-xs sm:text-sm">Momen paling ikonik kita bersama</p>
-                <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 rounded-full bg-emerald-500/80 backdrop-blur-sm text-white text-[10px] sm:text-xs font-medium">
-                  <Users className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-                  <span>34 Anggota</span>
-                </div>
-              </div>
-              
-              {/* Hover Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-            </div>
-          </motion.div>
-
-          {/* Study Tour Card */}
-          <motion.div 
-            className="md:col-span-4 group relative overflow-hidden rounded-2xl glass-premium border border-white/25 shadow-xl"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={slideUp}
-            custom={1}
-            whileHover={{ scale: 1.03 }}
-          >
-            <div className="h-full min-h-[140px] sm:min-h-[180px]">
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-100/35 to-indigo-50/25" />
-              <div className="absolute inset-0 bg-dots opacity-20" />
-              
-              <div className="relative z-10 h-full flex flex-col items-center justify-center p-4 sm:p-6 text-center">
-                <MapPin className="h-6 w-6 sm:h-7 sm:w-7 text-blue-500 mb-2 group-hover:scale-105 transition-transform" />
-                <h3 className="text-sm sm:text-base font-bold text-[#1a1a1a] mb-1 text-balance">Study Tour</h3>
-                <p className="text-[10px] sm:text-xs text-[#718096]">Petualangan seru</p>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Daily Fun Card */}
-          <motion.div 
-            className="md:col-span-4 group relative overflow-hidden rounded-2xl glass-premium border border-white/25 shadow-xl"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={slideUp}
-            custom={2}
-            whileHover={{ scale: 1.03 }}
-          >
-            <div className="h-full min-h-[140px] sm:min-h-[180px]">
-              <div className="absolute inset-0 bg-gradient-to-br from-amber-100/35 to-orange-50/25" />
-              <div className="absolute inset-0 bg-dots opacity-20" />
-              
-              <div className="relative z-10 h-full flex flex-col items-center justify-center p-4 sm:p-6 text-center">
-                <Heart className="h-6 w-6 sm:h-7 sm:w-7 text-amber-500 mb-2 group-hover:scale-105 transition-transform fill-amber-500" />
-                <h3 className="text-sm sm:text-base font-bold text-[#1a1a1a] mb-1 text-balance">Keseruan Harian</h3>
-                <p className="text-[10px] sm:text-xs text-[#718096]">Tawa dan canda</p>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Achievement Card */}
-          <motion.div 
-            className="md:col-span-4 group relative overflow-hidden rounded-2xl glass-premium border border-white/25 shadow-xl"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={slideUp}
-            custom={3}
-            whileHover={{ scale: 1.03 }}
-          >
-            <div className="h-full min-h-[140px] sm:min-h-[180px]">
-              <div className="absolute inset-0 bg-gradient-to-br from-purple-100/35 to-pink-50/25" />
-              <div className="absolute inset-0 bg-dots opacity-20" />
-              
-              <div className="relative z-10 h-full flex flex-col items-center justify-center p-4 sm:p-6 text-center">
-                <Trophy className="h-6 w-6 sm:h-7 sm:w-7 text-purple-500 mb-2 group-hover:scale-105 transition-transform" />
-                <h3 className="text-sm sm:text-base font-bold text-[#1a1a1a] mb-1 text-balance">Prestasi</h3>
-                <p className="text-[10px] sm:text-xs text-[#718096]">Bangga bersama</p>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Quote Card - Full Width */}
-          <motion.div 
-            className="md:col-span-12 group relative overflow-hidden rounded-2xl glass-premium border border-white/25 shadow-xl"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={slideUp}
-            custom={4}
-          >
-            <div className="p-6 sm:p-10 text-center">
-              <Quote className="h-8 w-8 sm:h-10 sm:w-10 text-emerald-500/25 mx-auto mb-4" />
-              <blockquote className="text-lg sm:text-xl lg:text-3xl font-black text-prestige text-[#1a1a1a] leading-relaxed mb-4 sm:mb-6 text-balance">
-                "Bersama kita tumbuh, 
-                <span className="gradient-text-warm">bersama kita dikenang."</span> 
-                9B bukan sekadar angkatan — kami adalah keluarga."
-              </blockquote>
-              <div className="flex items-center justify-center gap-2">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="h-5 w-5 text-amber-400 fill-amber-400 animate-pulse" style={{ animationDelay: `${i * 150}ms` }} />
-                ))}
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-
-/* ─── Landing Page (Professional Redesign) ─────────────────────── */
+/* ─── Landing Page (Long-Scrolling Redesign) ─────────────────────── */
 function LandingPage() {
   return (
     <div className="min-h-screen">
       <ProfessionalHeroSection />
+      <AboutSection />
+      <OrganizationalSection />
+      <PiketSection />
       <VideoHeroSection />
-      <Keluarga9BSection />
       
       {/* Final CTA Section */}
       <section className="relative py-20 px-6 bg-gradient-to-b from-[#faf8f5] to-[#f5f2ed]">

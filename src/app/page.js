@@ -7,7 +7,7 @@ import {
   Quote, Star, Heart, Camera, Trophy, ChevronRight,
   Loader2, Play, LayoutGrid, MessageCircle, Video,
   Calendar, Clock, MapPin, GraduationCap, Award, 
-  PenTool, Wallet, UserCheck, Leaf, School
+  PenTool, Wallet, UserCheck, Leaf, School, Crown
 } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
@@ -300,7 +300,13 @@ function OrganizationalSection() {
   ];
 
   return (
-    <section id="structure" className="relative py-24 px-6 bg-[#fdfcfb]">
+    <section id="structure" className="relative py-24 px-6 bg-gradient-to-b from-[#fdfcfb] to-[#faf8f5] overflow-hidden">
+      {/* Background Elements */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-20 left-10 w-32 h-32 bg-emerald-400/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-20 right-10 w-40 h-40 bg-tosca-400/5 rounded-full blur-3xl" />
+      </div>
+
       <div className="container-premium max-w-7xl mx-auto">
         {/* Section Header */}
         <motion.div 
@@ -322,9 +328,9 @@ function OrganizationalSection() {
           </p>
         </motion.div>
 
-        {/* Hierarchical Layout */}
-        <div className="flex flex-col items-center gap-12">
-          {/* Ketua */}
+        {/* Hierarchical Organization Chart */}
+        <div className="flex flex-col items-center gap-8">
+          {/* Ketua - Top Center */}
           <motion.div 
             initial="hidden"
             whileInView="visible"
@@ -332,57 +338,128 @@ function OrganizationalSection() {
             variants={fadeUp}
             className="w-full max-w-sm"
           >
-            <div className="bento-card p-1 overflow-hidden group">
-              <div className={`h-full bg-gradient-to-br ${pengurus[0].color} p-6 flex flex-col items-center justify-center text-center`}>
-                <div className="w-16 h-16 rounded-2xl bg-white/20 flex items-center justify-center mb-4 shadow-xl group-hover:scale-110 transition-transform">
-                  <Award className="h-8 w-8 text-white" />
+            <div className="glass-premium p-8 rounded-3xl border border-white/30 shadow-2xl backdrop-blur-xl group hover:scale-105 transition-all duration-500">
+              <div className={`h-full bg-gradient-to-br ${pengurus[0].color} p-8 rounded-2xl flex flex-col items-center justify-center text-center relative overflow-hidden`}>
+                {/* Background Pattern */}
+                <div className="absolute inset-0 bg-white/10" />
+                <div className="absolute inset-0 bg-dots opacity-20" />
+                
+                <div className="relative z-10">
+                  <div className="w-20 h-20 rounded-2xl bg-white/20 flex items-center justify-center mb-6 shadow-xl group-hover:scale-110 transition-transform">
+                    <Crown className="h-10 w-10 text-white" />
+                  </div>
+                  <p className="text-sm font-black text-white/80 uppercase tracking-[0.3em] mb-2">{pengurus[0].role}</p>
+                  <h3 className="text-2xl sm:text-3xl font-black text-white tracking-tight leading-tight">{pengurus[0].name}</h3>
                 </div>
-                <p className="text-xs font-black text-white/80 uppercase tracking-[0.3em] mb-1">{pengurus[0].role}</p>
-                <h3 className="text-xl sm:text-2xl font-black text-white tracking-tight">{pengurus[0].name}</h3>
+                
+                {/* Decorative Elements */}
+                <div className="absolute top-4 right-4 w-8 h-8 bg-white/10 rounded-full" />
+                <div className="absolute bottom-4 left-4 w-6 h-6 bg-white/10 rounded-full" />
               </div>
             </div>
           </motion.div>
 
-          {/* Connect Line */}
-          <div className="h-12 w-1 bg-gradient-to-b from-slate-200 to-emerald-200 hidden md:block" />
+          {/* Connection Line */}
+          <div className="h-16 w-1 bg-gradient-to-b from-amber-300 to-emerald-300 rounded-full hidden md:block" />
 
-          {/* Wakil */}
+          {/* Wakil - Below Ketua */}
           <motion.div 
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
             variants={fadeUp}
-            className="w-full max-w-xs"
+            className="w-full max-w-md"
           >
-            <div className="bento-card p-6 flex flex-col items-center justify-center text-center group border-emerald-200 shadow-xl shadow-emerald-100/50">
-              <div className="w-12 h-12 rounded-xl bg-emerald-100 flex items-center justify-center mb-3 group-hover:scale-105 transition-transform">
-                <UserCheck className="h-6 w-6 text-emerald-600" />
+            <div className="glass-premium p-6 rounded-2xl border border-white/25 shadow-xl backdrop-blur-lg group hover:scale-105 transition-all duration-500">
+              <div className={`bg-gradient-to-br ${pengurus[1].color} p-6 rounded-xl flex flex-col items-center justify-center text-center relative overflow-hidden`}>
+                {/* Background Pattern */}
+                <div className="absolute inset-0 bg-white/10" />
+                
+                <div className="relative z-10 flex items-center gap-4">
+                  <div className="w-14 h-14 rounded-xl bg-white/20 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                    <UserCheck className="h-7 w-7 text-white" />
+                  </div>
+                  <div className="text-left">
+                    <p className="text-sm font-black text-white/80 uppercase tracking-[0.25em] mb-1">{pengurus[1].role}</p>
+                    <h3 className="text-xl font-black text-white tracking-tight">{pengurus[1].name}</h3>
+                  </div>
+                </div>
+                
+                {/* Decorative Elements */}
+                <div className="absolute top-3 right-3 w-4 h-4 bg-white/10 rounded-full" />
               </div>
-              <p className="text-[10px] font-black text-emerald-600 uppercase tracking-[0.25em] mb-1">{pengurus[1].role}</p>
-              <h3 className="text-lg font-bold text-[#1a1a1a]">{pengurus[1].name}</h3>
             </div>
           </motion.div>
 
-          {/* Grid for Secretaries and Treasurers */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full mt-4">
-            {pengurus.slice(2).map((item, i) => (
-              <motion.div 
-                key={i}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                variants={fadeUp}
-                custom={i}
-              >
-                <div className="bento-card p-6 flex flex-col items-center justify-center text-center group h-full">
-                  <div className={`w-10 h-10 rounded-lg bg-slate-50 flex items-center justify-center mb-3 group-hover:scale-105 transition-transform`}>
-                    <item.icon className="h-5 w-5 text-slate-600" />
+          {/* Connection Lines to Bottom Level */}
+          <div className="flex items-center gap-8 mt-8">
+            <div className="h-12 w-1 bg-gradient-to-b from-emerald-300 to-blue-300 rounded-full hidden md:block" />
+            <div className="h-12 w-1 bg-gradient-to-b from-emerald-300 to-purple-300 rounded-full hidden md:block" />
+          </div>
+
+          {/* Bottom Level - Sekretaris and Bendahara Side by Side */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-5xl">
+            {/* Sekretaris Section */}
+            <motion.div 
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={fadeUp}
+              custom={0}
+              className="space-y-4"
+            >
+              <h4 className="text-center text-lg font-black text-[#1a1a1a] uppercase tracking-widest mb-4">Sekretaris</h4>
+              {pengurus.slice(2, 4).map((item, i) => (
+                <div key={i} className="glass-premium p-5 rounded-xl border border-white/20 shadow-lg backdrop-blur-lg group hover:scale-105 transition-all duration-300">
+                  <div className={`bg-gradient-to-br ${item.color} p-4 rounded-lg flex items-center gap-4 relative overflow-hidden`}>
+                    {/* Background Pattern */}
+                    <div className="absolute inset-0 bg-white/5" />
+                    
+                    <div className="relative z-10 w-12 h-12 rounded-lg bg-white/20 flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
+                      <item.icon className="h-6 w-6 text-white" />
+                    </div>
+                    <div className="relative z-10">
+                      <p className="text-xs font-black text-white/80 uppercase tracking-[0.2em] mb-1">{item.role}</p>
+                      <h4 className="text-lg font-bold text-white tracking-tight">{item.name}</h4>
+                    </div>
+                    
+                    {/* Decorative Elements */}
+                    <div className="absolute top-2 right-2 w-3 h-3 bg-white/10 rounded-full" />
                   </div>
-                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-1">{item.role}</p>
-                  <h3 className="text-base font-bold text-[#1a1a1a] leading-tight">{item.name}</h3>
                 </div>
-              </motion.div>
-            ))}
+              ))}
+            </motion.div>
+
+            {/* Bendahara Section */}
+            <motion.div 
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={fadeUp}
+              custom={1}
+              className="space-y-4"
+            >
+              <h4 className="text-center text-lg font-black text-[#1a1a1a] uppercase tracking-widest mb-4">Bendahara</h4>
+              {pengurus.slice(4, 6).map((item, i) => (
+                <div key={i} className="glass-premium p-5 rounded-xl border border-white/20 shadow-lg backdrop-blur-lg group hover:scale-105 transition-all duration-300">
+                  <div className={`bg-gradient-to-br ${item.color} p-4 rounded-lg flex items-center gap-4 relative overflow-hidden`}>
+                    {/* Background Pattern */}
+                    <div className="absolute inset-0 bg-white/5" />
+                    
+                    <div className="relative z-10 w-12 h-12 rounded-lg bg-white/20 flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
+                      <item.icon className="h-6 w-6 text-white" />
+                    </div>
+                    <div className="relative z-10">
+                      <p className="text-xs font-black text-white/80 uppercase tracking-[0.2em] mb-1">{item.role}</p>
+                      <h4 className="text-lg font-bold text-white tracking-tight">{item.name}</h4>
+                    </div>
+                    
+                    {/* Decorative Elements */}
+                    <div className="absolute top-2 right-2 w-3 h-3 bg-white/10 rounded-full" />
+                  </div>
+                </div>
+              ))}
+            </motion.div>
           </div>
         </div>
       </div>

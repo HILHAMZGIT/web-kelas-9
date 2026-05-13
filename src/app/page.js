@@ -6,7 +6,7 @@ import {
   Users, Images, MessageSquare, Sparkles, ArrowRight,
   Quote, Star, Heart, Camera, Trophy, ChevronRight,
   Loader2, Play, LayoutGrid, MessageCircle, Video,
-  Calendar, Clock, MapPin, Code, Heart as HeartIcon
+  Calendar, Clock, MapPin
 } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
@@ -431,61 +431,7 @@ function Keluarga9BSection() {
     </section>
   );
 }
-/* ─── Professional Footer ───────────────────────────────────── */
-function FooterCredit() {
-  return (
-    <footer className="footer-credit py-12 px-6 border-t border-white/20">
-      <div className="container-premium max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-8">
-          {/* Bagian Kiri - Brand Info */}
-          <div className="flex flex-col items-center md:items-start gap-2 text-center md:text-left">
-            <div className="flex items-center gap-3">
-              <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-emerald-500 to-tosca-600 flex items-center justify-center shadow-lg">
-                <span className="text-lg font-black text-white">9B</span>
-              </div>
-              <div>
-                <h3 className="text-lg font-black text-[#1a1a1a] tracking-tight">SPENSAKA 9B</h3>
-                <p className="text-xs font-semibold text-emerald-600 uppercase tracking-widest">Website Kelas 9B</p>
-              </div>
-            </div>
-            <div className="flex flex-col gap-1">
-              <p className="text-sm text-[#718096] font-medium">
-                SMPN 1 Karanglewas
-              </p>
-              <p className="text-xs text-[#a0aec0] font-semibold uppercase tracking-wider">
-                Angkatan 2026
-              </p>
-            </div>
-          </div>
 
-          {/* Bagian Kanan - Team Info */}
-          <div className="flex flex-col items-center md:items-end gap-3 text-center md:text-right">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-100/50 border border-slate-200/50">
-              <Code className="h-4 w-4 text-slate-600" />
-              <span className="text-xs font-bold text-slate-700 uppercase tracking-wider">Engineering Team</span>
-            </div>
-            <div className="flex flex-col gap-1">
-              <div className="flex items-center gap-2">
-                <div className="h-1 w-1 bg-emerald-500 rounded-full" />
-                <p className="text-sm font-bold text-[#1a1a1a]">
-                  Jazmi Hilmi Hamizan
-                  <span className="text-xs font-semibold text-emerald-600 ml-2">Lead Developer</span>
-                </p>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="h-1 w-1 bg-slate-400 rounded-full" />
-                <p className="text-sm font-medium text-[#718096]">
-                  Rama Indra Pratama
-                  <span className="text-xs text-slate-500 ml-2">Helper</span>
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </footer>
-  );
-}
 
 /* ─── Landing Page (Professional Redesign) ─────────────────────── */
 function LandingPage() {
@@ -520,9 +466,6 @@ function LandingPage() {
           </motion.div>
         </div>
       </section>
-      
-      {/* Footer Credit */}
-      <FooterCredit />
     </div>
   );
 }
@@ -579,51 +522,52 @@ function Dashboard({ user, profile, stats }) {
 
         {/* Hero Visual Section */}
         <motion.section variants={fadeUp} custom={1} className="mb-16">
-          <div className="group relative w-full aspect-[21/9] overflow-hidden rounded-2xl glass-premium border border-white/25 shadow-xl">
-            <div className="relative h-full w-full overflow-hidden rounded-2xl bg-gradient-to-br from-slate-900 to-slate-800 flex items-center justify-center">
-              {/* Background Video */}
-              <video
-                src="/video-utama.mp4"
-                autoPlay
-                loop
-                muted
-                playsInline
-                className="absolute inset-0 w-full h-full object-cover opacity-55 transition-transform duration-600 group-hover:scale-105"
-              />
-              
-              {/* Overlay Content */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/15 to-transparent flex flex-col items-center justify-center text-center px-6">
-                <motion.div 
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.4 }}
-                  className="mb-6 inline-flex items-center gap-2.5 rounded-full border border-white/15 bg-white/8 backdrop-blur-xl px-6 py-2.5"
-                >
-                  <Sparkles className="h-4 w-4 text-emerald-400" />
-                  <span className="text-xs font-black text-white uppercase tracking-[0.35em]">Family Forever</span>
-                </motion.div>
-                
-                <h2 className="text-3xl sm:text-5xl font-black text-prestige text-white tracking-tight text-shadow-hero mb-3">
-                  Selamat Datang di <span className="text-emerald-400">Website Kelas 9B</span>
-                </h2>
-                <p className="text-base font-bold text-white/75 max-w-3xl italic leading-relaxed">
-                  Portal kenangan angkatan 2026 SMPN 1 Karanglewas. Abadikan setiap detik perjalanan kita.
-                </p>
-                
-                <div className="mt-8 flex items-center gap-5">
-                  <div className="h-[1px] w-12 bg-white/25" />
-                  <Heart className="h-5 w-5 text-rose-500 fill-rose-500 animate-pulse" />
-                  <div className="h-[1px] w-12 bg-white/25" />
-                </div>
-              </div>
+          <div className="group relative w-full min-h-[180px] sm:min-h-[260px] overflow-hidden rounded-2xl border border-white/25 shadow-xl">
+            {/* Static Background Image */}
+            <Image
+              src="/bg-dashboard.jpg"
+              alt="Background Dashboard"
+              fill
+              className="object-cover object-bottom transition-transform duration-700 group-hover:scale-105"
+              priority
+              sizes="100vw"
+            />
 
-              {/* Caption Overlay */}
-              <div className="absolute bottom-6 right-6">
-                <div className="glass-premium px-5 py-2.5 rounded-xl border border-white/10 bg-white/5 backdrop-blur-lg">
-                  <p className="text-xs font-black text-white/55 uppercase tracking-widest flex items-center gap-2">
-                    <Users className="h-3.5 w-3.5" /> 34 Anggota Keluarga
-                  </p>
-                </div>
+            {/* Dark Overlay */}
+            <div className="absolute inset-0 bg-black/50" />
+
+            {/* Overlay Content */}
+            <div className="relative z-10 h-full min-h-[180px] sm:min-h-[260px] flex flex-col items-center justify-center text-center px-6 py-8">
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.4 }}
+                className="mb-6 inline-flex items-center gap-2.5 rounded-full border border-white/20 bg-white/10 backdrop-blur-xl px-6 py-2.5"
+              >
+                <Sparkles className="h-4 w-4 text-emerald-400" />
+                <span className="text-xs font-black text-white uppercase tracking-[0.35em]">Family Forever</span>
+              </motion.div>
+              
+              <h2 className="text-3xl sm:text-5xl font-black text-prestige text-white tracking-tight text-shadow-hero mb-3">
+                Selamat Datang di <span className="text-emerald-400">Website Kelas 9B</span>
+              </h2>
+              <p className="text-base font-bold text-white/80 max-w-3xl italic leading-relaxed">
+                Portal kenangan angkatan 2026 SMPN 1 Karanglewas. Abadikan setiap detik perjalanan kita.
+              </p>
+              
+              <div className="mt-8 flex items-center gap-5">
+                <div className="h-[1px] w-12 bg-white/30" />
+                <Heart className="h-5 w-5 text-rose-500 fill-rose-500 animate-pulse" />
+                <div className="h-[1px] w-12 bg-white/30" />
+              </div>
+            </div>
+
+            {/* Caption Overlay */}
+            <div className="absolute bottom-6 right-6 z-10">
+              <div className="glass-premium px-5 py-2.5 rounded-xl border border-white/10 bg-white/5 backdrop-blur-lg">
+                <p className="text-xs font-black text-white/70 uppercase tracking-widest flex items-center gap-2">
+                  <Users className="h-3.5 w-3.5" /> 34 Anggota Keluarga
+                </p>
               </div>
             </div>
           </div>
@@ -689,9 +633,6 @@ function Dashboard({ user, profile, stats }) {
           </div>
         </motion.section>
       </div>
-      
-      {/* Footer Credit */}
-      <FooterCredit />
     </div>
   );
 }

@@ -3,15 +3,17 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Home, Images, MessageSquare, Users, UserCircle } from "lucide-react";
+import { Home, Images, MessageSquare, Users, UserCircle, Info, Lock } from "lucide-react";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
 const navItems = [
   { href: "/", label: "Beranda", icon: Home },
+  { href: "/tentang", label: "Tentang", icon: Info },
   { href: "/galeri", label: "Galeri", icon: Images },
   { href: "/pesan", label: "Grup Chat", icon: MessageSquare },
   { href: "/siswa", label: "Siswa", icon: Users },
+  { href: "/ruang-rahasia", label: "Rahasia", icon: Lock },
   { href: "/profil", label: "Profil", icon: UserCircle },
 ];
 

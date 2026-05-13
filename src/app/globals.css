@@ -420,6 +420,53 @@
     border-top: 1px solid rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(8px);
   }
+
+  /* ─── Mobile Optimizations ─── */
+  @media (max-width: 768px) {
+    /* Ensure minimum touch targets */
+    button, .btn-primary, .btn-ghost {
+      min-height: 44px;
+      min-width: 44px;
+    }
+    
+    /* Better mobile scrolling */
+    * {
+      -webkit-overflow-scrolling: touch;
+    }
+    
+    /* Prevent horizontal scroll */
+    body {
+      overflow-x: hidden;
+      touch-action: manipulation;
+    }
+    
+    /* Safe area for devices with notches */
+    .safe-area-top {
+      padding-top: env(safe-area-inset-top);
+    }
+    
+    .safe-area-bottom {
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+    
+    /* Optimize text rendering on mobile */
+    h1, h2, h3, h4, h5, h6 {
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    
+    /* Better tap highlights */
+    * {
+      -webkit-tap-highlight-color: rgba(16, 185, 129, 0.1);
+    }
+    
+    /* Smooth scrolling on mobile */
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+  }
 }
 
 /* ─── Keyframes ─── */

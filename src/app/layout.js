@@ -16,6 +16,20 @@ export const metadata = {
   description:
     "Portal kenangan kelas 9B SMPN 1 Karanglewas. Abadikan momen, jelajahi galeri, dan temukan teman seangkatan.",
   keywords: ["SMPN 1 Karanglewas", "9B", "SPENSAKA", "kenangan", "galeri"],
+  viewport: {
+    width: "device-width",
+    initialScale: 1,
+    maximumScale: 1,
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  openGraph: {
+    title: "Website Kelas 9B — SPENSAKA",
+    description: "Portal kenangan kelas 9B SMPN 1 Karanglewas",
+    type: "website",
+  },
 };
 
 export default function RootLayout({ children }) {

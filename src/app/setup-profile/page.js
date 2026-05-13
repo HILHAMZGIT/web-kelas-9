@@ -36,7 +36,7 @@ export default function SetupProfilePage() {
     }
     // Jika sudah punya username, tak perlu di sini, tapi pastikan hanya redirect kalau bukan loop
     if (!loading && !needsProfileSetup && user) {
-      router.replace("/");
+      router.replace("/dashboard");
     }
   }, [loading, user, needsProfileSetup, router]);
 

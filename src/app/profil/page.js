@@ -156,20 +156,31 @@ export default function ProfilPage() {
 
   return (
     <div className="relative min-h-screen page-shell">
+      {/* Glassmorphism Background */}
+      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        <div className="absolute -top-40 -left-40 h-[600px] w-[600px] rounded-full bg-emerald-300/10 blur-[150px]" />
+        <div className="absolute top-1/2 -right-40 h-[500px] w-[500px] rounded-full bg-teal-200/10 blur-[150px]" />
+        <div className="absolute bottom-0 left-1/3 h-[400px] w-[400px] rounded-full bg-amber-200/8 blur-[120px]" />
+      </div>
+
       <motion.div
-        className="mx-auto max-w-2xl px-4 pb-32 pt-24 sm:px-6 md:pt-28"
+        className="relative z-10 mx-auto max-w-4xl px-4 pb-32 pt-24 sm:px-6 md:pt-28"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.18 }}
         variants={stagger}
       >
         {/* Page Header */}
-        <motion.div variants={fadeUp} custom={0} className="mb-8">
-          <p className="text-xs font-semibold uppercase tracking-widest text-emerald-600">Akun Saya</p>
-          <h1 className="mt-1 text-3xl font-black tracking-tight text-slate-800 sm:text-4xl">Profil Saya</h1>
-          <p className="mt-2 text-sm text-slate-400">
-            Identitas yang kamu pakai di portal kenangan kelas{" "}
-            <span className="text-emerald-600 font-medium">9B</span>.
+        <motion.div variants={fadeUp} custom={0} className="mb-12 text-center">
+          <div className="inline-flex items-center gap-2 rounded-full glass-strong px-6 py-2 text-sm font-medium text-emerald-700 mb-6">
+            <User className="h-4 w-4" />
+            Portal Siswa 9B
+          </div>
+          <h1 className="text-4xl md:text-5xl font-black tracking-tight text-slate-800 mb-4">
+            Profil <span className="gradient-text-warm">Eksklusif</span>
+          </h1>
+          <p className="text-lg text-slate-400 max-w-2xl mx-auto">
+            Identitas digitalmu sebagai bagian dari keluarga besar SPENSAKA 9B Angkatan 2026
           </p>
         </motion.div>
 
@@ -178,23 +189,25 @@ export default function ProfilPage() {
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mb-4 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700 flex items-center gap-2"
+            className="mb-8 rounded-2xl glass-strong p-4 text-center"
           >
-            <Check className="h-4 w-4" /> Profil berhasil diperbarui!
+            <div className="flex items-center justify-center gap-2 text-emerald-700">
+              <Check className="h-5 w-5" />
+              <span className="font-medium">Profil berhasil diperbarui!</span>
+            </div>
           </motion.div>
         )}
 
-        {/* Avatar Card */}
-        <motion.div variants={fadeUp} custom={1} className="bento-card mb-4 p-6 sm:p-8">
-          <div className="absolute inset-0 bg-gradient-to-br from-emerald-50/50 via-transparent to-transparent pointer-events-none" />
-          <div className="relative z-10 flex flex-col items-center gap-5 sm:flex-row sm:items-start">
-            <div className="relative flex-shrink-0">
-              <div className="h-20 w-20 overflow-hidden rounded-2xl ring-2 ring-emerald-200/50 shadow-md sm:h-24 sm:w-24">
+        {/* Main Profile Card */}
+        <motion.div variants={fadeUp} custom={1} className="glass-premium mb-8 p-8 md:p-12 rounded-3xl shadow-2xl">
+          <div className="text-center mb-8">
+            <div className="relative inline-block mb-6">
+              <div className="h-32 w-32 md:h-40 md:w-40 overflow-hidden rounded-3xl ring-4 ring-emerald-200/50 shadow-2xl mx-auto">
                 {avatarUrl ? (
-                  <Image src={avatarUrl} alt={fullName || "Avatar"} width={96} height={96} className="h-full w-full object-cover" unoptimized />
+                  <Image src={avatarUrl} alt={fullName || "Avatar"} width={160} height={160} className="h-full w-full object-cover" unoptimized />
                 ) : (
-                  <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-emerald-300 to-teal-400">
-                    <User className="h-10 w-10 text-white" />
+                  <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-emerald-400 via-teal-500 to-cyan-600">
+                    <User className="h-16 w-16 md:h-20 md:w-20 text-white" />
                   </div>
                 )}
               </div>
@@ -202,10 +215,10 @@ export default function ProfilPage() {
               <button
                 onClick={() => fileInputRef.current?.click()}
                 disabled={uploading}
-                className="absolute -bottom-1 -right-1 flex h-8 w-8 items-center justify-center rounded-full bg-white ring-2 ring-emerald-200 shadow-md text-emerald-600 hover:bg-emerald-50 transition-all disabled:opacity-50"
+                className="absolute -bottom-3 -right-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-white ring-4 ring-white shadow-xl text-emerald-600 hover:bg-emerald-50 transition-all disabled:opacity-50"
                 title="Ganti foto profil"
               >
-                {uploading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Camera className="h-3.5 w-3.5" />}
+                {uploading ? <Loader2 className="h-5 w-5 animate-spin" /> : <Camera className="h-5 w-5" />}
               </button>
               <input
                 ref={fileInputRef}
@@ -214,216 +227,214 @@ export default function ProfilPage() {
                 className="hidden"
                 onChange={handlePhotoUpload}
               />
-              <span className="absolute -bottom-1 -left-1 flex h-4 w-4 items-center justify-center rounded-full bg-white ring-2 ring-white">
-                <span className="h-2.5 w-2.5 rounded-full bg-emerald-400 animate-pulse" />
-              </span>
-            </div>
-            <div className="flex-1 text-center sm:text-left">
-              <h2 className="text-xl font-bold text-slate-800 sm:text-2xl">
-                {fullName ?? <span className="text-slate-400 italic font-normal text-base">Nama belum tersedia</span>}
-              </h2>
-              {username && (
-                <p className="mt-0.5 text-sm font-medium text-emerald-600">@{username}</p>
-              )}
-              <p className="mt-0.5 text-sm text-slate-400">
-                {email ?? <span className="italic text-slate-300">Email tidak tersedia</span>}
-              </p>
-              <div className="mt-3 flex flex-wrap justify-center gap-2 sm:justify-start">
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-700">
-                  <Star className="h-3 w-3 fill-emerald-500 text-emerald-500" />
-                  Siswa Kelas 9B
-                </span>
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs text-slate-500">
-                  <Shield className="h-3 w-3 text-blue-400" />
-                  Google Verified
-                </span>
+              <div className="absolute -bottom-3 -left-3 flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500 ring-4 ring-white">
+                <span className="h-3 w-3 rounded-full bg-white animate-pulse" />
               </div>
             </div>
+
+            <h2 className="text-2xl md:text-3xl font-black text-slate-800 mb-2">
+              {fullName ?? <span className="text-slate-400 italic font-normal">Nama belum tersedia</span>}
+            </h2>
+            {username && (
+              <p className="text-lg font-semibold text-emerald-600 mb-4">@{username}</p>
+            )}
+            <div className="flex flex-wrap justify-center gap-3 mb-6">
+              <span className="inline-flex items-center gap-2 rounded-2xl glass-strong px-4 py-2 text-sm font-semibold text-emerald-700">
+                <Star className="h-4 w-4 fill-emerald-500 text-emerald-500" />
+                Siswa Kelas 9B
+              </span>
+              <span className="inline-flex items-center gap-2 rounded-2xl glass-strong px-4 py-2 text-sm font-medium text-slate-600">
+                <Shield className="h-4 w-4 text-blue-500" />
+                Google Verified
+              </span>
+            </div>
+            {uploadError && (
+              <p className="text-sm text-red-500 bg-red-50/80 rounded-xl px-4 py-2 inline-block">{uploadError}</p>
+            )}
           </div>
-          {uploadError && (
-            <p className="relative z-10 mt-3 text-xs text-red-500 text-center">{uploadError}</p>
-          )}
         </motion.div>
 
-        {/* Bio & Instagram — Editable */}
-        <motion.div variants={fadeUp} custom={2} className="bento-card mb-4 p-5 sm:p-6">
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-50/30 via-transparent to-transparent pointer-events-none" />
-          <div className="relative z-10">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-sm font-bold text-slate-700">Informasi Profil</h3>
-              {!editing ? (
+        {/* Editable Info Section */}
+        <motion.div variants={fadeUp} custom={2} className="glass-premium mb-8 p-8 rounded-3xl shadow-xl">
+          <div className="flex items-center justify-between mb-8">
+            <h3 className="text-xl font-bold text-slate-800">Informasi Pribadi</h3>
+            {!editing ? (
+              <button
+                onClick={() => setEditing(true)}
+                className="flex items-center gap-2 rounded-2xl bg-emerald-500 px-6 py-3 text-sm font-semibold text-white shadow-lg hover:bg-emerald-600 hover:shadow-xl transition-all hover:scale-105"
+              >
+                <Edit3 className="h-4 w-4" /> Edit Profil
+              </button>
+            ) : (
+              <div className="flex gap-3">
                 <button
-                  onClick={() => setEditing(true)}
-                  className="flex items-center gap-1.5 rounded-lg bg-emerald-50 px-3 py-1.5 text-xs font-medium text-emerald-600 ring-1 ring-emerald-200/50 transition-all hover:bg-emerald-100"
+                  onClick={() => { setEditing(false); setEditBio(profile?.bio || ""); setEditIg(profile?.instagram_username || ""); }}
+                  className="flex items-center gap-2 rounded-2xl glass-strong px-6 py-3 text-sm font-medium text-slate-600 hover:bg-slate-100 transition-all"
                 >
-                  <Edit3 className="h-3 w-3" /> Edit
+                  <X className="h-4 w-4" /> Batal
                 </button>
+                <button
+                  onClick={handleSaveProfile}
+                  disabled={saving}
+                  className="flex items-center gap-2 rounded-2xl bg-emerald-500 px-6 py-3 text-sm font-semibold text-white shadow-lg hover:bg-emerald-600 disabled:opacity-50 transition-all hover:scale-105"
+                >
+                  {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Check className="h-4 w-4" />} Simpan
+                </button>
+              </div>
+            )}
+          </div>
+
+          {saveError && (
+            <div className="mb-6 rounded-2xl bg-red-50/80 border border-red-200 p-4">
+              <p className="text-sm text-red-600">{saveError}</p>
+            </div>
+          )}
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* Bio */}
+            <div className="space-y-3">
+              <label className="text-sm font-semibold uppercase tracking-wider text-slate-500 flex items-center gap-2">
+                <FileText className="h-4 w-4 text-amber-500" /> Bio
+              </label>
+              {editing ? (
+                <textarea
+                  value={editBio}
+                  onChange={(e) => setEditBio(e.target.value)}
+                  maxLength={150}
+                  rows={4}
+                  className="w-full rounded-2xl glass-strong p-4 text-sm resize-none focus:ring-2 focus:ring-emerald-300 transition-all"
+                  placeholder="Ceritakan sedikit tentang dirimu..."
+                />
               ) : (
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => { setEditing(false); setEditBio(profile?.bio || ""); setEditIg(profile?.instagram_username || ""); }}
-                    className="flex items-center gap-1 rounded-lg bg-slate-100 px-3 py-1.5 text-xs font-medium text-slate-500 transition hover:bg-slate-200"
-                  >
-                    <X className="h-3 w-3" /> Batal
-                  </button>
-                  <button
-                    onClick={handleSaveProfile}
-                    disabled={saving}
-                    className="flex items-center gap-1 rounded-lg bg-emerald-500 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-emerald-600 disabled:opacity-50"
-                  >
-                    {saving ? <Loader2 className="h-3 w-3 animate-spin" /> : <Check className="h-3 w-3" />} Simpan
-                  </button>
+                <div className="rounded-2xl glass-strong p-4 min-h-[100px] flex items-center">
+                  <p className="text-sm text-slate-600 leading-relaxed">
+                    {bio || <span className="italic text-slate-400">Belum diisi</span>}
+                  </p>
                 </div>
               )}
             </div>
 
-            {saveError && (
-              <p className="mb-3 text-xs text-red-500 bg-red-50 rounded-lg px-3 py-2 border border-red-200">{saveError}</p>
-            )}
-
-            <div className="space-y-4">
-              {/* Bio */}
-              <div>
-                <label className="text-[11px] font-medium uppercase tracking-widest text-slate-400 flex items-center gap-1.5 mb-1.5">
-                  <FileText className="h-3 w-3 text-amber-500" /> Bio
-                </label>
-                {editing ? (
-                  <textarea
-                    value={editBio}
-                    onChange={(e) => setEditBio(e.target.value)}
-                    maxLength={150}
-                    rows={3}
-                    className="input-glass resize-none"
-                    placeholder="Ceritakan sedikit tentang dirimu..."
+            {/* Instagram */}
+            <div className="space-y-3">
+              <label className="text-sm font-semibold uppercase tracking-wider text-slate-500 flex items-center gap-2">
+                <InstagramIcon className="h-4 w-4 text-pink-500" /> Instagram
+              </label>
+              {editing ? (
+                <div className="relative">
+                  <span className="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400 text-sm">@</span>
+                  <input
+                    type="text"
+                    value={editIg}
+                    onChange={(e) => setEditIg(e.target.value.replace(/\s/g, "").replace("@", ""))}
+                    className="w-full rounded-2xl glass-strong pl-8 pr-4 py-4 text-sm focus:ring-2 focus:ring-emerald-300 transition-all"
+                    placeholder="username_instagram"
+                    maxLength={48}
                   />
-                ) : (
-                  <p className="text-sm text-slate-600 leading-relaxed bg-white/50 rounded-xl px-4 py-3 border border-black/5">
-                    {bio || <span className="italic text-slate-300">Belum diisi</span>}
-                  </p>
-                )}
-              </div>
-
-              {/* Instagram */}
-              <div>
-                <label className="text-[11px] font-medium uppercase tracking-widest text-slate-400 flex items-center gap-1.5 mb-1.5">
-                  <InstagramIcon className="h-3 w-3 text-pink-500" /> Instagram
-                </label>
-                {editing ? (
-                  <div className="relative">
-                    <span className="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400 text-sm">@</span>
-                    <input
-                      type="text"
-                      value={editIg}
-                      onChange={(e) => setEditIg(e.target.value.replace(/\s/g, "").replace("@", ""))}
-                      className="input-glass pl-8"
-                      placeholder="username_instagram"
-                      maxLength={48}
-                    />
-                  </div>
-                ) : (
-                  <div className="flex items-center gap-2">
-                    <p className="text-sm text-slate-600 bg-white/50 rounded-xl px-4 py-3 border border-black/5 flex-1">
-                      {igUsername ? (
-                        <a
-                          href={`https://instagram.com/${igUsername}`}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="text-pink-500 hover:text-pink-600 font-medium transition-colors"
-                        >
-                          @{igUsername}
-                        </a>
-                      ) : (
-                        <span className="italic text-slate-300">Belum diisi</span>
-                      )}
-                    </p>
-                    {igUsername && (
+                </div>
+              ) : (
+                <div className="rounded-2xl glass-strong p-4 flex items-center justify-between">
+                  <p className="text-sm text-slate-600">
+                    {igUsername ? (
                       <a
                         href={`https://instagram.com/${igUsername}`}
                         target="_blank"
                         rel="noreferrer"
-                        className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 text-white shadow-md transition hover:shadow-lg hover:scale-105"
+                        className="text-pink-500 hover:text-pink-600 font-medium transition-colors"
                       >
-                        <InstagramIcon className="h-4 w-4" />
+                        @{igUsername}
                       </a>
+                    ) : (
+                      <span className="italic text-slate-400">Belum diisi</span>
                     )}
-                  </div>
-                )}
-              </div>
+                  </p>
+                  {igUsername && (
+                    <a
+                      href={`https://instagram.com/${igUsername}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 text-white shadow-md transition hover:shadow-lg hover:scale-105"
+                    >
+                      <InstagramIcon className="h-4 w-4" />
+                    </a>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         </motion.div>
 
-        {/* Info Details (read-only) */}
-        <motion.div variants={fadeUp} custom={3} className="bento-card mb-4 divide-y divide-black/5">
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-50/20 via-transparent to-transparent pointer-events-none" />
+        {/* Account Details */}
+        <motion.div variants={fadeUp} custom={3} className="glass-premium mb-8 p-8 rounded-3xl shadow-xl divide-y divide-slate-200/50">
+          <div className="pb-6">
+            <h3 className="text-xl font-bold text-slate-800 mb-6">Detail Akun</h3>
+          </div>
 
           {/* Nama Lengkap */}
-          <div className="relative z-10 flex items-center gap-4 p-5">
-            <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-blue-50">
-              <User className="h-4 w-4 text-blue-500" strokeWidth={1.8} />
+          <div className="py-6 flex items-center gap-6">
+            <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl bg-blue-50">
+              <User className="h-5 w-5 text-blue-500" strokeWidth={1.8} />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-[11px] font-medium uppercase tracking-widest text-slate-400">Nama Lengkap</p>
-              <p className="mt-0.5 truncate text-sm font-medium text-slate-700">
-                {fullName ?? <span className="italic text-slate-300">Belum diisi</span>}
+              <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">Nama Lengkap</p>
+              <p className="mt-1 text-base font-semibold text-slate-700">
+                {fullName ?? <span className="italic text-slate-400">Belum diisi</span>}
               </p>
             </div>
           </div>
 
           {/* Username */}
-          <div className="relative z-10 flex items-center gap-4 p-5">
-            <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-emerald-50">
-              <span className="text-xs font-black text-emerald-600">@</span>
+          <div className="py-6 flex items-center gap-6">
+            <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl bg-emerald-50">
+              <span className="text-sm font-black text-emerald-600">@</span>
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-[11px] font-medium uppercase tracking-widest text-slate-400">Username</p>
-              <p className="mt-0.5 truncate text-sm font-medium text-slate-700">
-                {username ?? <span className="italic text-slate-300">Belum diisi</span>}
+              <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">Username</p>
+              <p className="mt-1 text-base font-semibold text-slate-700">
+                {username ?? <span className="italic text-slate-400">Belum diisi</span>}
               </p>
             </div>
           </div>
 
           {/* Email */}
-          <div className="relative z-10 flex items-center gap-4 p-5">
-            <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-violet-50">
-              <Mail className="h-4 w-4 text-violet-500" strokeWidth={1.8} />
+          <div className="py-6 flex items-center gap-6">
+            <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl bg-violet-50">
+              <Mail className="h-5 w-5 text-violet-500" strokeWidth={1.8} />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-[11px] font-medium uppercase tracking-widest text-slate-400">Email</p>
-              <p className="mt-0.5 truncate text-sm font-medium text-slate-700">
-                {email ?? <span className="italic text-slate-300">Tidak tersedia</span>}
+              <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">Email</p>
+              <p className="mt-1 text-base font-semibold text-slate-700">
+                {email ?? <span className="italic text-slate-400">Tidak tersedia</span>}
               </p>
             </div>
           </div>
         </motion.div>
 
         {/* School Info */}
-        <motion.div variants={fadeUp} custom={4} className="bento-card mb-6 p-5">
-          <div className="absolute inset-0 bg-gradient-to-br from-amber-50/40 via-transparent to-transparent pointer-events-none" />
-          <div className="relative z-10 flex items-center gap-4">
-            <div className="h-12 w-12 flex-shrink-0 overflow-hidden rounded-xl ring-1 ring-black/5 shadow-sm">
-              <Image src="/logo.png" alt="Logo SPENSAKA" width={48} height={48} className="h-full w-full object-cover" />
+        <motion.div variants={fadeUp} custom={4} className="glass-premium mb-12 p-8 rounded-3xl shadow-xl">
+          <div className="flex items-center gap-6">
+            <div className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-2xl ring-2 ring-emerald-200/50 shadow-lg">
+              <Image src="/logo.png" alt="Logo SPENSAKA" width={64} height={64} className="h-full w-full object-cover" />
             </div>
             <div>
-              <p className="text-xs text-slate-400 uppercase tracking-widest font-medium">Sekolah</p>
-              <p className="mt-0.5 text-sm font-semibold text-slate-700">SMPN 1 Karanglewas</p>
-              <p className="text-xs text-amber-600">SPENSAKA · Kelas 9B · 2026</p>
+              <p className="text-sm text-slate-400 uppercase tracking-wider font-semibold">Sekolah</p>
+              <p className="mt-1 text-xl font-bold text-slate-800">SMPN 1 Karanglewas</p>
+              <p className="text-base text-emerald-600 font-medium">SPENSAKA · Kelas 9B · Angkatan 2026</p>
             </div>
           </div>
         </motion.div>
 
-        {/* Logout */}
-        <motion.div variants={fadeUp} custom={5} className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        {/* Logout Section */}
+        <motion.div variants={fadeUp} custom={5} className="text-center">
           <button
             id="btn-logout"
             onClick={signOut}
-            className="flex items-center gap-2 rounded-xl border border-red-200 bg-red-50 px-4 py-2.5 text-sm font-medium text-red-500 transition hover:bg-red-100 hover:text-red-600"
+            className="inline-flex items-center gap-3 rounded-2xl border-2 border-red-200 bg-red-50/80 px-8 py-4 text-base font-semibold text-red-600 shadow-lg hover:bg-red-100 hover:shadow-xl transition-all hover:scale-105"
           >
-            <LogOut className="h-4 w-4" />
+            <LogOut className="h-5 w-5" />
             Keluar dari Akun
           </button>
-          <p className="text-xs text-slate-300">
-            Powered by <span className="text-slate-400">Clerk Auth · Google OAuth</span>
+          <p className="mt-4 text-sm text-slate-400">
+            Powered by <span className="text-slate-500 font-medium">Clerk Auth · Google OAuth</span>
           </p>
         </motion.div>
 

@@ -3,12 +3,23 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Home, Images, MessageSquare, Users, UserCircle, Info, Lock } from "lucide-react";
+import { Home, Images, MessageSquare, Users, UserCircle, Info, Lock, LayoutDashboard } from "lucide-react";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { useAuth } from "@/lib/AuthContext";
 
-const navItems = [
+const publicNavItems = [
   { href: "/", label: "Beranda", icon: Home },
+  { href: "/tentang", label: "Tentang", icon: Info },
+  { href: "/galeri", label: "Galeri", icon: Images },
+  { href: "/pesan", label: "Grup Chat", icon: MessageSquare },
+  { href: "/siswa", label: "Siswa", icon: Users },
+  { href: "/ruang-rahasia", label: "Rahasia", icon: Lock },
+];
+
+const authenticatedNavItems = [
+  { href: "/", label: "Beranda", icon: Home },
+  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/tentang", label: "Tentang", icon: Info },
   { href: "/galeri", label: "Galeri", icon: Images },
   { href: "/pesan", label: "Grup Chat", icon: MessageSquare },
@@ -20,6 +31,9 @@ const navItems = [
 export default function Navbar() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
+  const { user, loading } = useAuth();
+
+  const navItems = user ? authenticatedNavItems : publicNavItems;
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);

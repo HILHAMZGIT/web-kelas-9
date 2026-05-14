@@ -99,24 +99,22 @@ export default function Navbar() {
       </nav>
 
       {/* Mobile App-Style Bottom Navigation */}
-      <nav className="fixed inset-x-0 bottom-0 z-50 md:hidden bg-white/80 backdrop-blur-xl border-t border-slate-200/50 pb-safe">
-        <div className="mx-auto max-w-md px-2">
-          <div className="flex items-center justify-around py-2">
-            {[
-              { href: "/", label: "Beranda", icon: Home },
-              { href: "/galeri", label: "Galeri", icon: Images },
-              { href: "/pesan", label: "Chat", icon: MessageSquare },
-              { href: "/siswa", label: "Siswa", icon: Users },
-              { href: "/profil", label: "Profil", icon: UserCircle },
-            ].map((item) => {
+      <nav className="fixed inset-x-0 bottom-0 z-50 md:hidden bg-white/80 backdrop-blur-xl border-t border-slate-200/50 pb-safe shadow-[0_-8px_30px_rgba(0,0,0,0.04)]">
+        <div className="mx-auto max-w-full relative">
+          {/* Gradient overlay sebagai petunjuk visual bahwa navbar bisa digeser */}
+          <div className="absolute right-0 top-0 bottom-0 w-10 bg-gradient-to-l from-white/90 via-white/50 to-transparent pointer-events-none z-10" />
+          <div className="absolute left-0 top-0 bottom-0 w-4 bg-gradient-to-r from-white/90 to-transparent pointer-events-none z-10" />
+          
+          <div className="flex items-center justify-start gap-1.5 overflow-x-auto no-scrollbar snap-x snap-mandatory py-2 px-4">
+            {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = pathname === item.href;
               return (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`relative flex flex-col items-center gap-1 px-2 py-1 transition-all duration-300 ${
-                    isActive ? "text-emerald-600" : "text-slate-400"
+                  className={`snap-center flex-shrink-0 relative flex flex-col items-center gap-1 min-w-[72px] px-1 py-1 transition-all duration-300 ${
+                    isActive ? "text-emerald-600" : "text-slate-400 hover:text-slate-600"
                   }`}
                 >
                   <div className={`relative flex items-center justify-center h-8 w-8 rounded-xl transition-all duration-300 ${
@@ -124,7 +122,7 @@ export default function Navbar() {
                   }`}>
                     <Icon className="h-5 w-5 relative z-10" strokeWidth={isActive ? 2.5 : 2} />
                   </div>
-                  <span className={`text-[10px] font-bold transition-all duration-300 ${
+                  <span className={`text-[10px] font-bold whitespace-nowrap transition-all duration-300 ${
                     isActive ? "opacity-100" : "opacity-70"
                   }`}>
                     {item.label}

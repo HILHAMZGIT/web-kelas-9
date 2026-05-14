@@ -236,6 +236,16 @@ function PiketSection() {
 }
 
 function VideoHeroSection() {
+  const videoRef = useRef(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  const handlePlay = () => {
+    if (videoRef.current) {
+      videoRef.current.play();
+      setIsPlaying(true);
+    }
+  };
+
   return (
     <section id="gallery" className="relative py-20 px-6 bg-gradient-to-b from-[#faf8f5] to-[#f5f2ed]">
       <div className="container-premium max-w-7xl mx-auto">
@@ -251,21 +261,29 @@ function VideoHeroSection() {
             Video perjalanan kita bersama di 9B SMPN 1 Karanglewas
           </p>
         </motion.div>
-        <motion.div className="relative aspect-video rounded-2xl overflow-hidden glass-premium border border-white/25 shadow-xl" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={slideUp}>
-          <div className="absolute inset-0 bg-gradient-to-br from-emerald-900/8 to-tosca-900/8" />
-          <div className="relative z-10 h-full flex flex-col items-center justify-center p-8">
-            <motion.div whileHover={{ scale: 1.08 }} whileTap={{ scale: 0.95 }} className="w-20 h-20 rounded-2xl bg-gradient-to-br from-emerald-400 to-tosca-500 flex items-center justify-center shadow-xl mb-8 cursor-pointer group">
-              <Play className="h-9 w-9 text-white ml-1 group-hover:scale-110 transition-transform" fill="white" />
-            </motion.div>
-            <div className="text-center">
-              <h3 className="text-xl font-bold text-[#1a1a1a] mb-2">Video Kenangan Kelas 9B</h3>
-              <p className="text-[#718096] mb-4">Tempat video kenangan terindah kita bersama</p>
-              <div className="flex items-center gap-4 text-sm text-[#a0aec0] justify-center">
-                <div className="flex items-center gap-1"><Clock className="h-4 w-4" /><span>Coming Soon</span></div>
-                <div className="flex items-center gap-1"><Calendar className="h-4 w-4" /><span>2024-2026</span></div>
+        <motion.div className="relative aspect-video rounded-2xl overflow-hidden glass-premium border border-white/25 shadow-xl bg-black/5" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={slideUp}>
+          <video 
+            ref={videoRef}
+            src="/video-utama.mp4" 
+            controls={isPlaying}
+            className="absolute inset-0 w-full h-full object-cover z-0 rounded-2xl"
+            preload="metadata"
+            onPlay={() => setIsPlaying(true)}
+            onPause={() => setIsPlaying(false)}
+          >
+            Maaf, browser Anda tidak mendukung pemutaran video.
+          </video>
+          
+          {!isPlaying && (
+            <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-black/30 backdrop-blur-[2px] cursor-pointer" onClick={handlePlay}>
+              <motion.div whileHover={{ scale: 1.08 }} whileTap={{ scale: 0.95 }} className="w-20 h-20 rounded-2xl bg-gradient-to-br from-emerald-400 to-tosca-500 flex items-center justify-center shadow-xl mb-4 group">
+                <Play className="h-9 w-9 text-white ml-1 group-hover:scale-110 transition-transform" fill="white" />
+              </motion.div>
+              <div className="text-center">
+                <h3 className="text-xl font-bold text-white drop-shadow-md">Putar Video Kenangan</h3>
               </div>
             </div>
-          </div>
+          )}
         </motion.div>
       </div>
     </section>

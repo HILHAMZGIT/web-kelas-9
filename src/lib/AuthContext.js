@@ -64,8 +64,15 @@ export function AuthProvider({ children }) {
   }, [clerkUser?.id, clerkLoaded, fetchProfile]);
 
   const signOut = async () => {
-    await clerkSignOut();
-    setProfile(null);
+    try {
+      await clerkSignOut();
+      setProfile(null);
+      // Force redirect to home to prevent middleware/page loops
+      window.location.href = "/";
+    } catch (e) {
+      console.error("Logout error:", e);
+      window.location.href = "/";
+    }
   };
 
   const loading = !clerkLoaded || profileLoading;

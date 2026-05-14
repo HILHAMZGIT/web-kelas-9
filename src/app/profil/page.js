@@ -427,7 +427,10 @@ export default function ProfilPage() {
         <motion.div variants={fadeUp} custom={5} className="text-center">
           <button
             id="btn-logout"
-            onClick={signOut}
+            onClick={async () => {
+              await signOut();
+              router.push("/");
+            }}
             className="inline-flex items-center gap-3 rounded-2xl border-2 border-red-200 bg-red-50/80 px-8 py-4 text-base font-semibold text-red-600 shadow-lg hover:bg-red-100 hover:shadow-xl transition-all hover:scale-105"
           >
             <LogOut className="h-5 w-5" />

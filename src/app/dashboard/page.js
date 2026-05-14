@@ -249,12 +249,10 @@ export default function DashboardPage() {
                 key={piket.hari}
                 variants={fadeUp}
                 custom={i + 1}
-                className={`glass-premium p-6 rounded-2xl border-l-4 ${
-                  piket.isQuote ? 'border-l-slate-400' : `border-l-${piket.color}-400`
-                }`}
+                className={`glass-premium p-6 rounded-2xl border-l-4 border-l-${piket.color}-400`}
               >
                 <div className="flex items-center gap-3 mb-4">
-                  <Calendar className={`h-5 w-5 ${piket.isQuote ? 'text-slate-500' : `text-${piket.color}-500`}`} />
+                  <Calendar className={`h-5 w-5 text-${piket.color}-500`} />
                   <h3 className="font-bold text-slate-800">{piket.hari}</h3>
                 </div>
 
@@ -262,20 +260,24 @@ export default function DashboardPage() {
                   <p className="text-sm text-slate-600 italic">"{piket.members[0]}"</p>
                 ) : (
                   <div className="flex flex-wrap gap-1">
-                    {piket.members.map((member, idx) => (
-                      <span
-                        key={idx}
-                        className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${
-                          piket.color === 'emerald' ? 'bg-emerald-100 text-emerald-700' :
-                          piket.color === 'blue' ? 'bg-blue-100 text-blue-700' :
-                          piket.color === 'violet' ? 'bg-violet-100 text-violet-700' :
-                          piket.color === 'amber' ? 'bg-amber-100 text-amber-700' :
-                          'bg-rose-100 text-rose-700'
-                        }`}
-                      >
-                        {member}
-                      </span>
-                    ))}
+                    {piket.members.map((member, idx) => {
+                      const colorClasses = {
+                        emerald: "bg-emerald-100 text-emerald-700",
+                        blue: "bg-blue-100 text-blue-700",
+                        violet: "bg-violet-100 text-violet-700",
+                        amber: "bg-amber-100 text-amber-700",
+                        rose: "bg-rose-100 text-rose-700",
+                        slate: "bg-slate-100 text-slate-700"
+                      };
+                      return (
+                        <span
+                          key={idx}
+                          className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${colorClasses[piket.color]}`}
+                        >
+                          {member}
+                        </span>
+                      );
+                    })}
                   </div>
                 )}
               </motion.div>
@@ -285,5 +287,4 @@ export default function DashboardPage() {
       </section>
     </div>
   );
-}</content>
-<parameter name="filePath">d:\Projects\web-kelas-9\src\app\dashboard\page.js
+}

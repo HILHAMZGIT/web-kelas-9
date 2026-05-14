@@ -19,7 +19,6 @@ const publicNavItems = [
 
 const authenticatedNavItems = [
   { href: "/", label: "Beranda", icon: Home },
-  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/tentang", label: "Tentang", icon: Info },
   { href: "/galeri", label: "Galeri", icon: Images },
   { href: "/pesan", label: "Grup Chat", icon: MessageSquare },
@@ -99,39 +98,40 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* Mobile Navbar — bottom */}
-      <nav className="fixed inset-x-0 bottom-0 z-50 md:hidden">
-        <div className="mx-auto px-3 pb-3">
-          <div className="glass-strong flex items-center gap-1 overflow-x-auto flex-nowrap rounded-2xl px-2 py-2 shadow-[0_-4px_32px_rgba(0,0,0,0.08)] [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-            {navItems.map((item) => {
+      {/* Mobile App-Style Bottom Navigation */}
+      <nav className="fixed inset-x-0 bottom-0 z-50 md:hidden bg-white/80 backdrop-blur-xl border-t border-slate-200/50 pb-safe">
+        <div className="mx-auto max-w-md px-2">
+          <div className="flex items-center justify-around py-2">
+            {[
+              { href: "/", label: "Beranda", icon: Home },
+              { href: "/galeri", label: "Galeri", icon: Images },
+              { href: "/pesan", label: "Chat", icon: MessageSquare },
+              { href: "/siswa", label: "Siswa", icon: Users },
+              { href: "/profil", label: "Profil", icon: UserCircle },
+            ].map((item) => {
               const Icon = item.icon;
               const isActive = pathname === item.href;
               return (
                 <Link
                   key={item.href}
                   href={item.href}
-                  id={`nav-mobile-${item.label.toLowerCase()}`}
-                  className={`relative flex flex-col items-center gap-1 rounded-xl px-4 py-2.5 text-[10px] font-medium transition-all duration-300 flex-shrink-0 ${
-                    isActive ? "text-emerald-700" : "text-slate-400 hover:text-slate-600"
+                  className={`relative flex flex-col items-center gap-1 px-2 py-1 transition-all duration-300 ${
+                    isActive ? "text-emerald-600" : "text-slate-400"
                   }`}
                 >
-                  {isActive && (
-                    <motion.span
-                      layoutId="nav-pill-mobile"
-                      className="absolute inset-0 rounded-xl bg-emerald-50 ring-1 ring-emerald-200/50"
-                      transition={{ type: "spring", bounce: 0.2, duration: 0.5 }}
-                    />
-                  )}
-                  <Icon
-                    className={`h-5 w-5 relative z-10 transition-all duration-300 ${isActive ? "text-emerald-600" : ""}`}
-                    strokeWidth={isActive ? 2.2 : 1.8}
-                  />
-                  <span className="relative z-10">{item.label}</span>
+                  <div className={`relative flex items-center justify-center h-8 w-8 rounded-xl transition-all duration-300 ${
+                    isActive ? "bg-emerald-50 shadow-sm" : ""
+                  }`}>
+                    <Icon className="h-5 w-5 relative z-10" strokeWidth={isActive ? 2.5 : 2} />
+                  </div>
+                  <span className={`text-[10px] font-bold transition-all duration-300 ${
+                    isActive ? "opacity-100" : "opacity-70"
+                  }`}>
+                    {item.label}
+                  </span>
                 </Link>
               );
             })}
-            {/* Extra padding at the end for scroll space */}
-            <div className="w-4 flex-shrink-0" />
           </div>
         </div>
       </nav>

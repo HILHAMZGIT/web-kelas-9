@@ -1,368 +1,144 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import {
-  Images, Film, X, Upload, Loader2, ZoomIn,
-  ChevronLeft, ChevronRight, Camera,
-} from "lucide-react";
-import { supabase } from "@/lib/supabase";
-import { useAuth } from "@/lib/AuthContext";
+import { useState, useEffect } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
+import { X, ZoomIn } from "lucide-react";
 
-/* ─── Categories: Only Foto & Video ─── */
-const categories = [
-  { key: "Foto", label: "Foto", icon: Camera },
-  { key: "Video", label: "Video", icon: Film },
-];
+// Menyiapkan array angka 1 sampai 18 untuk mapping gambar otomatis
+const images = Array.from({ length: 18 }, (_, i) => i + 1);
 
+// Animasi masuk untuk grid masonry
 const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  visible: (i = 0) => ({
-    opacity: 1, y: 0,
-    transition: { delay: i * 0.06, duration: 0.55, ease: [0.23, 1, 0.32, 1] },
+  hidden: { opacity: 0, y: 40 },
+  visible: (i) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: i * 0.05, duration: 0.7, ease: [0.23, 1, 0.32, 1] },
   }),
 };
 
-const fadeIn = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: 0.75, ease: [0.23, 1, 0.32, 1] } },
-};
-
-const stagger = {
-  visible: { transition: { staggerChildren: 0.08 } },
-};
-
-/* ─── Lightbox ─── */
-function Lightbox({ item, onClose, onPrev, onNext }) {
+// Komponen Modal/Lightbox untuk Zoom
+function Lightbox({ num, onClose }) {
+  // Tutup pakai tombol Esc di keyboard
   useEffect(() => {
     function handleKey(e) {
       if (e.key === "Escape") onClose();
-      if (e.key === "ArrowLeft") onPrev();
-      if (e.key === "ArrowRight") onNext();
     }
     document.addEventListener("keydown", handleKey);
     return () => document.removeEventListener("keydown", handleKey);
-  }, [onClose, onPrev, onNext]);
-
-  const isVideo = item.type === "Video" || item.image_url?.match(/\.(mp4|webm|ogg|mov)$/i);
+  }, [onClose]);
 
   return (
     <motion.div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-8"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       onClick={onClose}
     >
-      <div className="absolute inset-0 bg-black/70 backdrop-blur-md" />
+      {/* Background Gelap dengan Blur */}
+      <div className="absolute inset-0 bg-black/90 backdrop-blur-xl" />
 
+      {/* Tombol Close */}
       <button
         onClick={onClose}
-        className="absolute right-4 top-4 z-50 flex h-10 w-10 items-center justify-center rounded-full bg-white/15 text-white backdrop-blur-sm transition hover:bg-white/25"
+        className="absolute right-4 top-4 sm:right-8 sm:top-8 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-md transition-all hover:bg-white/25 hover:scale-110 hover:rotate-90"
       >
-        <X className="h-5 w-5" />
+        <X className="h-6 w-6" />
       </button>
 
-      <button
-        onClick={(e) => { e.stopPropagation(); onPrev(); }}
-        className="absolute left-4 top-1/2 -translate-y-1/2 z-50 flex h-10 w-10 items-center justify-center rounded-full bg-white/15 text-white backdrop-blur-sm transition hover:bg-white/25"
-      >
-        <ChevronLeft className="h-5 w-5" />
-      </button>
-      <button
-        onClick={(e) => { e.stopPropagation(); onNext(); }}
-        className="absolute right-4 top-1/2 -translate-y-1/2 z-50 flex h-10 w-10 items-center justify-center rounded-full bg-white/15 text-white backdrop-blur-sm transition hover:bg-white/25"
-      >
-        <ChevronRight className="h-5 w-5" />
-      </button>
-
+      {/* Gambar Membesar di Tengah */}
       <motion.div
-        className="relative z-40 max-w-4xl w-full"
+        className="relative z-40 w-full h-[85vh] flex items-center justify-center"
         initial={{ scale: 0.85, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.85, opacity: 0 }}
-        transition={{ type: "spring", bounce: 0.15, duration: 0.5 }}
-        onClick={(e) => e.stopPropagation()}
+        transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+        onClick={(e) => e.stopPropagation()} // Supaya klik gambar tidak ikut menutup modal
       >
-        {isVideo ? (
-          <video
-            src={item.image_url}
-            controls
-            autoPlay
-            className="w-full max-h-[80vh] object-contain rounded-2xl shadow-2xl"
+        <div className="relative w-full h-full">
+          <Image
+            src={`/Gallery/${num}.jpeg`}
+            alt={`Galeri Zoom ${num}`}
+            fill
+            className="object-contain drop-shadow-2xl"
+            sizes="100vw"
+            priority // Gambar yang di-zoom di-load cepat
           />
-        ) : (
-          <img
-            src={item.image_url}
-            alt="Galeri 9B"
-            className="w-full max-h-[80vh] object-contain rounded-2xl shadow-2xl"
-          />
-        )}
+        </div>
       </motion.div>
     </motion.div>
   );
 }
 
-/* ════════════════════════════════════════════════════════════ */
 export default function GaleriPage() {
-  const { user } = useAuth();
-  const [activeTab, setActiveTab] = useState("Foto");
-  const [dbItems, setDbItems] = useState([]);
-  const [loadingDb, setLoadingDb] = useState(true);
-  const [uploading, setUploading] = useState(false);
-  const [uploadError, setUploadError] = useState(null);
-  const [lightboxIndex, setLightboxIndex] = useState(null);
-  const fileInputRef = useRef(null);
-
-  // Fetch gallery from Supabase
-  const fetchGallery = useCallback(async () => {
-    setLoadingDb(true);
-    const { data, error } = await supabase
-      .from("galeri")
-      .select("*")
-      .order("created_at", { ascending: false });
-    if (!error && data) setDbItems(data);
-    setLoadingDb(false);
-  }, []);
-
-  useEffect(() => {
-    fetchGallery();
-
-    const channel = supabase
-      .channel("public:galeri")
-      .on("postgres_changes", { event: "INSERT", schema: "public", table: "galeri" }, () => fetchGallery())
-      .on("postgres_changes", { event: "DELETE", schema: "public", table: "galeri" }, () => fetchGallery())
-      .subscribe();
-
-    return () => { supabase.removeChannel(channel); };
-  }, [fetchGallery]);
-
-  // Map and filter items
-  const allItems = useMemo(() => {
-    return dbItems.map((item) => {
-      const url = item.foto_url || item.image_url || "";
-      const isVideo = (item.kategori === "Video") || url.match(/\.(mp4|webm|ogg|mov)$/i);
-      return {
-        id: item.id,
-        type: isVideo ? "Video" : "Foto",
-        image_url: url,
-      };
-    });
-  }, [dbItems]);
-
-  const visibleItems = useMemo(
-    () => allItems.filter((item) => item.type === activeTab),
-    [activeTab, allItems]
-  );
-
-  async function handleUpload(e) {
-    const file = e.target.files?.[0];
-    if (!file || !user) return;
-
-    const isVideo = file.type.startsWith("video/");
-    const isImage = file.type.startsWith("image/");
-
-    if (!isImage && !isVideo) {
-      setUploadError("File harus berupa gambar atau video.");
-      return;
-    }
-    if (file.size > 50 * 1024 * 1024) {
-      setUploadError("Ukuran file maksimal 50MB.");
-      return;
-    }
-
-    setUploading(true);
-    setUploadError(null);
-
-    try {
-      const ext = file.name.split(".").pop();
-      const fileName = `${user.id}_${Date.now()}.${ext}`;
-      const filePath = `galeri/${fileName}`;
-
-      const { error: uploadErr } = await supabase.storage
-        .from("gallery")
-        .upload(filePath, file, { cacheControl: "3600" });
-
-      if (uploadErr) throw uploadErr;
-
-      const { data: { publicUrl } } = supabase.storage
-        .from("gallery")
-        .getPublicUrl(filePath);
-
-      const { error: insertErr } = await supabase
-        .from("galeri")
-        .insert({
-          user_id: user.id,
-          foto_url: publicUrl,
-          judul: file.name.replace(/\.[^/.]+$/, ""),
-          kategori: isVideo ? "Video" : "Random",
-        });
-
-      if (insertErr) throw insertErr;
-      await fetchGallery();
-    } catch (err) {
-      setUploadError(err?.message || "Gagal upload.");
-    } finally {
-      setUploading(false);
-      if (fileInputRef.current) fileInputRef.current.value = "";
-    }
-  }
-
-  function openLightbox(index) { setLightboxIndex(index); }
-  function closeLightbox() { setLightboxIndex(null); }
-  function prevLightbox() { setLightboxIndex((p) => (p > 0 ? p - 1 : visibleItems.length - 1)); }
-  function nextLightbox() { setLightboxIndex((p) => (p < visibleItems.length - 1 ? p + 1 : 0)); }
-
-  const heights = ["h-48", "h-64", "h-56", "h-44", "h-60", "h-52"];
+  const [selectedImage, setSelectedImage] = useState(null);
 
   return (
-    <div className="relative min-h-screen page-shell">
-      <motion.div
-        className="mx-auto max-w-6xl px-3 pb-32 pt-24 sm:px-6 md:pt-28"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.15 }}
-        variants={stagger}
-      >
-        {/* ─── Header: Minimal ─── */}
-        <motion.div variants={fadeUp} custom={0} className="mb-6 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
-          <div>
-            <h1 className="text-2xl sm:text-3xl font-black text-prestige tracking-tight text-[#1a1a1a]">
-              Galeri <span className="gradient-text">9B</span>
-            </h1>
+    <div className="relative min-h-screen bg-gradient-to-b from-[#faf8f5] to-[#f5f2ed] page-shell pt-24 pb-32">
+      <div className="container-premium max-w-7xl mx-auto px-4 sm:px-6">
+        
+        {/* Header Estetik Emerald/Tosca */}
+        <motion.div 
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
+        >
+          <div className="inline-flex items-center gap-2 rounded-full border border-emerald-200/50 bg-emerald-50/50 backdrop-blur-xl px-5 py-2 text-[10px] font-black text-emerald-700 uppercase tracking-[0.3em] mb-4">
+            Memori Kelas
           </div>
-
-          {/* Upload button */}
-          <button
-            onClick={() => fileInputRef.current?.click()}
-            disabled={uploading || !user}
-            className="btn-primary text-sm py-2.5 px-5 disabled:opacity-50"
-          >
-            {uploading ? (
-              <><Loader2 className="h-4 w-4 animate-spin" /> Mengupload...</>
-            ) : (
-              <><Upload className="h-4 w-4" /> Upload</>
-            )}
-          </button>
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept="image/*,video/*"
-            className="hidden"
-            onChange={handleUpload}
-          />
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-prestige tracking-tight text-[#1a1a1a]">
+            Galeri <span className="gradient-text-warm">Kenangan 9B</span>
+          </h1>
         </motion.div>
 
-        {/* ─── Tab Filter: Foto / Video ─── */}
-        <motion.div variants={fadeUp} custom={1} className="sticky top-20 z-20 mb-5">
-          <div className="glass-strong inline-flex gap-1 rounded-xl p-1 shadow-sm">
-            {categories.map(({ key, label, icon: Icon }) => {
-              const isActive = activeTab === key;
-              return (
-                <button
-                  key={key}
-                  onClick={() => setActiveTab(key)}
-                  className={`relative flex items-center gap-2 rounded-lg px-5 py-2 text-sm font-semibold transition-all duration-300 ${
-                    isActive
-                      ? "text-emerald-700"
-                      : "text-slate-400 hover:text-slate-600"
-                  }`}
-                >
-                  {isActive && (
-                    <motion.span
-                      layoutId="galeri-tab"
-                      className="absolute inset-0 rounded-lg bg-emerald-50 ring-1 ring-emerald-200/60"
-                      transition={{ type: "spring", bounce: 0.2, duration: 0.5 }}
-                    />
-                  )}
-                  <Icon className="h-4 w-4 relative z-10" />
-                  <span className="relative z-10">{label}</span>
-                </button>
-              );
-            })}
-          </div>
-        </motion.div>
-
-        {/* ─── Upload Error ─── */}
-        {uploadError && (
-          <div className="mb-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600 flex items-center justify-between">
-            {uploadError}
-            <button onClick={() => setUploadError(null)} className="text-red-400 hover:text-red-500"><X className="h-4 w-4" /></button>
-          </div>
-        )}
-
-        {/* ─── Masonry Grid — Pure Visual, No Captions ─── */}
-        {loadingDb ? (
-          <div className="columns-2 gap-2.5 sm:columns-3 lg:columns-4">
-            {[...Array(8)].map((_, i) => (
-              <div key={i} className="mb-2.5 break-inside-avoid">
-                <div className={`rounded-xl overflow-hidden animate-pulse ${heights[i % heights.length]}`}>
-                  <div className="h-full bg-gradient-to-br from-slate-100 to-slate-50" />
+        {/* Responsive Masonry Grid: 2 kolom di HP, 3 di Tablet, 4 di Desktop */}
+        <div className="columns-2 md:columns-3 lg:columns-4 gap-3 sm:gap-5 space-y-3 sm:space-y-5">
+          {images.map((num, i) => (
+            <motion.div
+              key={num}
+              className="break-inside-avoid relative overflow-hidden rounded-[1.25rem] cursor-pointer group shadow-sm hover:shadow-2xl transition-all duration-500 border border-emerald-900/5"
+              variants={fadeUp}
+              initial="hidden"
+              animate="visible"
+              custom={i}
+              onClick={() => setSelectedImage(num)}
+            >
+              {/* 
+                Menggunakan width=0 & height=0 dengan style={{ width: '100%', height: 'auto' }}
+                adalah trik Next.js Image terbaik untuk menjaga Aspect Ratio asli gambar dalam layout Masonry.
+              */}
+              <Image
+                src={`/Gallery/${num}.jpeg`}
+                alt={`Kenangan 9B ${num}`}
+                width={0}
+                height={0}
+                sizes="(max-width: 768px) 50vw, 33vw"
+                style={{ width: '100%', height: 'auto' }}
+                className="group-hover:scale-110 transition-transform duration-700 ease-out"
+                loading="lazy"
+              />
+              
+              {/* Overlay Tosca/Emerald saat di-hover */}
+              <div className="absolute inset-0 bg-gradient-to-t from-emerald-900/60 via-emerald-900/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              
+              {/* Ikon Zoom di tengah */}
+              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-4 group-hover:translate-y-0">
+                <div className="flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-full bg-white/90 backdrop-blur-md shadow-2xl text-emerald-600">
+                  <ZoomIn className="h-6 w-6 sm:h-7 sm:w-7" />
                 </div>
               </div>
-            ))}
-          </div>
-        ) : visibleItems.length === 0 ? (
-          <div className="bento-card p-16 text-center">
-            <Images className="h-12 w-12 text-slate-300 mx-auto mb-4" />
-            <p className="text-sm font-semibold text-slate-400">
-              Belum ada {activeTab.toLowerCase()} yang diupload
-            </p>
-            <p className="text-xs text-slate-300 mt-1">Jadilah yang pertama mengabadikan momen!</p>
-          </div>
-        ) : (
-          <div className="columns-2 gap-2.5 sm:columns-3 lg:columns-4">
-            {visibleItems.map((item, i) => (
-              <motion.div
-                key={item.id}
-                className="mb-2.5 break-inside-avoid group cursor-pointer"
-                variants={fadeUp}
-                custom={i}
-                onClick={() => openLightbox(i)}
-              >
-                <div className="relative overflow-hidden rounded-xl">
-                  <div className={`relative ${heights[i % heights.length]} transition-transform duration-500 group-hover:scale-[1.03]`}>
-                    {item.type === "Video" ? (
-                      <div className="relative h-full w-full">
-                        <video src={item.image_url} className="h-full w-full object-cover" muted />
-                        <div className="absolute inset-0 flex items-center justify-center bg-black/15">
-                          <div className="h-10 w-10 rounded-full bg-white/25 backdrop-blur-sm flex items-center justify-center">
-                            <Film className="h-5 w-5 text-white" />
-                          </div>
-                        </div>
-                      </div>
-                    ) : (
-                      <img
-                        src={item.image_url}
-                        alt=""
-                        className="h-full w-full object-cover"
-                        loading="lazy"
-                      />
-                    )}
+            </motion.div>
+          ))}
+        </div>
+      </div>
 
-                    {/* Hover zoom overlay */}
-                    <div className="absolute inset-0 flex items-center justify-center bg-black/20 opacity-0 group-hover:opacity-100 transition-all duration-300">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/80 backdrop-blur-sm shadow-md">
-                        <ZoomIn className="h-5 w-5 text-slate-700" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        )}
-      </motion.div>
-
-      {/* Lightbox */}
+      {/* Lightbox / Modal Overlay (Hanya muncul jika ada foto yang dipilih) */}
       <AnimatePresence>
-        {lightboxIndex !== null && visibleItems[lightboxIndex] && (
-          <Lightbox
-            item={visibleItems[lightboxIndex]}
-            onClose={closeLightbox}
-            onPrev={prevLightbox}
-            onNext={nextLightbox}
-          />
+        {selectedImage && (
+          <Lightbox num={selectedImage} onClose={() => setSelectedImage(null)} />
         )}
       </AnimatePresence>
     </div>

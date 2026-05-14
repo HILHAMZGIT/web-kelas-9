@@ -16,11 +16,6 @@ export const metadata = {
   description:
     "Portal kenangan kelas 9B SMPN 1 Karanglewas. Abadikan momen, jelajahi galeri, dan temukan teman seangkatan.",
   keywords: ["SMPN 1 Karanglewas", "9B", "SPENSAKA", "kenangan", "galeri"],
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 1,
-  },
   robots: {
     index: true,
     follow: true,
@@ -35,7 +30,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="id" className={inter.variable}>
-      <body className="font-sans antialiased overflow-x-hidden">
+      <body className="font-sans antialiased overflow-x-hidden" suppressHydrationWarning>
         <ClerkProvider>
           <AuthProvider>
             {/* Background ambient glows — soft, warm */}

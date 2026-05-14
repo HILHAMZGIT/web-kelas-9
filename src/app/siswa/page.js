@@ -46,7 +46,10 @@ const fadeIn = {
 };
 
 const stagger = {
-  visible: { transition: { staggerChildren: 0.08 } }
+  visible: { 
+    opacity: 1,
+    transition: { staggerChildren: 0.05, delayChildren: 0.1 } 
+  }
 };
 
 /* ─── Student Avatar ─────────────────────────────────────────── */
@@ -74,9 +77,24 @@ function SiswaAvatar({ nama, fotoUrl, index }) {
 }
 
 /* ════════════════════════════════════════════════════════════ */
+const staticSiswa = [
+  { nama: "Ade Vanes Syahputra" }, { nama: "Adnan Fathurrohman" }, { nama: "Aghis Awalia Wayangsari" }, 
+  { nama: "Aida Novitasari" }, { nama: "Anggit Slamet Syahputra" }, { nama: "Anton Maulidan" }, 
+  { nama: "Aulia Shintya Megarani" }, { nama: "Azmi Cheryl Ardelia" }, { nama: "Barra Abdillah" }, 
+  { nama: "Dwi Lestari Sulistiyaning Tyas" }, { nama: "Farel Juniansyah" }, { nama: "Feliza Nuril Anggraeni" }, 
+  { nama: "Fitriyani" }, { nama: "Haikal Fahmi Setya Aji" }, { nama: "Ikbal Anugrah" }, 
+  { nama: "Itmam Nur Rohman" }, { nama: "Jazmi Hilmi Hamizan" }, { nama: "Keiya Khairunisa Putri" }, 
+  { nama: "Maritza Salsabil Az Zahra" }, { nama: "Nadira Rafelina" }, { nama: "M. Zaki Nurehan" }, 
+  { nama: "Nela Oktaviana" }, { nama: "Nesa Novisa" }, { nama: "Nova Erlani" }, 
+  { nama: "Nurrizky Ita Dwi Alyana" }, { nama: "Rama Indra Pratama" }, { nama: "Revan Septian Budiono" }, 
+  { nama: "Rena Setyawati" }, { nama: "Rifda Amelia" }, { nama: "Ringga Yazid Khoeri" }, 
+  { nama: "Rival Catur Widiono" }, { nama: "Shayla Ayu Saputri" }, { nama: "Tri Wahyudiono" }, 
+  { nama: "Zahrotus Sita" }
+].sort((a, b) => a.nama.localeCompare(b.nama));
+
 export default function SiswaPage() {
   const [query, setQuery] = useState("");
-  const [siswaList, setSiswaList] = useState([]);
+  const [siswaList, setSiswaList] = useState(staticSiswa);
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
   const [selected, setSelected] = useState(null);
@@ -85,17 +103,23 @@ export default function SiswaPage() {
     async function fetchSiswa() {
       setLoading(true);
       setErrorMessage("");
-      const { data, error } = await supabase
-        .from("siswa")
-        .select("*")
-        .order("id", { ascending: true });
-      if (error) {
-        setErrorMessage(error.message || "Gagal mengambil data siswa.");
-        setSiswaList([]);
-      } else {
-        setSiswaList(data || []);
+      try {
+        const { data, error } = await supabase
+          .from("siswa")
+          .select("*")
+          .order("id", { ascending: true });
+        
+        if (error) {
+          console.error("Error fetching siswa:", error);
+          // Keep static list if fetch fails
+        } else if (data && data.length > 0) {
+          setSiswaList(data);
+        }
+      } catch (err) {
+        console.error("Fetch catch error:", err);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     }
     fetchSiswa();
   }, []);
@@ -113,12 +137,11 @@ export default function SiswaPage() {
       <motion.div
         className="mx-auto max-w-7xl px-4 pb-32 pt-24 sm:px-6 md:pt-28 lg:px-8"
         initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.15 }}
+        animate="visible"
         variants={stagger}
       >
         {/* Header */}
-        <motion.div variants={fadeUp} custom={0} className="mb-8">
+        <motion.div variants={fadeUp} className="mb-8">
           <div className="inline-flex items-center gap-2 rounded-full border border-orange-200 bg-orange-50/80 px-4 py-1.5 text-xs font-medium text-orange-600">
             <Users className="h-3.5 w-3.5" />
             Angkatan 9B · SPENSAKA 2026
@@ -132,7 +155,7 @@ export default function SiswaPage() {
         </motion.div>
 
         {/* Search */}
-        <motion.div variants={fadeUp} custom={1}>
+        <motion.div variants={fadeUp}>
           <div className="glass-strong mb-6 flex items-center gap-3 rounded-2xl px-4 py-3 shadow-sm ring-1 ring-black/5">
             <Search className="h-4 w-4 flex-shrink-0 text-slate-300" />
             <input
@@ -154,12 +177,11 @@ export default function SiswaPage() {
         {loading ? (
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
             {[...Array(10)].map((_, i) => (
-              <div key={i} className="bento-card animate-pulse">
-                <div className="aspect-square rounded-t-2xl bg-gradient-to-br from-slate-100 to-slate-50" />
+              <div key={i} className="bento-card overflow-hidden">
+                <div className="aspect-square bg-slate-100 shimmer" />
                 <div className="p-3 space-y-2">
-                  <div className="h-3 w-3/4 rounded-full bg-slate-100" />
-                  <div className="h-2 w-full rounded-full bg-slate-100" />
-                  <div className="h-2 w-2/3 rounded-full bg-slate-100" />
+                  <div className="h-3 w-3/4 rounded-full bg-slate-100 shimmer" />
+                  <div className="h-2 w-full rounded-full bg-slate-100 shimmer" />
                 </div>
               </div>
             ))}
@@ -185,7 +207,6 @@ export default function SiswaPage() {
                   className="bento-card group cursor-pointer p-0 overflow-hidden"
                   onClick={() => setSelected({ ...siswa, index: i })}
                   variants={fadeUp}
-                  custom={i + 2}
                 >
                   <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-gradient-to-br from-emerald-100/30 via-transparent to-transparent transition-opacity duration-300 pointer-events-none" />
 

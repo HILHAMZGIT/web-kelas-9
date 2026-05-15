@@ -552,12 +552,12 @@ export default function HomePage() {
   useEffect(() => {
     if (!user) return;
     const updateStats = async () => {
-      const [siswa, galeri, pesan] = await Promise.all([
+      const galeriCount = 18; // Berdasarkan panjang array lokal di halaman Galeri
+      const [siswa, pesan] = await Promise.all([
         fetchCount("siswa"),
-        fetchCount("galeri"),
         fetchCount("obrolan_kelas"),
       ]);
-      setStats({ siswa, galeri, pesan, ready: true });
+      setStats({ siswa, galeri: galeriCount, pesan, ready: true });
     };
     updateStats();
     

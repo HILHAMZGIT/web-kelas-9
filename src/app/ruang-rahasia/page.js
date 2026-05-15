@@ -100,7 +100,7 @@ export default function RuangRahasiaPage() {
   }
 
   return (
-    <div className="relative min-h-screen page-shell">
+    <div className="relative min-h-screen page-shell overflow-x-hidden w-full max-w-full">
       {/* Subtle mysterious ambient */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] rounded-full bg-violet-300/5 blur-[150px]" />

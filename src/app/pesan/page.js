@@ -355,7 +355,7 @@ export default function PesanPage() {
         <ProfileModal userId={modalUserId} onClose={() => setModalUserId(null)} />
       )}
 
-      <main className="page-shell flex min-h-[100dvh] flex-col">
+      <main className="page-shell flex min-h-[calc(100vh-80px)] flex-col pb-24 md:pb-0 relative">
         {/* Header */}
         <header className="sticky top-0 z-20 shrink-0 glass-strong border-b border-black/5 px-4 py-3 shadow-sm sm:px-6">
           <div className="mx-auto flex max-w-3xl items-center gap-3">
@@ -390,8 +390,8 @@ export default function PesanPage() {
               </div>
             )}
 
-            <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-2xl border border-black/5 bg-white/40 backdrop-blur-sm shadow-inner">
-              <div className="flex flex-1 flex-col gap-2 overflow-y-auto px-2 py-3 sm:px-4 sm:py-4">
+            <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-2xl border border-black/5 bg-white/40 backdrop-blur-sm shadow-inner mb-24 md:mb-0">
+              <div className="flex flex-1 flex-col gap-2 overflow-y-auto px-2 py-3 sm:px-4 sm:py-4 pb-24 md:pb-4">
                 {messagesLoading ? (
                   <div className="flex flex-1 flex-col items-center justify-center gap-2 py-16 text-slate-400">
                     <Loader2 className="h-8 w-8 animate-spin text-emerald-500" />
@@ -495,7 +495,7 @@ export default function PesanPage() {
               {/* Composer */}
               <form
                 onSubmit={(e) => { e.preventDefault(); sendMessage(); }}
-                className="flex shrink-0 items-end gap-2 border-t border-black/5 bg-white/60 backdrop-blur-sm p-2 sm:p-3"
+                className="fixed bottom-[75px] md:bottom-0 left-0 right-0 z-40 mx-auto w-full max-w-3xl flex shrink-0 items-end gap-2 border-t border-slate-200/50 bg-white/90 backdrop-blur-md p-3 shadow-[0_-10px_30px_rgba(0,0,0,0.05)] rounded-t-3xl md:rounded-none"
               >
                 {/* Emoji Picker Toggle */}
                 <div className="relative" ref={emojiRef}>

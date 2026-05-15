@@ -2,8 +2,13 @@
 
 import Image from "next/image";
 import { Code2, Heart, Sparkles, Globe, MessageCircle } from "lucide-react";
+import { usePathname } from "next/navigation";
 
 export default function Footer() {
+  const pathname = usePathname();
+  
+  if (pathname === "/pesan") return null;
+
   return (
     <footer className="relative z-10 mt-12 border-t border-black/[0.03] bg-[#FAF9F6] bg-dots">
       <div className="glass-premium border-x-0 border-b-0 rounded-none bg-white/40 backdrop-blur-2xl">

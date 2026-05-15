@@ -4,7 +4,7 @@ import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/lib/AuthContext";
 import {
   Hash, Loader2, MessageCircle, Send, Users, X, User,
-  FileText, Trash2, Smile,
+  FileText, Trash2, Smile, Lock
 } from "lucide-react";
 import InstagramIcon from "@/components/InstagramIcon";
 import Image from "next/image";
@@ -355,200 +355,200 @@ export default function PesanPage() {
         <ProfileModal userId={modalUserId} onClose={() => setModalUserId(null)} />
       )}
 
-      <main className="page-shell flex min-h-[calc(100vh-80px)] flex-col pb-24 md:pb-0 relative">
+      <main className="page-shell flex flex-col h-[100dvh] pb-[75px] md:pb-0 relative overflow-hidden bg-[#efeae2]">
         {/* Header */}
-        <header className="sticky top-0 z-20 shrink-0 glass-strong border-b border-black/5 px-4 py-3 shadow-sm sm:px-6">
+        <header className="sticky top-0 z-20 shrink-0 bg-white/95 backdrop-blur-md px-4 py-2.5 shadow-sm sm:px-6">
           <div className="mx-auto flex max-w-3xl items-center gap-3">
-            <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded-xl ring-2 ring-emerald-200/50 shadow-sm">
-              <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-emerald-400 to-teal-500">
-                <Users className="h-6 w-6 text-white" />
+            <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full ring-1 ring-black/5 shadow-sm">
+              <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-emerald-500 to-teal-600">
+                <Users className="h-5 w-5 text-white" />
               </div>
             </div>
             <div className="min-w-0 flex-1">
-              <h1 className="truncate text-lg font-bold text-slate-800 sm:text-xl">Grup Chat • 9B</h1>
-              <p className="truncate text-xs text-slate-400">
+              <h1 className="truncate text-[15px] font-bold text-slate-800 leading-tight">Grup Chat 9B</h1>
+              <p className="truncate text-[11px] text-emerald-600 font-medium">
                 {myUsername} <span className="hidden sm:inline">• online</span>
               </p>
             </div>
             <button
               type="button"
               onClick={() => { setMessages([]); signOut(); }}
-              className="inline-flex shrink-0 items-center gap-2 rounded-xl bg-slate-100 px-3 py-2 text-xs font-semibold text-slate-500 transition hover:bg-slate-200 sm:text-sm"
+              className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-slate-100 px-3 py-1.5 text-[11px] font-semibold text-slate-600 transition hover:bg-slate-200"
             >
-              <X className="h-4 w-4" />
+              <X className="h-3.5 w-3.5" />
               <span className="hidden sm:inline">Keluar</span>
             </button>
           </div>
         </header>
 
         {/* Chat body */}
-        <div className="relative flex flex-1 flex-col overflow-hidden bg-gradient-to-b from-emerald-50/30 via-white/40 to-amber-50/20">
-          <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col px-2 pb-2 pt-3 sm:px-4">
+        <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col overflow-hidden sm:border-x sm:border-black/5">
+          <div className="flex-1 overflow-y-auto px-3 py-4 pb-24 space-y-2 sm:px-4">
             {chatError && (
               <div className="mb-2 rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-center text-xs text-red-700" role="alert">
                 {chatError}
               </div>
             )}
 
-            <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-2xl border border-black/5 bg-white/40 backdrop-blur-sm shadow-inner mb-24 md:mb-0">
-              <div className="flex flex-1 flex-col gap-2 overflow-y-auto px-2 py-3 sm:px-4 sm:py-4 pb-24 md:pb-4">
-                {messagesLoading ? (
-                  <div className="flex flex-1 flex-col items-center justify-center gap-2 py-16 text-slate-400">
-                    <Loader2 className="h-8 w-8 animate-spin text-emerald-500" />
-                    <p className="text-sm">Memuat obrolan...</p>
-                  </div>
-                ) : messages.length === 0 ? (
-                  <div className="flex flex-1 flex-col items-center justify-center px-4 py-16 text-center">
-                    <MessageCircle className="mb-3 h-12 w-12 text-slate-300" />
-                    <p className="text-sm font-medium text-slate-500">Belum ada pesan</p>
-                    <p className="mt-1 max-w-xs text-xs text-slate-400">Mulai percakapan - pesan tampil ke semua anggota grup secara real-time.</p>
-                  </div>
-                ) : (
-                  messages.map((m) => {
-                    const mine = m.user_id === userId;
-                    const joined = Array.isArray(m.profil_user) ? m.profil_user[0] : m.profil_user;
-                    const senderUsername = (joined?.username || "").trim() || (mine ? myUsername : "Anonim");
-                    const senderUserId = joined?.id || m.user_id;
-                    const senderAvatar = joined?.foto_profil;
-                    const senderIg = (joined?.instagram_username || "").trim();
+            {messagesLoading ? (
+              <div className="flex flex-1 flex-col items-center justify-center gap-2 py-16 text-slate-400">
+                <Loader2 className="h-8 w-8 animate-spin text-emerald-500" />
+                <p className="text-sm">Memuat obrolan...</p>
+              </div>
+            ) : messages.length === 0 ? (
+              <div className="flex flex-1 flex-col items-center justify-center px-4 py-16 text-center">
+                <div className="rounded-2xl bg-[#ffeecd] px-4 py-3 shadow-sm inline-block max-w-[85%]">
+                  <p className="text-xs text-slate-600 leading-relaxed">
+                    <Lock className="inline-block h-3 w-3 mr-1 -mt-0.5" />
+                    Pesan di grup ini diamankan. Canda, ini grup kelas biasa. Mulai sapa temanmu!
+                  </p>
+                </div>
+              </div>
+            ) : (
+              messages.map((m) => {
+                const mine = m.user_id === userId;
+                const joined = Array.isArray(m.profil_user) ? m.profil_user[0] : m.profil_user;
+                const senderUsername = (joined?.username || "").trim() || (mine ? myUsername : "Anonim");
+                const senderUserId = joined?.id || m.user_id;
+                const senderAvatar = joined?.foto_profil;
+                const senderIg = (joined?.instagram_username || "").trim();
 
-                    return (
-                      <motion.div
-                        key={m.id}
-                        className={`flex w-full gap-2 ${mine ? "justify-end" : "justify-start"}`}
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.2 }}
+                return (
+                  <motion.div
+                    key={m.id}
+                    className={`flex w-full gap-1.5 ${mine ? "justify-end" : "justify-start"}`}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    {/* Avatar for others */}
+                    {!mine && (
+                      <button
+                        type="button"
+                        onClick={() => setModalUserId(senderUserId)}
+                        className="flex-shrink-0 h-7 w-7 rounded-full overflow-hidden ring-1 ring-black/5 mt-auto transition-transform hover:scale-110"
                       >
-                        {/* Avatar for others */}
-                        {!mine && (
+                        {senderAvatar ? (
+                          <Image src={senderAvatar} alt="" width={28} height={28} className="h-full w-full object-cover" unoptimized />
+                        ) : (
+                          <div className="flex h-full w-full items-center justify-center bg-slate-200 text-[10px] font-bold text-slate-500">
+                            {senderUsername[0]?.toUpperCase()}
+                          </div>
+                        )}
+                      </button>
+                    )}
+
+                    <div className={`relative max-w-[85%] sm:max-w-[75%] rounded-lg px-2.5 py-1.5 shadow-sm ${
+                      mine
+                        ? "rounded-tr-sm bg-[#dcf8c6] text-slate-800"
+                        : "rounded-tl-sm bg-white text-slate-800"
+                    }`}>
+                      {/* Sender name clickable for others */}
+                      {!mine ? (
+                        <div className="flex items-center gap-1.5 mb-0.5">
                           <button
                             type="button"
                             onClick={() => setModalUserId(senderUserId)}
-                            className="flex-shrink-0 h-8 w-8 rounded-full overflow-hidden ring-1 ring-black/5 mt-1 transition-transform hover:scale-110"
+                            className="text-[11px] font-bold text-[#1f8b72] hover:underline transition-colors text-left"
                           >
-                            {senderAvatar ? (
-                              <Image src={senderAvatar} alt="" width={32} height={32} className="h-full w-full object-cover" unoptimized />
-                            ) : (
-                              <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-emerald-300 to-teal-400 text-xs font-bold text-white">
-                                {senderUsername[0]?.toUpperCase()}
-                              </div>
-                            )}
+                            ~{senderUsername}
                           </button>
-                        )}
-
-                        <div className={`group relative max-w-[80%] rounded-2xl px-3.5 py-2.5 shadow-sm sm:max-w-[70%] ${
-                          mine
-                            ? "rounded-br-md bg-emerald-50 text-slate-800 ring-1 ring-emerald-100"
-                            : "rounded-bl-md bg-white text-slate-800 ring-1 ring-black/5"
-                        }`}>
-                          {/* Sender name â€” clickable for others */}
-                          {!mine ? (
-                            <div className="flex items-center gap-1.5 mb-0.5">
-                              <button
-                                type="button"
-                                onClick={() => setModalUserId(senderUserId)}
-                                className="text-xs font-semibold text-emerald-600 hover:underline transition-colors text-left"
-                              >
-                                @{senderUsername}
-                              </button>
-                              {senderIg && (
-                                <a href={`https://instagram.com/${senderIg}`} target="_blank" rel="noreferrer" className="text-pink-400 hover:text-pink-500 transition-colors" onClick={(e) => e.stopPropagation()}>
-                                  <InstagramIcon className="h-3 w-3" />
-                                </a>
-                              )}
-                            </div>
-                          ) : (
-                            <p className="mb-0.5 text-xs font-semibold text-emerald-600/70">Kamu</p>
+                          {senderIg && (
+                            <a href={`https://instagram.com/${senderIg}`} target="_blank" rel="noreferrer" className="text-pink-400 hover:text-pink-500 transition-colors" onClick={(e) => e.stopPropagation()}>
+                              <InstagramIcon className="h-3 w-3" />
+                            </a>
                           )}
-                          <p className="whitespace-pre-wrap break-words text-sm leading-relaxed">{m.pesan ?? m.isi ?? ""}</p>
-                          <div className="mt-1 flex items-center justify-end gap-2">
-                            <p className={`text-[10px] tabular-nums ${mine ? "text-emerald-500/60" : "text-slate-300"}`}>
-                              {formatChatTime(m.created_at)}
-                            </p>
-                          </div>
-
-                          {/* Delete button â€” only for own messages */}
+                        </div>
+                      ) : null}
+                      <div className="flex flex-wrap items-end gap-x-2 gap-y-1">
+                        <p className="whitespace-pre-wrap break-words text-[13.5px] leading-relaxed max-w-full">
+                          {m.pesan ?? m.isi ?? ""}
+                        </p>
+                        <div className="flex items-center justify-end gap-1 ml-auto shrink-0 mb-0.5">
+                          <span className={`text-[10px] tabular-nums ${mine ? "text-[#5cb85c]" : "text-slate-400"}`}>
+                            {formatChatTime(m.created_at)}
+                          </span>
+                          {/* Delete button permanently visible inside bubble */}
                           {mine && (
                             <button
                               type="button"
                               onClick={() => deleteMessage(m.id)}
                               disabled={deletingId === m.id}
-                              className="absolute -left-8 top-1/2 -translate-y-1/2 flex h-6 w-6 items-center justify-center rounded-full bg-red-50 text-red-400 opacity-0 group-hover:opacity-100 transition-all hover:bg-red-100 hover:text-red-500 disabled:opacity-50"
+                              className="text-slate-400 hover:text-red-500 transition-colors disabled:opacity-50 ml-0.5"
                               title="Hapus pesan"
                             >
                               {deletingId === m.id ? (
                                 <Loader2 className="h-3 w-3 animate-spin" />
                               ) : (
-                                <Trash2 className="h-3 w-3" />
+                                <Trash2 className="h-[11px] w-[11px]" strokeWidth={2.5} />
                               )}
                             </button>
                           )}
                         </div>
-                      </motion.div>
-                    );
-                  })
-                )}
-                <div ref={scrollAnchorRef} />
-              </div>
-
-              {/* Composer */}
-              <form
-                onSubmit={(e) => { e.preventDefault(); sendMessage(); }}
-                className="fixed bottom-[75px] md:bottom-0 left-0 right-0 z-40 mx-auto w-full max-w-3xl flex shrink-0 items-end gap-2 border-t border-slate-200/50 bg-white/90 backdrop-blur-md p-3 shadow-[0_-10px_30px_rgba(0,0,0,0.05)] rounded-t-3xl md:rounded-none"
-              >
-                {/* Emoji Picker Toggle */}
-                <div className="relative" ref={emojiRef}>
-                  <button
-                    type="button"
-                    onClick={() => setShowEmoji(!showEmoji)}
-                    className={`flex h-11 w-11 items-center justify-center rounded-full transition-all ${
-                      showEmoji ? "bg-emerald-100 text-emerald-600" : "bg-slate-100 text-slate-400 hover:bg-slate-200 hover:text-slate-500"
-                    }`}
-                  >
-                    <Smile className="h-5 w-5" />
-                  </button>
-                  {showEmoji && (
-                    <div className="absolute bottom-14 left-0 z-50">
-                      <EmojiPicker
-                        onEmojiClick={onEmojiClick}
-                        width={300}
-                        height={380}
-                        searchDisabled={false}
-                        skinTonesDisabled
-                        previewConfig={{ showPreview: false }}
-                      />
+                      </div>
                     </div>
-                  )}
-                </div>
-
-                <div className="relative min-w-0 flex-1">
-                  <textarea
-                    rows={1}
-                    value={draft}
-                    onChange={(e) => setDraft(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" && !e.shiftKey) {
-                        e.preventDefault();
-                        if (!sendBusy && draft.trim()) void sendMessage();
-                      }
-                    }}
-                    placeholder="Ketik pesan..."
-                    className="max-h-32 min-h-[44px] w-full resize-none rounded-2xl border border-black/8 bg-white/80 px-4 py-3 text-sm text-slate-700 outline-none transition focus:ring-2 focus:ring-emerald-200 focus:border-emerald-300"
-                  />
-                </div>
-                <button
-                  type="submit"
-                  disabled={sendBusy || !draft.trim()}
-                  className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 text-white shadow-md shadow-emerald-200 transition hover:shadow-lg hover:shadow-emerald-300 disabled:opacity-50 sm:h-12 sm:w-12"
-                  aria-label="Kirim pesan"
-                >
-                  {sendBusy ? <Loader2 className="h-5 w-5 animate-spin" /> : <Send className="h-5 w-5" strokeWidth={2.2} />}
-                </button>
-              </form>
-            </div>
+                  </motion.div>
+                );
+              })
+            )}
+            <div ref={scrollAnchorRef} />
           </div>
         </div>
+
+        {/* Composer */}
+        <form
+          onSubmit={(e) => { e.preventDefault(); sendMessage(); }}
+          className="fixed bottom-[75px] md:bottom-0 left-0 right-0 z-40 mx-auto w-full max-w-3xl flex shrink-0 items-end gap-2 bg-[#f0f2f5] p-2 sm:p-3 shadow-[0_-2px_10px_rgba(0,0,0,0.05)]"
+        >
+          {/* Emoji Picker Toggle */}
+          <div className="relative" ref={emojiRef}>
+            <button
+              type="button"
+              onClick={() => setShowEmoji(!showEmoji)}
+              className={`flex h-11 w-11 items-center justify-center rounded-full transition-all ${
+                showEmoji ? "text-[#00a884] bg-slate-200/50" : "text-slate-500 hover:bg-slate-200/50"
+              }`}
+            >
+              <Smile className="h-6 w-6" />
+            </button>
+            {showEmoji && (
+              <div className="absolute bottom-14 left-0 z-50">
+                <EmojiPicker
+                  onEmojiClick={onEmojiClick}
+                  width={300}
+                  height={380}
+                  searchDisabled={false}
+                  skinTonesDisabled
+                  previewConfig={{ showPreview: false }}
+                />
+              </div>
+            )}
+          </div>
+
+          <div className="relative min-w-0 flex-1">
+            <textarea
+              rows={1}
+              value={draft}
+              onChange={(e) => setDraft(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault();
+                  if (!sendBusy && draft.trim()) void sendMessage();
+                }
+              }}
+              placeholder="Ketik pesan..."
+              className="max-h-32 min-h-[44px] w-full resize-none rounded-2xl bg-white px-4 py-3 text-sm text-slate-800 outline-none shadow-sm transition focus:ring-1 focus:ring-emerald-200"
+            />
+          </div>
+          <button
+            type="submit"
+            disabled={sendBusy || !draft.trim()}
+            className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#00a884] text-white shadow-sm transition hover:bg-[#008f6f] disabled:opacity-50"
+            aria-label="Kirim pesan"
+          >
+            {sendBusy ? <Loader2 className="h-5 w-5 animate-spin" /> : <Send className="h-5 w-5 ml-1" strokeWidth={2.2} />}
+          </button>
+        </form>
       </main>
     </>
   );

@@ -99,8 +99,8 @@ export default function Navbar() {
       </nav>
 
       {/* Mobile App-Style Bottom Navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 z-[9999] md:hidden bg-white/80 backdrop-blur-md border-t border-slate-200/50 pb-safe shadow-[0_-8px_30px_rgba(0,0,0,0.04)]">
-        <div className="w-full flex overflow-x-auto overflow-y-hidden whitespace-nowrap overscroll-x-contain no-scrollbar touch-pan-x">
+      <nav className="fixed bottom-0 left-0 right-0 z-[9999] md:hidden bg-white/90 backdrop-blur-md border-t border-slate-200/50 pb-safe shadow-[0_-8px_30px_rgba(0,0,0,0.04)] pointer-events-auto">
+        <div className="w-full flex overflow-x-auto overflow-y-hidden whitespace-nowrap overscroll-x-contain no-scrollbar touch-pan-x pointer-events-auto">
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = pathname === item.href;
@@ -108,7 +108,7 @@ export default function Navbar() {
               <Link
                 key={item.href}
                 href={item.href}
-                className="flex-shrink-0 min-w-[70px] flex flex-col items-center gap-1 px-3 py-2 transition-all duration-300"
+                className="flex-shrink-0 min-w-[70px] flex flex-col items-center gap-1 px-3 py-2 transition-all duration-300 pointer-events-auto"
               >
                 <div className={`relative flex items-center justify-center h-10 w-10 rounded-xl transition-all duration-300 ${
                   isActive ? "bg-emerald-50 shadow-sm" : ""

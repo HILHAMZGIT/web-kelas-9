@@ -105,7 +105,7 @@ export default function Navbar() {
           <div className="absolute right-0 top-0 bottom-0 w-10 bg-gradient-to-l from-white/90 via-white/50 to-transparent pointer-events-none z-10" />
           <div className="absolute left-0 top-0 bottom-0 w-4 bg-gradient-to-r from-white/90 to-transparent pointer-events-none z-10" />
           
-          <div className="flex items-center justify-start gap-1.5 overflow-x-auto no-scrollbar snap-x snap-mandatory py-2 px-4">
+          <div className="flex items-center justify-start gap-1.5 overflow-x-auto overscroll-x-contain no-scrollbar snap-x snap-mandatory py-2 px-4">
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = pathname === item.href;

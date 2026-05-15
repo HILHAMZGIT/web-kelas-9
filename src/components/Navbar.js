@@ -99,38 +99,32 @@ export default function Navbar() {
       </nav>
 
       {/* Mobile App-Style Bottom Navigation */}
-      <nav className="fixed inset-x-0 bottom-0 z-50 md:hidden bg-white/80 backdrop-blur-xl border-t border-slate-200/50 pb-safe shadow-[0_-8px_30px_rgba(0,0,0,0.04)]">
-        <div className="mx-auto max-w-full relative">
-          {/* Gradient overlay sebagai petunjuk visual bahwa navbar bisa digeser */}
-          <div className="absolute right-0 top-0 bottom-0 w-10 bg-gradient-to-l from-white/90 via-white/50 to-transparent pointer-events-none z-10" />
-          <div className="absolute left-0 top-0 bottom-0 w-4 bg-gradient-to-r from-white/90 to-transparent pointer-events-none z-10" />
-          
-          <div className="flex items-center justify-start gap-1.5 overflow-x-auto overscroll-x-contain no-scrollbar snap-x snap-mandatory py-2 px-4">
-            {navItems.map((item) => {
-              const Icon = item.icon;
-              const isActive = pathname === item.href;
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={`snap-center flex-shrink-0 relative flex flex-col items-center gap-1 min-w-[72px] px-1 py-1 transition-all duration-300 ${
-                    isActive ? "text-emerald-600" : "text-slate-400 hover:text-slate-600"
-                  }`}
-                >
-                  <div className={`relative flex items-center justify-center h-8 w-8 rounded-xl transition-all duration-300 ${
-                    isActive ? "bg-emerald-50 shadow-sm" : ""
-                  }`}>
-                    <Icon className="h-5 w-5 relative z-10" strokeWidth={isActive ? 2.5 : 2} />
-                  </div>
-                  <span className={`text-[10px] font-bold whitespace-nowrap transition-all duration-300 ${
-                    isActive ? "opacity-100" : "opacity-70"
-                  }`}>
-                    {item.label}
-                  </span>
-                </Link>
-              );
-            })}
-          </div>
+      <nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-white/80 backdrop-blur-md border-t border-slate-200/50 pb-safe shadow-[0_-8px_30px_rgba(0,0,0,0.04)]">
+        <div className="w-full flex overflow-x-auto overflow-y-hidden whitespace-nowrap overscroll-x-contain no-scrollbar">
+          {navItems.map((item) => {
+            const Icon = item.icon;
+            const isActive = pathname === item.href;
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="flex-shrink-0 min-w-[70px] flex flex-col items-center gap-1 px-3 py-2 transition-all duration-300"
+              >
+                <div className={`relative flex items-center justify-center h-10 w-10 rounded-xl transition-all duration-300 ${
+                  isActive ? "bg-emerald-50 shadow-sm" : ""
+                }`}>
+                  <Icon className={`h-5 w-5 relative z-10 transition-all duration-300 ${
+                    isActive ? "text-emerald-600" : "text-slate-400"
+                  }`} strokeWidth={isActive ? 2.5 : 2} />
+                </div>
+                <span className={`text-[10px] font-bold whitespace-nowrap transition-all duration-300 ${
+                  isActive ? "text-emerald-600 opacity-100" : "text-slate-400 opacity-70"
+                }`}>
+                  {item.label}
+                </span>
+              </Link>
+            );
+          })}
         </div>
       </nav>
     </>

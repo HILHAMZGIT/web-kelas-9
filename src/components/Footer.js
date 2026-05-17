@@ -56,9 +56,9 @@ export default function Footer() {
                     </div>
                   </div>
                   <div className="flex items-center justify-end gap-3 group">
-                    <div className="flex flex-col items-end leading-tight">
-                      <span className="text-base font-black text-slate-600 text-prestige">Rama Indra Pratama</span>
-                      <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">System Contributor</span>
+                    <div className="flex flex-col items-end leading-tight mt-1">
+                      <span className="text-sm font-bold text-slate-500">Rama Indra Pratama</span>
+                      <span className="text-[8px] font-semibold text-slate-400 uppercase tracking-widest">Minor Contributor</span>
                     </div>
                   </div>
                 </div>

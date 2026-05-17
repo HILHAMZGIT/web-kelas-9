@@ -85,7 +85,7 @@ const jadwalPiket = [
     color: "border-l-rose-500",
     bg: "bg-rose-50/30",
     iconColor: "text-rose-500",
-    anggota: ["Rifa Auliya Ramadhani", "Rifki Pratama", "Sabrina Zhara Rahmadani", "Safira Nasha Farah Azizah", "Shahnaz Histi Pratiwi", "Syifa Nabilah", "Tiara Adrastya Putri"]
+    anggota: ["Rena Setyawati", "Rifda Amelia", "Ringga Yazid khoeri", "Rival Catur Widiono", "Shayla ayu saputri", "Tri wahyudiono", "Zahrotus Sita"]
   },
 ];
 

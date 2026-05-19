@@ -6,6 +6,8 @@ import {
   Users, MessageCircle, Camera, Clock, Calendar, ArrowRight, 
   Sparkles, MessageSquare, ChevronRight, Play, School, Leaf, Star, Trophy, Crown, UserCheck, PenTool, Wallet, Video, Quote, Heart
 } from "lucide-react";
+import BirthdayWidget from "@/components/BirthdayWidget";
+import MemoryCounter from "@/components/MemoryCounter";
 import { useEffect, useState, useRef, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
@@ -301,12 +303,20 @@ function LandingPage() {
           <div className="absolute inset-0 bg-gradient-to-t from-[#faf8f5] via-transparent to-[#faf8f5]/60" />
         </div>
         
-        <motion.div className="relative z-10 text-center max-w-5xl mx-auto" initial="hidden" animate="visible" variants={stagger}>
-          <motion.div variants={fadeUp} className="mb-6">
-             <div className="inline-flex items-center gap-3 rounded-full border border-emerald-200/40 bg-emerald-50/25 backdrop-blur-xl px-5 py-2 text-[10px] sm:text-xs font-semibold text-emerald-700 shadow-lg">
+        <motion.div className="relative z-10 text-center max-w-5xl mx-auto px-2 sm:px-4" initial="hidden" animate="visible" variants={stagger}>
+          <motion.div variants={fadeUp} className="mb-4 sm:mb-6">
+             <div className="inline-flex items-center gap-2 sm:gap-3 rounded-full border border-emerald-200/40 bg-emerald-50/25 backdrop-blur-xl px-3 sm:px-5 py-1.5 sm:py-2 text-[9px] sm:text-xs font-semibold text-emerald-700 shadow-lg">
                <Sparkles className="h-3.5 w-3.5 text-emerald-500 animate-pulse" />
                <span className="tracking-widest uppercase">SMPN 1 KARANGLEWAS · ANGKATAN 2026</span>
              </div>
+          </motion.div>
+
+          <motion.div variants={fadeUp} className="mb-6 max-w-md mx-auto">
+            <BirthdayWidget />
+          </motion.div>
+
+          <motion.div variants={fadeUp} className="mb-8 max-w-lg mx-auto">
+            <MemoryCounter />
           </motion.div>
 
           <motion.h1 variants={fadeUp} className="text-4xl sm:text-7xl lg:text-9xl font-black text-[#1a1a1a] tracking-tight mb-8">
@@ -498,6 +508,7 @@ function Dashboard({ user, profile, stats }) {
 
            {/* Spotlight & Chat Quick Link */}
            <div className="lg:col-span-1 space-y-6">
+              <BirthdayWidget />
               <div className="bento-card p-6 bg-amber-50 border-amber-200">
                  <Sparkles className="h-6 w-6 text-amber-500 mb-4" />
                  <p className="text-[10px] font-bold text-amber-600 uppercase mb-2">Siswa Hari Ini</p>

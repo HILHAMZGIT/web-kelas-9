@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import {
   Users, GraduationCap, Sparkles, Award, Crown,
   UserCheck, BookOpen, PenLine, Wallet, Calendar,
-  Leaf, School, Heart,
+  Leaf, School, Heart, Laptop,
 } from "lucide-react";
 import InstagramIcon from "@/components/InstagramIcon";
 
@@ -190,7 +190,7 @@ export default function TentangPage() {
               Profil <span className="gradient-text">Pendidik</span>
             </h2>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {/* Kepala Sekolah */}
             <div className="bento-card p-6 sm:p-8">
               <div className="flex items-start gap-4">
@@ -222,6 +222,24 @@ export default function TentangPage() {
                   </h3>
                   <p className="text-xs text-[#a0aec0] font-semibold mt-2 tracking-wide">
                     NIP: 19800902 202321 1 001
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Guru Informatika */}
+            <div className="bento-card p-6 sm:p-8">
+              <div className="flex items-start gap-4">
+                <div className="flex-shrink-0 h-14 w-14 rounded-2xl bg-violet-100/60 flex items-center justify-center">
+                  <Laptop className="h-7 w-7 text-violet-600" />
+                </div>
+                <div>
+                  <p className="text-[10px] font-black text-violet-600 uppercase tracking-[0.3em] mb-1">Guru Informatika</p>
+                  <h3 className="text-lg font-black text-[#1a1a1a] tracking-tight leading-snug">
+                    Ajeng Ivon Primardani, S.Kom
+                  </h3>
+                  <p className="text-xs text-[#a0aec0] font-semibold mt-2 tracking-wide">
+                    NIP: 19971113 202521 2 02
                   </p>
                 </div>
               </div>

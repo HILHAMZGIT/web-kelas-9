@@ -5,10 +5,19 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ZoomIn, Lock, Clock } from "lucide-react";
 
-// Menyiapkan array angka 1 sampai 18 untuk mapping gambar otomatis
-const images = Array.from({ length: 18 }, (_, i) => i + 1);
+// ============================================================
+// LANGKAH 2: Generate array 35 foto (1-20 .jpeg, 21-35 .jpg)
+// Tanpa fs — murni logic JS client-side
+// ============================================================
+const images = Array.from({ length: 35 }, (_, i) => {
+  const num = i + 1;
+  return {
+    id: num,
+    src: `/Gallery/${num}${num <= 20 ? ".jpeg" : ".jpg"}`,
+  };
+});
 
-// Animasi masuk untuk grid masonry
+// Animasi fade-up untuk grid
 const fadeUp = {
   hidden: { opacity: 0, y: 40 },
   visible: (i) => ({
@@ -18,9 +27,11 @@ const fadeUp = {
   }),
 };
 
-// Komponen Modal/Lightbox untuk Zoom
-function Lightbox({ num, onClose }) {
-  // Tutup pakai tombol Esc di keyboard
+// ============================================================
+// LANGKAH 3B: Lightbox Modal — PERBAIKI BUG total
+// ============================================================
+function Lightbox({ src, onClose }) {
+  // Tutup pakai tombol Esc
   useEffect(() => {
     function handleKey(e) {
       if (e.key === "Escape") onClose();
@@ -31,40 +42,41 @@ function Lightbox({ num, onClose }) {
 
   return (
     <motion.div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-8"
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       onClick={onClose}
     >
-      {/* Background Gelap dengan Blur */}
-      <div className="absolute inset-0 bg-black/90 backdrop-blur-xl" />
+      {/* Background gelap + blur — z-index dibawah konten */}
+      <div className="absolute inset-0 bg-black/90 backdrop-blur-md" />
 
-      {/* Tombol Close */}
+      {/* Tombol Close — z-[110] supaya PASTI bisa diklik */}
       <button
         onClick={onClose}
-        className="absolute right-4 top-4 sm:right-8 sm:top-8 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-md transition-all hover:bg-white/25 hover:scale-110 hover:rotate-90"
+        className="absolute top-4 right-4 md:top-6 md:right-6 z-[110] bg-white/20 hover:bg-white/40 text-white rounded-full p-3 cursor-pointer transition-all duration-300 hover:scale-110 hover:rotate-90"
+        aria-label="Tutup"
       >
         <X className="h-6 w-6" />
       </button>
 
-      {/* Gambar Membesar di Tengah */}
+      {/* Gambar di tengah — flex + object-contain solves semuanya */}
       <motion.div
-        className="relative z-40 w-full h-[85vh] flex items-center justify-center"
+        className="relative z-[101] w-full h-full flex items-center justify-center"
         initial={{ scale: 0.85, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.85, opacity: 0 }}
         transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-        onClick={(e) => e.stopPropagation()} // Supaya klik gambar tidak ikut menutup modal
+        onClick={(e) => e.stopPropagation()} // Klik gambar ≠ tutup modal
       >
-        <div className="relative w-full h-full">
+        <div className="relative w-full h-full max-w-[90vw] max-h-[85vh]">
           <Image
-            src={`/Gallery/${num}.jpeg`}
-            alt={`Galeri Zoom ${num}`}
+            src={src}
+            alt="Galeri Zoom"
             fill
-            className="object-contain drop-shadow-2xl"
+            className="object-contain rounded-lg"
             sizes="100vw"
-            priority // Gambar yang di-zoom di-load cepat
+            priority
           />
         </div>
       </motion.div>
@@ -72,6 +84,9 @@ function Lightbox({ num, onClose }) {
   );
 }
 
+// ============================================================
+// LANGKAH 3A + 4: Halaman Utama Gallery
+// ============================================================
 export default function GaleriPage() {
   const [selectedImage, setSelectedImage] = useState(null);
   const [activeTab, setActiveTab] = useState("foto");
@@ -80,7 +95,7 @@ export default function GaleriPage() {
     <div className="relative min-h-screen bg-gradient-to-b from-[#faf8f5] to-[#f5f2ed] page-shell pt-24 pb-32">
       <div className="container-premium max-w-7xl mx-auto px-4 sm:px-6">
         
-        {/* Header Estetik Emerald/Tosca */}
+        {/* Header Estetik */}
         <motion.div 
           className="text-center mb-12"
           initial={{ opacity: 0, y: -20 }}
@@ -136,32 +151,32 @@ export default function GaleriPage() {
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.4 }}
             >
-              {/* Responsive Masonry Grid: 2 kolom di HP, 3 di Tablet, 4 di Desktop */}
-              <div className="columns-2 md:columns-3 lg:columns-4 gap-3 sm:gap-5 space-y-3 sm:space-y-5">
-                {images.map((num, i) => (
+              {/* GRID RESPONSIF: 2 kolom mobile, 3 tablet, 4 desktop */}
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                {images.map((img, i) => (
                   <motion.div
-                    key={num}
-                    className="break-inside-avoid relative overflow-hidden rounded-[1.25rem] cursor-pointer group shadow-sm hover:shadow-2xl transition-all duration-500 border border-emerald-900/5"
+                    key={img.id}
+                    className="aspect-square overflow-hidden rounded-xl cursor-pointer group shadow-sm hover:shadow-2xl transition-all duration-500 border border-emerald-900/5"
                     variants={fadeUp}
                     initial="hidden"
                     animate="visible"
                     custom={i}
-                    onClick={() => setSelectedImage(num)}
+                    onClick={() => setSelectedImage(img.src)}
                   >
-                    <Image
-                      src={`/Gallery/${num}.jpeg`}
-                      alt={`Kenangan 9B ${num}`}
-                      width={0}
-                      height={0}
-                      sizes="(max-width: 768px) 50vw, 33vw"
-                      style={{ width: '100%', height: 'auto' }}
-                      className="group-hover:scale-110 transition-transform duration-700 ease-out"
-                      loading="lazy"
-                    />
-                    
-                    {/* Overlay Tosca/Emerald saat di-hover */}
+                    <div className="relative w-full h-full">
+                      <Image
+                        src={img.src}
+                        alt={`Kenangan 9B ${img.id}`}
+                        fill
+                        sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                        className="object-cover group-hover:scale-105 transition-transform duration-300"
+                        loading="lazy"
+                      />
+                    </div>
+
+                    {/* Overlay emerald saat hover */}
                     <div className="absolute inset-0 bg-gradient-to-t from-emerald-900/60 via-emerald-900/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    
+
                     {/* Ikon Zoom di tengah */}
                     <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-4 group-hover:translate-y-0">
                       <div className="flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-full bg-white/90 backdrop-blur-md shadow-2xl text-emerald-600">
@@ -230,10 +245,10 @@ export default function GaleriPage() {
         </AnimatePresence>
       </div>
 
-      {/* Lightbox / Modal Overlay (Hanya muncul jika ada foto yang dipilih) */}
+      {/* Lightbox — hanya muncul jika ada gambar dipilih */}
       <AnimatePresence>
         {selectedImage && (
-          <Lightbox num={selectedImage} onClose={() => setSelectedImage(null)} />
+          <Lightbox src={selectedImage} onClose={() => setSelectedImage(null)} />
         )}
       </AnimatePresence>
     </div>

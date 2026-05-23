@@ -19,13 +19,13 @@ const galleryImages = Array.from({ length: 35 }, (_, i) => {
 const videoData = [
   {
     id: 1,
-    title: "Memori Kelas 9B - Part 1",
+    title: "Video Angkatan Ke-39 - Part 1",
     embedUrl:
       "https://drive.google.com/file/d/150Xk8hLd0PAtmRSoLNOmUI1hXLjOoh3d/preview",
   },
   {
     id: 2,
-    title: "Memori Kelas 9B - Part 2",
+    title: "Video Angkatan Ke-39 - Part 2",
     embedUrl:
       "https://drive.google.com/file/d/1vJOEFozNcKV14PVn0lNNEuScUQss-q7W/preview",
   },
